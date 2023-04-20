@@ -1,0 +1,27 @@
+package Clases;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+
+public class CocheTest {
+
+    @Test
+    public void testEquals() {
+        Coche coche1 = new Coche("B1", "1234ABC", "Renault", "Clio", 2019, Motor.Gasolina);
+        Coche coche2 = new Coche("B1", "1234ABC", "Renault", "Clio", 2019, Motor.Gasolina);
+        assertTrue(coche1.equals(coche2));
+    }
+    
+    @Test
+    public void testGetTipoDeMotor() {
+        Coche coche = new Coche("B4", "9999XYZ", "Toyota", "Corolla", 2023, Motor.Electrico);
+        assertEquals(Motor.Electrico, coche.getMotor());
+    }
+    
+    @Test
+    public void testSetTipoDeMotor() {
+        Coche coche = new Coche("B5", "5555CCC", "Volkswagen", "Golf", 2024, Motor.Gasolina);
+        coche.setMotor(Motor.Diesel);
+        assertEquals(Motor.Diesel, coche.getMotor());
+    }
+}
