@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<datos>
+
+    <nombre_datos>Registro de empleados </nombre_datos>
+   
+
+<!-- REPARACIONES -->
+
+    <Reparaciones>
+   
+        <reparacion id="01">
+            <idMecanico>4</idMecanico>
+            <descripcion>Reparación de motor</descripcion>
+            <coste>500</coste>
+            <precio>728.5</precio>
+            <horasRepacion>10:00:00</horasRepacion>
+            <fechaIni>2023-04-10</fechaIni>
+            <fechaFin>2023-04-12</fechaFin>
+            
+        </reparacion>
+
+        <reparacion id="02">
+        <idMecanico>5</idMecanico>
+            <descripcion>Reparación de transmisión</descripcion>
+            <coste>445.1</coste>
+            <precio>634</precio>
+            <horasRepacion>08:00:00</horasRepacion>
+            <fechaIni>2023-04-11</fechaIni>
+            <fechaFin>2023-04-14</fechaFin>
+            
+        </reparacion>
+
+         <reparacion id="03">
+            <idMecanico>6</idMecanico>
+            <descripcion>Reemplazo de frenos</descripcion>
+            <coste>300</coste>
+            <precio>50</precio>
+            <horasRepacion>02:00:00</horasRepacion>
+            <fechaIni>2023-04-12</fechaIni>
+            <fechaFin>2023-04-13</fechaFin>
+           
+        </reparacion>
+
+    </Reparaciones>   
+
+<!-- VENTAS -->
+
+    <Ventas>
+   
+        <venta id="1">
+           
+            <idVendedor>2</idVendedor>
+            <idVehiculo>321987654098765TY</idVehiculo>
+            <idCliente>12123232R</idCliente>
+            <precio>20000</precio>
+            <fecha>2023-04-15</fecha>
+          
+        </venta>
+
+      
+        <venta id="2">
+           
+            <idVendedor>3</idVendedor>
+            <idVehiculo>456789012345678EF</idVehiculo>
+            <idCliente>98987676V</idCliente>
+            <precio>30000</precio>
+            <fecha>2023-04-16</fecha>
+          
+    
+        </venta>
+    </Ventas>
+</datos>
