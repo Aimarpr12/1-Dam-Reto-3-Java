@@ -15,8 +15,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import clases.Reparacion;
 import controller.Controller;
+import modelo.Reparacion;
 
 public class OutputReparaciones {
 
@@ -67,6 +67,10 @@ public class OutputReparaciones {
 				Element fechaFinElement = doc.createElement("fechaFin");
 				fechaFinElement.appendChild(doc.createTextNode(new SimpleDateFormat("dd/MM/yyyy").format(reparacion.getFechaFin())));
 				reparacionElement.appendChild(fechaFinElement);
+				
+				Element idVehiculoElement = doc.createElement("idVehiculo");
+				idVehiculoElement.appendChild(doc.createTextNode(reparacion.getIdVehiculo()));
+				reparacionElement.appendChild(idVehiculoElement);
 			}
 	
 			// Escribir el contenido del documento XML en un archivo

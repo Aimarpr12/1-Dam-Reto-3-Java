@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import clases.Empleado;
-import clases.Mecanico;
-import clases.TipoDeEmpleado;
-import clases.Vendedor;
+import modelo.Empleado;
+import modelo.Mecanico;
+import modelo.TipoDeEmpleado;
+import modelo.Vendedor;
 import utils.DBUtils;
 import utils.SqlQuerys;
 

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import clases.Coche;
+import modelo.Coche;
 import utils.DBUtils;
 
 public class InsertarCoche {

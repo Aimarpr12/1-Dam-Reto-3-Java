@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import clases.Cliente;
+import modelo.Cliente;
 import utils.DBUtils;
 
 public class InsertarCliente {

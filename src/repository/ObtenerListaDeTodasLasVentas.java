@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import clases.Venta;
+import modelo.Venta;
 import utils.DBUtils;
 import utils.SqlQuerys;
 

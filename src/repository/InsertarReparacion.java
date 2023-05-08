@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import clases.Reparacion;
+import modelo.Reparacion;
 import utils.DBUtils;
 
 public class InsertarReparacion {

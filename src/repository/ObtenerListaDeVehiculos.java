@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import clases.Coche;
-import clases.Moto;
-import clases.Motor;
-import clases.TipoDeVehiculo;
-import clases.Vehiculo;
+import modelo.Coche;
+import modelo.Moto;
+import modelo.Motor;
+import modelo.TipoDeVehiculo;
+import modelo.Vehiculo;
 import utils.DBUtils;
 import utils.SqlQuerys;
 

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import clases.Empleado;
+import modelo.Empleado;
 import utils.DBUtils;
 import utils.SqlQuerys;
 

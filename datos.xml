@@ -9,7 +9,7 @@
 
     <Reparaciones>
    
-        <reparacion id="01">
+        <reparacion id="20">
             <idMecanico>4</idMecanico>
             <descripcion>Reparación de motor</descripcion>
             <coste>500</coste>
@@ -17,18 +17,19 @@
             <horasRepacion>10:00:00</horasRepacion>
             <fechaIni>2023-04-10</fechaIni>
             <fechaFin>2023-04-12</fechaFin>
+            <idVehiculo>456123789012345XZ</idVehiculo>
             
         </reparacion>
 
         <reparacion id="02">
         <idMecanico>5</idMecanico>
-            <descripcion>Reparación de transmisión</descripcion>
+            <descripcion>Reparación trnsmisión</descripcion>
             <coste>445.1</coste>
             <precio>634</precio>
-            <horasRepacion>08:00:00</horasRepacion>
+            <horasRepacion>08:01:00</horasRepacion>
             <fechaIni>2023-04-11</fechaIni>
             <fechaFin>2023-04-14</fechaFin>
-            
+            <idVehiculo>123456789012345AB</idVehiculo>
         </reparacion>
 
          <reparacion id="03">
@@ -39,7 +40,7 @@
             <horasRepacion>02:00:00</horasRepacion>
             <fechaIni>2023-04-12</fechaIni>
             <fechaFin>2023-04-13</fechaFin>
-           
+            <idVehiculo>456789012345678EF</idVehiculo>
         </reparacion>
 
     </Reparaciones>   
@@ -48,7 +49,7 @@
 
     <Ventas>
    
-        <venta id="1">
+        <venta id="10">
            
             <idVendedor>2</idVendedor>
             <idVehiculo>321987654098765TY</idVehiculo>
@@ -64,7 +65,7 @@
             <idVendedor>3</idVendedor>
             <idVehiculo>456789012345678EF</idVehiculo>
             <idCliente>98987676V</idCliente>
-            <precio>30000</precio>
+            <precio>300212</precio>
             <fecha>2023-04-16</fecha>
           
     

@@ -2,17 +2,25 @@ package controller;
 
 import java.util.List;
 
-import clases.Cliente;
-import clases.ClienteVehiculo;
-import clases.Coche;
-import clases.Empleado;
-import clases.Moto;
-import clases.Reparacion;
-import clases.TipoDeVehiculo;
-import clases.Vehiculo;
-import clases.Venta;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import error.VehiculoNoEncontradoException;
+import modelo.Cliente;
+import modelo.ClienteVehiculo;
+import modelo.Coche;
+import modelo.Empleado;
+import modelo.Mecanico;
+import modelo.Moto;
+import modelo.Reparacion;
+import modelo.TipoDeVehiculo;
+import modelo.Vehiculo;
+import modelo.Vendedor;
+import modelo.Venta;
 import repository.ActualizarVerificado;
+import repository.AnadirLogIn;
+import repository.AnadirUser;
 import repository.ComprobarLogIn;
 import repository.ComprobarQueEsUserNoEstaRegistrado;
 import repository.ComprobarQueLaContraseñaEsIgual;
@@ -35,18 +43,26 @@ import repository.ObtenerListaDeTodasLasVentas;
 import repository.ObtenerListaDeTodosLosEmpleados;
 import repository.ObtenerListaDeVehiculos;
 import repository.ObtenerNombreDelUser;
+import repository.UpdateComision;
 import repository.UpdateDireccion;
 import repository.UpdateIdJefe;
 import repository.UpdatePassword;
+import repository.UpdateRango;
 import repository.UpdateReparacion;
+import repository.UpdateReparacionConImport;
 import repository.UpdateSalary;
 import repository.UpdateTelefono;
 import repository.UpdateUser;
+import repository.UpdateVenta;
 import xmlParser.InputReparaciones;
 import xmlParser.InputVentas;
 import xmlParser.OutputReparaciones;
 import xmlParser.OutputVentas;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -86,6 +102,12 @@ public class Controller {
 	private static OutputVentas outputVentas = new OutputVentas();	
 	private static InputReparaciones intputReparaciones = new InputReparaciones();
 	private static InputVentas intputVentas = new InputVentas();	
+	private static AnadirUser anadirUser = new AnadirUser();
+	private static AnadirLogIn anadirLogIn = new AnadirLogIn();
+	private static UpdateComision updateVendedor = new UpdateComision();
+	private static UpdateRango updateMecanico = new UpdateRango();
+	private static UpdateVenta updateVenta = new UpdateVenta();
+	private static UpdateReparacionConImport updateReparacionInput = new UpdateReparacionConImport();
 	
 	private List<Empleado> listaEmpleados = new ArrayList<Empleado>();
 	
@@ -351,7 +373,18 @@ public class Controller {
 	}
 
 	public void anadirUser(Empleado empleadoNuevo, String valueOf) {
-		// TODO Auto-generated method stub
+		DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");   
+		String fechaActualFormateada = formatoFecha.format(new Date());
+		Date fechaActual = new Date();
+		try {
+			fechaActual = formatoFecha.parse(fechaActualFormateada);
+			empleadoNuevo.setFechaContratacion(fechaActual);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		anadirUser.anadirUser(empleadoNuevo);
+		anadirLogIn.anadirLogIn(empleadoNuevo.getDni(), valueOf);
 		
 	}
 	
@@ -398,7 +431,157 @@ public class Controller {
 	}
 	
 	public void importarDatos() {
-		intputReparaciones.inputReparaciones();
-		intputVentas.inputVentas();
+		List <Venta> listaDeVentasImportada = new ArrayList <Venta>();
+		List <Reparacion> listaDeReparacionesImportada = new ArrayList <Reparacion>();
+		try {
+			listaDeReparacionesImportada = intputReparaciones.inputReparaciones();
+			listaDeVentasImportada = intputVentas.inputVentas();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+		}
+		comprobarListaVentas(listaDeVentasImportada);
+		comprobarListaReparaciones(listaDeReparacionesImportada);
+	}
+
+	private void comprobarListaReparaciones(List<Reparacion> listaDeReparacionesImportada) {
+		for(Reparacion reparacionImportada : listaDeReparacionesImportada) {
+			boolean nuevaReparacion = true;
+			for(Reparacion reparacionController : listDeReparaciones ) {
+				if(reparacionController.equals(reparacionImportada)) {
+					nuevaReparacion = false;
+				}else if(reparacionController.getIdReparacion() == reparacionImportada.getIdReparacion()) {
+					nuevaReparacion = false;
+					actualizarDatosReparacionImport(reparacionController, reparacionImportada);
+					updateReparacionInput.updateReparacion(reparacionController);
+				}
+			}
+			if(nuevaReparacion) {
+				anadirReparacion(reparacionImportada);
+				listDeReparaciones.add(reparacionImportada);			
+			}
+		}
+	}
+
+	private void actualizarDatosReparacionImport(Reparacion reparacionController, Reparacion reparacionImportada) {
+		if(!reparacionController.getIdVehiculo().equals(reparacionImportada.getIdVehiculo()) || !reparacionController.getDescripcion().equals(reparacionImportada.getDescripcion()) ||
+				reparacionController.getCoste() != reparacionImportada.getCoste() || reparacionController.getPrecio() != reparacionImportada.getPrecio() ||
+				!reparacionController.getFechaIni().equals(reparacionImportada.getFechaIni()) || !reparacionController.getFechaFin().equals(reparacionImportada.getFechaFin()) ||
+				reparacionController.getIdMecanico() != reparacionImportada.getIdMecanico()
+				) {
+			reparacionController.setIdVehiculo(reparacionImportada.getIdVehiculo());
+			reparacionController.setDescripcion(reparacionImportada.getDescripcion());
+			reparacionController.setCoste(reparacionImportada.getCoste());
+			reparacionController.setPrecio(reparacionImportada.getPrecio());
+			reparacionController.setFechaIni(reparacionImportada.getFechaIni());
+			reparacionController.setFechaFin(reparacionImportada.getFechaFin());
+			reparacionController.setIdMecanico(reparacionImportada.getIdMecanico());
+		}
+			
+		
+	}
+
+	private void comprobarListaVentas(List<Venta> listaDeVentasImportada) {
+		for(Venta ventaImport : listaDeVentasImportada) {
+			boolean nuevaVenta = true;
+			for(Venta ventaDelController : listaDeVentas) {
+				if(ventaDelController.equals(ventaImport)) {
+					nuevaVenta = false;
+				}else if(ventaDelController.getIdVenta() == ventaImport.getIdVenta()) {
+					actualizarDatosVentaImport(ventaDelController, ventaImport);
+					updateVenta.updateVenta(ventaDelController);
+					nuevaVenta = false;
+				}
+			}
+			if(nuevaVenta) {
+				anadirVenta.createVenta(ventaImport);
+				listaDeVentas.add(ventaImport);
+			}
+		}
+		
+	}
+
+	private void actualizarDatosVentaImport(Venta ventaDelController, Venta ventaImport) {
+		if(ventaDelController.getPrecio() != ventaImport.getPrecio() || !ventaDelController.getFecha().equals(ventaImport.getFecha()) ||
+				ventaDelController.getIdVendedor() != ventaImport.getIdVendedor() || !ventaDelController.getBastidor().equals(ventaImport.getBastidor()) ||
+				!ventaDelController.getIdCliente().equals(ventaImport.getIdCliente())
+				) {
+			ventaDelController.setPrecio(ventaImport.getPrecio());
+			ventaDelController.setFecha(ventaImport.getFecha());
+			ventaDelController.setIdVendedor(ventaImport.getIdVendedor());
+			ventaDelController.setBastidor(ventaImport.getBastidor());
+			ventaDelController.setIdCliente(ventaImport.getIdCliente());
+		}
+	}
+
+	public boolean updateComision(Vendedor vendedor) {
+		return updateVendedor.insertarComision(vendedor);
+	}
+
+	public boolean updateComisionList(Vendedor vendedor) {
+		List <Empleado> listaNueva = new ArrayList<Empleado>();
+		boolean seHaActualizado = false;
+		for(Empleado empleado : listaEmpleados) {
+			if(vendedor.getDni().equals(empleado.getDni())) {
+				listaNueva.add(vendedor);
+				seHaActualizado = true;
+			}else {
+				listaNueva.add(empleado);
+			}
+		}
+		listaEmpleados = listaNueva;
+		return seHaActualizado;
+	}
+
+	public boolean updateRango(Mecanico mecanico) {
+		return updateMecanico.insertarRango(mecanico);
+	}
+
+	public boolean updateRangoList(Mecanico mecanico) {
+		List <Empleado> listaNueva = new ArrayList<Empleado>();
+		boolean seHaActualizado = false;
+		for(Empleado empleado : listaEmpleados) {
+			if(mecanico.getDni().equals(empleado.getDni())) {
+				listaNueva.add(mecanico);
+				seHaActualizado = true;
+			}else {
+				listaNueva.add(empleado);
+			}
+		}
+		listaEmpleados = listaNueva;
+		return seHaActualizado;
+	}
+
+	public boolean contarCuantasReparacionesHaySinFinalizar() {
+		int i = 0;
+		for(Reparacion reparacion : listDeReparaciones) {
+			if(reparacion.getFechaFin() == null) {
+				i++;
+			}
+		}
+		if(i < 3 ) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+
+	public boolean conseguiNumeroDeVehiculosEnVenta() {
+		int i = 0;
+		for(Vehiculo vehiculo : listDeVehiculos) {
+			boolean hayCoche = false;
+			for(ClienteVehiculo clienteVehiculo : listDeClienteVehiculos) {
+				if(vehiculo.getBastidor().equals(clienteVehiculo.getBastidor())) {
+					hayCoche = true;
+				}
+			}
+			if(!hayCoche) {
+				i++;
+			}
+		}
+		if(i > 2) {
+			return true;
+		}
+		return false;
 	}
 }

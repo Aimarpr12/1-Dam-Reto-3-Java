@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import clases.Moto;
+import modelo.Moto;
 import utils.DBUtils;
 
 public class InsertarMoto {

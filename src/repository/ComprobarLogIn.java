@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import clases.Empleado;
+import modelo.Empleado;
 import utils.DBUtils;
 import utils.SqlQuerys;
 

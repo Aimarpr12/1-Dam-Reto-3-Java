@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import clases.Reparacion;
-import clases.Venta;
+import modelo.Venta;
 import utils.DBUtils;
 
 public class InsertarVenta {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import clases.Reparacion;
+import modelo.Reparacion;
 import utils.DBUtils;
 import utils.SqlQuerys;
 
