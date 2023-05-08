@@ -60,7 +60,10 @@ public class Vendedor extends Empleado {
 				+ salario + ", jefe=" + jefe+ "]";
 	}
 
-
+	public Vendedor(int id, String dni, String nombre, String apellido, Date fechaNacimiento, Date fechaContratacion,
+			int numeroTelefono, String direccion, String email, int salario, int jefe, TipoDeEmpleado tipoDeEmpleado) {
+		super(id, dni, nombre, apellido, fechaNacimiento, fechaContratacion, numeroTelefono, direccion, email, salario, jefe, tipoDeEmpleado);
+	}
 
 	public Vendedor(int id, String dni, String nombre, String apellido, Date fechaNacimiento, Date fechaContratacion,
 			int numeroTelefono, String direccion, String email, int salario, int jefe, TipoDeEmpleado tipoDeEmpleado, double comision) {

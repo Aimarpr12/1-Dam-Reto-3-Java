@@ -93,6 +93,7 @@ public class Mecanico extends Empleado {
 
 	public boolean setRango(Mecanico mecanico, Controller controller) {
 		boolean seHaInsertado = controller.updateRango(mecanico);
+		System.out.println(seHaInsertado);
 		if(seHaInsertado) {
 			return controller.updateRangoList(mecanico);
 		}else {
