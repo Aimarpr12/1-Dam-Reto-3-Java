@@ -115,7 +115,7 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 		buttonLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Empleado user = controller.getLogInCorrect(txtDni.getText(),String.valueOf(passwordField.getPassword()));
-				if(controller.comprobarSiEstanVerificados(txtDni.getText())) {
+				if(comprobarSiEstanVerificados(txtDni.getText())) {
 					if (user != null) {
 						Component component = (Component) e.getSource();
 						App app = (App) SwingUtilities.getRoot(component);
@@ -123,16 +123,16 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 						if (controller.comporbarSiEsJefe(user.getId())) {
 							app.esJefe(user);
 						}else if (controller.comprobarSiEsMecanico(user.getId())){
-							String rango = controller.conseguirDatosDeMecanico(user.getId());
+							String rango = conseguirDatosDeMecanico(user.getId());
 							Mecanico mecanico = new Mecanico (user, rango);
 							app.esMecanico(mecanico);
 						}else {
-							double comisionVenta = controller.conseguirDatosDeVendedor(user.getId());
+							double comisionVenta = conseguirDatosDeVendedor(user.getId());
 							Vendedor vendedor = new Vendedor(user, comisionVenta);
 							app.esVendedor(vendedor); 
 						}
 					}else {
-						JOptionPane.showMessageDialog(
+			 			JOptionPane.showMessageDialog(
 								null,
 								"Usuario o contraseña incorrectos.",
 								"Error",
@@ -154,6 +154,35 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 		buttonLogIn.setEnabled(false);
 		buttonLogIn.addActionListener(this);
 
+	}
+
+	protected double conseguirDatosDeVendedor(int id) {
+		for(Empleado empleado : controller.getAllEmpleado()) {
+			if(id == empleado.getId()) {
+				Vendedor vendedor = (Vendedor) empleado;
+				return vendedor.getComision();
+			}
+		}
+		return 0;
+	}
+
+	protected String conseguirDatosDeMecanico(int id) {
+		for(Empleado empleado :controller.getAllEmpleado()) {
+			if(id == empleado.getId()) {
+				Mecanico mecanico = (Mecanico) empleado;
+				return mecanico.getRango();
+			}
+		}
+		return null;
+	}
+
+	protected boolean comprobarSiEstanVerificados(String text) {
+		for(Empleado empleadoActual :controller.getAllEmpleadosNoVerificados()) {
+			if(text.equals(empleadoActual.getDni())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void labelContrasena() {

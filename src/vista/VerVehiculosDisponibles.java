@@ -3,6 +3,7 @@ package vista;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
+import modelo.ClienteVehiculo;
 import modelo.Vehiculo;
 import modelo.Vendedor;
 
@@ -98,10 +100,27 @@ public class VerVehiculosDisponibles extends JPanel {
 		model.addColumn("Marca");
 		model.addColumn("Modelo");
 		model.addColumn("Año");
-		listaDeVehiculos = controller.getAllVehiculosDisponibles();
+		listaDeVehiculos = getAllVehiculosDisponibles();
 		actualizarVentas();
 		
 		scrollPane.setViewportView(table);
+	}
+
+	private List<Vehiculo> getAllVehiculosDisponibles() {
+		List <Vehiculo> listDeVehiculoDisponible =  new ArrayList<Vehiculo>();
+		for(Vehiculo vehiculoActual : controller.getAllVehiculos()) {
+			boolean vehiculoLibre = true;
+			for(ClienteVehiculo clienteVehiculoActual: controller.getAllClienteVehiculos()) {
+				if(vehiculoActual.getBastidor().equals(clienteVehiculoActual.getBastidor())) {
+					vehiculoLibre = false;
+				}
+			}
+			if(vehiculoLibre) {
+				listDeVehiculoDisponible.add(vehiculoActual);
+			}
+			
+		}
+		return listDeVehiculoDisponible;
 	}
 
 	private void actualizarVentas() {

@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -251,7 +252,17 @@ public class PantallaInicioMecanico extends JPanel {
 
 
 	protected boolean comprobarQueHayHuecoParaLaReparacion() {
-		return controller.contarCuantasReparacionesHaySinFinalizar();
+		int i = 0;
+		for(Reparacion reparacion : controller.getAllReparaciones()) {
+			if(reparacion.getFechaFin() == null) {
+				i++;
+			}
+		}
+		if(i < 3 ) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	protected void finalizarReparacion(int idReparacion, Mecanico user, ActionEvent e) {
@@ -324,10 +335,21 @@ public class PantallaInicioMecanico extends JPanel {
 		model.addColumn("Fecha Fin");
 		model.addColumn("Matrícula");
 		model.addColumn("DNI del Cliente");
-		listaDeReparaciones = controller.getAllReparacionesPorMecanico(user.getId());
+		listaDeReparaciones = getAllReparacionesPorMecanico(user.getId());
 		actualizarVentas();
 
 		scrollPane.setViewportView(table);
+	}
+
+	private List<Reparacion> getAllReparacionesPorMecanico(int id) {
+		List <Reparacion> listDeTodasLasReparaciones = controller.getAllReparaciones();
+		List <Reparacion> listDeReparacionesPorMecanico = new ArrayList <Reparacion>();
+		for(Reparacion reparacion : listDeTodasLasReparaciones) {
+			if(id == reparacion.getIdMecanico()){
+				listDeReparacionesPorMecanico.add(reparacion);
+			}
+		}
+		return listDeReparacionesPorMecanico;
 	}
 
 	private void actualizarVentas() {

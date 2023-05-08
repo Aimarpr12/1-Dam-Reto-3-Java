@@ -12,11 +12,13 @@ import javax.swing.table.DefaultTableModel;
 import controller.Controller;
 import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
+import modelo.ClienteVehiculo;
 import modelo.Coche;
 import modelo.Empleado;
 import modelo.Mecanico;
 import modelo.Moto;
 import modelo.TipoDeVehiculo;
+import modelo.Vehiculo;
 import modelo.Vendedor;
 import modelo.Venta;
 
@@ -25,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Component;
@@ -260,10 +263,23 @@ public class PantallaInicioVendedor extends JPanel {
 		model.addColumn("Fecha");
 		model.addColumn("Matrícula");
 		model.addColumn("DNI del Cliente");
-		listaDeVentas = controller.getAllVentasPorVendedor(user.getId());
+		listaDeVentas = getAllVentasPorVendedor(user.getId());
 		actualizarVentas();
 
 		scrollPane.setViewportView(table);
+	}
+	
+	
+
+	private List<Venta> getAllVentasPorVendedor(int id) {
+		List <Venta> listDeTodasLasVentas = controller.getAllVentas();
+		List <Venta> listDeVentasPorVendedor = new ArrayList <Venta>();
+		for(Venta venta : listDeTodasLasVentas) {
+			if(id == venta.getIdVendedor()){
+				listDeVentasPorVendedor.add(venta);
+			}
+		}
+		return listDeVentasPorVendedor;
 	}
 
 	private void actualizarVentas() {
@@ -357,8 +373,22 @@ public class PantallaInicioVendedor extends JPanel {
 	}
 
 	protected boolean comprobarQueHayMasde2Vehiculos() {
-		// TODO Auto-generated method stub
-		return controller.conseguiNumeroDeVehiculosEnVenta();
+		int i = 0;
+		for(Vehiculo vehiculo : controller.getAllVehiculos()) {
+			boolean hayCoche = false;
+			for(ClienteVehiculo clienteVehiculo : controller.getAllClienteVehiculos()) {
+				if(vehiculo.getBastidor().equals(clienteVehiculo.getBastidor())) {
+					hayCoche = true;
+				}
+			}
+			if(!hayCoche) {
+				i++;
+			}
+		}
+		if(i > 2) {
+			return true;
+		}
+		return false;
 	} 
 
 }

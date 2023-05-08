@@ -158,7 +158,7 @@ public class Controller {
 	public Empleado getLogInCorrect(String text, String valueOf) {
 		Empleado logInCorrecto = comprobarLogIn.getLogInCorrect(text, valueOf);
 		return logInCorrecto;
-	}
+	} 
 
 	public boolean comporbarSiEsJefe(int id) {
 		boolean esJefe = comprobarjefe.comprobarJefe(id);
@@ -167,19 +167,9 @@ public class Controller {
 
 	public boolean comprobarSiEsMecanico(int id) {
 		boolean esMecanico = comprobarMecanico.comprobarMecanico(id);
-		return esMecanico;
+		return esMecanico; 
 	}
 	
-	public String conseguirDatosDeMecanico(int id) {
-		String rango = datosDeLosMecanicos.conseguirDatosMecanicos(id);
-		return rango;
-	}
-
-	public double conseguirDatosDeVendedor(int id) {
-		double comisionDeVenta = datosDeLosVendedores.conseguirDatosVendedores(id);
-		return comisionDeVenta;
-	}
-
 	public boolean comprobarUser(String text) {
 		return comprobarUser.comprobarSiExisteUser(text);
 	}
@@ -252,45 +242,6 @@ public class Controller {
 			}
 		}
 		throw new VehiculoNoEncontradoException("No se ha encontrado");
-	}
-	
-	public List<Vehiculo> getAllVehiculosDisponibles() {
-		List <Vehiculo> listDeVehiculoDisponible =  new ArrayList<Vehiculo>();
-		for(Vehiculo vehiculoActual : listDeVehiculos) {
-			boolean vehiculoLibre = true;
-			for(ClienteVehiculo clienteVehiculoActual: listDeClienteVehiculos) {
-				if(vehiculoActual.getBastidor().equals(clienteVehiculoActual.getBastidor())) {
-					vehiculoLibre = false;
-				}
-			}
-			if(vehiculoLibre) {
-				listDeVehiculoDisponible.add(vehiculoActual);
-			}
-			
-		}
-		return listDeVehiculoDisponible;
-	}
-
-	public List<Reparacion> getAllReparacionesPorMecanico(int id) {
-		List <Reparacion> listDeTodasLasReparaciones = getAllReparaciones();
-		List <Reparacion> listDeReparacionesPorMecanico = new ArrayList <Reparacion>();
-		for(Reparacion reparacion : listDeTodasLasReparaciones) {
-			if(id == reparacion.getIdMecanico()){
-				listDeReparacionesPorMecanico.add(reparacion);
-			}
-		}
-		return listDeReparacionesPorMecanico;
-	}
-	
-	public List<Venta> getAllVentasPorVendedor(int id) {
-		List <Venta> listDeTodasLasVentas = getAllVentas();
-		List <Venta> listDeVentasPorVendedor = new ArrayList <Venta>();
-		for(Venta venta : listDeTodasLasVentas) {
-			if(id == venta.getIdVendedor()){
-				listDeVentasPorVendedor.add(venta);
-			}
-		}
-		return listDeVentasPorVendedor;
 	}
 	
 	public boolean UpdateReparacion(Date fechaFin2, int idReparacion2) {
@@ -415,16 +366,6 @@ public class Controller {
 		listEmpleadosNoVerificados = listDeUsersPorVerificar.getListaDeEmpleadosPorVerificar();
 		
 	}
-
-	public boolean comprobarSiEstanVerificados(String text) {
-		for(Empleado empleadoActual : listEmpleadosNoVerificados) {
-			if(text.equals(empleadoActual.getDni())) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public void exportarDatos() {
 		outputReparaciones.outputReparaciones(this);
 		outputVentas.outputVentas(this);
@@ -551,37 +492,5 @@ public class Controller {
 		return seHaActualizado;
 	}
 
-	public boolean contarCuantasReparacionesHaySinFinalizar() {
-		int i = 0;
-		for(Reparacion reparacion : listDeReparaciones) {
-			if(reparacion.getFechaFin() == null) {
-				i++;
-			}
-		}
-		if(i < 3 ) {
-			return true;
-		}else {
-			return false;
-		}
-		
-	}
 
-	public boolean conseguiNumeroDeVehiculosEnVenta() {
-		int i = 0;
-		for(Vehiculo vehiculo : listDeVehiculos) {
-			boolean hayCoche = false;
-			for(ClienteVehiculo clienteVehiculo : listDeClienteVehiculos) {
-				if(vehiculo.getBastidor().equals(clienteVehiculo.getBastidor())) {
-					hayCoche = true;
-				}
-			}
-			if(!hayCoche) {
-				i++;
-			}
-		}
-		if(i > 2) {
-			return true;
-		}
-		return false;
-	}
 }
