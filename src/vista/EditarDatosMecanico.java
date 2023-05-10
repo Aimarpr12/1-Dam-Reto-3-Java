@@ -53,7 +53,7 @@ import java.awt.SystemColor;
 			jTextDireccion(user);
 			labelCorreo();
 			jTextCorreo(user);
-			buttonLogIn(user);
+			buttoneditarDatos(user);
 			buttonChangePass(user);
 			buttonAtras(user);
 			buttonLogOut();
@@ -247,7 +247,7 @@ import java.awt.SystemColor;
 			add(lblNombre);
 		}
 
-		private void buttonLogIn(Mecanico user) {
+		private void buttoneditarDatos(Mecanico user) {
 			buttonLogIn = new JButton("Actualizar Datos");
 			buttonLogIn.setForeground(Color.WHITE);
 			buttonLogIn.setBackground(SystemColor.textHighlight);
@@ -256,6 +256,10 @@ import java.awt.SystemColor;
 				public void actionPerformed(ActionEvent e) {
 					Mecanico updateDelUser = new Mecanico(user.getDni(), textNombre.getText(), textApellido.getText(), Integer.parseInt(textTelefono.getText()), user.getFechaContratacion(), textDireccion.getText(), textCorreo.getText());
 					controller.actualizarUser(updateDelUser, user.getId());
+					JOptionPane.showMessageDialog(null, "Se han actualizado los datos correctamente", "User Actualizado", JOptionPane.INFORMATION_MESSAGE);		
+					Component component = (Component) e.getSource();
+	                App app = (App) SwingUtilities.getRoot(component);
+	                app.esMecanico(user);
 				}
 			});
 			buttonLogIn.setBounds(163, 459, 175, 23);

@@ -19,6 +19,7 @@ import javax.swing.event.DocumentListener;
 import controller.Controller;
 import modelo.Empleado;
 import modelo.Mecanico;
+import modelo.TipoDeEmpleado;
 import modelo.Vendedor;
 
 import java.awt.Font;
@@ -119,10 +120,10 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 					if (user != null) {
 						Component component = (Component) e.getSource();
 						App app = (App) SwingUtilities.getRoot(component);
-						//comprobar si es jefe total
-						if (controller.comporbarSiEsJefe(user.getId())) {
+						controller.cargarListaDeEmpleados();
+						if (comporbarSiEsJefe(user.getId())) {
 							app.esJefe(user);
-						}else if (controller.comprobarSiEsMecanico(user.getId())){
+						}else if (comprobarSiEsMecanico(user.getId())){
 							String rango = conseguirDatosDeMecanico(user.getId());
 							Mecanico mecanico = new Mecanico (user, rango);
 							app.esMecanico(mecanico);
@@ -154,6 +155,24 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 		buttonLogIn.setEnabled(false);
 		buttonLogIn.addActionListener(this);
 
+	}
+
+	protected boolean comprobarSiEsMecanico(int id) {
+		for(Empleado empleado : controller.getAllEmpleado()) {
+			if(id == empleado.getId() && empleado.getTipoDeEmpleado().equals(TipoDeEmpleado.mecanico)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected boolean comporbarSiEsJefe(int id) {
+		for(Empleado empleado : controller.getAllEmpleado()) {
+			if(id == empleado.getId() && empleado.getTipoDeEmpleado().equals(TipoDeEmpleado.jefe)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected double conseguirDatosDeVendedor(int id) {

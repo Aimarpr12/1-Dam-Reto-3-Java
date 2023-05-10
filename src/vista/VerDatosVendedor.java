@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import controller.Controller;
+import modelo.Empleado;
 import modelo.Vendedor;
 
 public class VerDatosVendedor extends JPanel {
@@ -174,7 +175,7 @@ public class VerDatosVendedor extends JPanel {
 
 		private void labelIdJefe(Vendedor user) {
 			String idJefe = user.getJefe() + "";
-			String nombreJefe = controller.getNombreJefe(user.getJefe());
+			String nombreJefe = getNombreJefe(user.getJefe());
 			if(nombreJefe.equals("")) {
 				idJefe = "No tiene jefe";
 			}
@@ -188,7 +189,7 @@ public class VerDatosVendedor extends JPanel {
 		}
 
 		private void labelNombreJefe(Vendedor user) {
-			String nombreJefe = controller.getNombreJefe(user.getJefe());
+			String nombreJefe = getNombreJefe(user.getJefe());
 			if(nombreJefe.equals("")) {
 				nombreJefe = "No tiene jefe";
 			}
@@ -199,6 +200,15 @@ public class VerDatosVendedor extends JPanel {
 			labelNombreJefe.setText("Nombre: " + nombreJefe);
 			add(labelNombreJefe);
 			
+		}
+		
+		private String getNombreJefe(int jefe) {
+			for(Empleado empleado : controller.getAllEmpleado()) {
+				if(jefe == empleado.getId()) {
+					return empleado.getNombre();
+				}
+			}
+			return null;
 		}
 
 		private void labelJefe(Vendedor user) {

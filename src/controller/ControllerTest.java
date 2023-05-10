@@ -94,20 +94,7 @@ public class ControllerTest {
 		contrasena = "1234";
 		assertNotNull(controller.getLogInCorrect(user, contrasena));
 	}
-	
-	@Test 
-	public void comporbarSiEsJefeTest() {
-		assertFalse(controller.comporbarSiEsJefe(2));	
-		assertTrue(controller.comporbarSiEsJefe(1));
-	}
-	 
-	@Test 
-	public void comprobarSiEsMecanicoTest() {
-		assertFalse(controller.comprobarSiEsMecanico(2));	
-		assertTrue(controller.comprobarSiEsMecanico(4));
-	}
 
-	@Test 
 	
 	
 }

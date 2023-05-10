@@ -50,7 +50,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 		jTextDireccion(user);
 		labelCorreo();
 		jTextCorreo(user);
-		buttonLogIn(user);
+		buttonActualizarDatos(user);
 		buttonChangePass(user);
 		buttonAtras(user);
 		buttonLogOut();
@@ -243,7 +243,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 		add(lblNombre);
 	}
 
-	private void buttonLogIn(Vendedor user) {
+	private void buttonActualizarDatos(Vendedor user) {
 		buttonLogIn = new JButton("Actualizar Datos");
 		buttonLogIn.setForeground(Color.WHITE);
 		buttonLogIn.setBackground(SystemColor.textHighlight);
@@ -252,6 +252,10 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 			public void actionPerformed(ActionEvent e) {
 				Vendedor updateDelUser = new Vendedor(user.getDni(), textNombre.getText(), textApellido.getText(), Integer.parseInt(textTelefono.getText()), user.getFechaNacimiento(), textDireccion.getText(), textCorreo.getText());
 				controller.actualizarUser(updateDelUser, user.getId());
+				JOptionPane.showMessageDialog(null, "Se han actualizado los datos correctamente", "User Actualizado", JOptionPane.INFORMATION_MESSAGE);		
+				Component component = (Component) e.getSource();
+                App app = (App) SwingUtilities.getRoot(component);
+                app.esVendedor(user);
 			}
 		});
 		buttonLogIn.setBounds(163, 459, 175, 23);

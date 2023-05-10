@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import controller.Controller;
+import modelo.Empleado;
 import modelo.Mecanico;
 
 import java.awt.Font;
@@ -174,7 +175,7 @@ public class VerDatosMecanico extends JPanel {
 
 	private void labelIdJefe(Mecanico user) {
 		String idJefe = user.getJefe() + "";
-		String nombreJefe = controller.getNombreJefe(user.getJefe());
+		String nombreJefe = getNombreJefe(user.getJefe());
 		if(nombreJefe.equals("")) {
 			idJefe = "No tiene jefe";
 		}
@@ -187,8 +188,17 @@ public class VerDatosMecanico extends JPanel {
 		
 	}
 
+	private String getNombreJefe(int jefe) {
+		for(Empleado empleado : controller.getAllEmpleado()) {
+			if(jefe == empleado.getId()) {
+				return empleado.getNombre();
+			}
+		}
+		return null;
+	}
+
 	private void labelNombreJefe(Mecanico user) {
-		String nombreJefe = controller.getNombreJefe(user.getJefe());
+		String nombreJefe = getNombreJefe(user.getJefe());
 		if(nombreJefe.equals("")) {
 			nombreJefe = "No tiene jefe";
 		}

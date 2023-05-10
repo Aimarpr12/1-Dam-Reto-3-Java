@@ -18,42 +18,11 @@ import modelo.TipoDeVehiculo;
 import modelo.Vehiculo;
 import modelo.Vendedor;
 import modelo.Venta;
-import repository.ActualizarVerificado;
-import repository.AnadirLogIn;
-import repository.AnadirUser;
-import repository.ComprobarLogIn;
-import repository.ComprobarQueEsUserNoEstaRegistrado;
-import repository.ComprobarQueLaContraseñaEsIgual;
-import repository.ComprobarSiEsJefe;
-import repository.ComprobarSiEsMecanico;
-import repository.ConseguirDatosDeLosMecanicos;
-import repository.ConseguirDatosDeLosVendedores;
-import repository.InsertarCliente;
-import repository.InsertarClienteVehiculo;
-import repository.InsertarCoche;
-import repository.InsertarMoto;
-import repository.InsertarReparacion;
-import repository.InsertarVehiculo;
-import repository.InsertarVenta;
-import repository.ListDeEmpleadosPorVerificar;
-import repository.ObtenerListaDeClienteVehiculos;
-import repository.ObtenerListaDeClientes;
-import repository.ObtenerListaDeTodasLasReparaciones;
-import repository.ObtenerListaDeTodasLasVentas;
-import repository.ObtenerListaDeTodosLosEmpleados;
-import repository.ObtenerListaDeVehiculos;
-import repository.ObtenerNombreDelUser;
-import repository.UpdateComision;
-import repository.UpdateDireccion;
-import repository.UpdateIdJefe;
-import repository.UpdatePassword;
-import repository.UpdateRango;
-import repository.UpdateReparacion;
-import repository.UpdateReparacionConImport;
-import repository.UpdateSalary;
-import repository.UpdateTelefono;
-import repository.UpdateUser;
-import repository.UpdateVenta;
+import repository.RepositorioCargarListas;
+import repository.RepositorioDeEstadisticas;
+import repository.RepositorioDeInserts;
+import repository.RepositorioDeLogIn;
+import repository.RepositorioDeUpdates;
 import xmlParser.InputReparaciones;
 import xmlParser.InputVentas;
 import xmlParser.OutputReparaciones;
@@ -68,46 +37,15 @@ import java.util.Date;
 
 public class Controller {
 	
-	private static ComprobarLogIn comprobarLogIn = new ComprobarLogIn();
-	private static ComprobarSiEsJefe comprobarjefe = new ComprobarSiEsJefe();
-	private static ComprobarSiEsMecanico comprobarMecanico = new ComprobarSiEsMecanico();
-	private static ConseguirDatosDeLosMecanicos datosDeLosMecanicos = new ConseguirDatosDeLosMecanicos();
-	private static ConseguirDatosDeLosVendedores datosDeLosVendedores = new ConseguirDatosDeLosVendedores();
-	private static ComprobarQueEsUserNoEstaRegistrado comprobarUser = new ComprobarQueEsUserNoEstaRegistrado();
-	private static ComprobarQueLaContraseñaEsIgual samePass = new ComprobarQueLaContraseñaEsIgual();
-	private static UpdatePassword updatePass = new UpdatePassword();
-	private static UpdateUser updateUser = new UpdateUser();
-	private static ObtenerNombreDelUser nombreUser = new ObtenerNombreDelUser();
-	private static ObtenerListaDeTodosLosEmpleados allEmpleados = new ObtenerListaDeTodosLosEmpleados();
-	private static UpdateSalary updateSallary = new UpdateSalary();
-	private static UpdateIdJefe updateIdJefe = new UpdateIdJefe();
-	private static UpdateTelefono updateTelefono = new UpdateTelefono();
-	private static UpdateDireccion updateDir = new UpdateDireccion();
-	private static ObtenerListaDeTodasLasVentas allVentas = new ObtenerListaDeTodasLasVentas();
-	private static ObtenerListaDeTodasLasReparaciones allReparaciones = new ObtenerListaDeTodasLasReparaciones();
-	private static ObtenerListaDeVehiculos allVehiculos = new ObtenerListaDeVehiculos();
-	private static ObtenerListaDeClientes allClientes = new ObtenerListaDeClientes();
-	private static ObtenerListaDeClienteVehiculos allClienteVehiculos = new ObtenerListaDeClienteVehiculos();
-	private static UpdateReparacion updateReparacion = new UpdateReparacion();
-	private static InsertarReparacion anadirReparqacion = new InsertarReparacion();	
-	private static InsertarVehiculo anadirVehiculo = new InsertarVehiculo();
-	private static InsertarMoto anadirMoto = new InsertarMoto();
-	private static InsertarCoche anadirCoche = new InsertarCoche();
-	private static InsertarCliente anadirCliente = new InsertarCliente();
-	private static InsertarClienteVehiculo anadirClienteVehiculo = new InsertarClienteVehiculo();
-	private static InsertarVenta anadirVenta = new InsertarVenta();
-	private static ActualizarVerificado actualizarVerificado = new ActualizarVerificado();
-	private static ListDeEmpleadosPorVerificar listDeUsersPorVerificar = new ListDeEmpleadosPorVerificar();
 	private static OutputReparaciones outputReparaciones = new OutputReparaciones();
 	private static OutputVentas outputVentas = new OutputVentas();	
 	private static InputReparaciones intputReparaciones = new InputReparaciones();
-	private static InputVentas intputVentas = new InputVentas();	
-	private static AnadirUser anadirUser = new AnadirUser();
-	private static AnadirLogIn anadirLogIn = new AnadirLogIn();
-	private static UpdateComision updateVendedor = new UpdateComision();
-	private static UpdateRango updateMecanico = new UpdateRango();
-	private static UpdateVenta updateVenta = new UpdateVenta();
-	private static UpdateReparacionConImport updateReparacionInput = new UpdateReparacionConImport();
+	private static InputVentas intputVentas = new InputVentas();
+	private static RepositorioDeLogIn repositorioDeLogIn = new RepositorioDeLogIn();
+	private static RepositorioCargarListas repositorioDeCargarListas = new RepositorioCargarListas();
+	private static RepositorioDeInserts repositorioDeInserts = new RepositorioDeInserts();
+	private static RepositorioDeUpdates repositorioDeUpdates = new RepositorioDeUpdates();
+	private static RepositorioDeEstadisticas repositorioDeEstadisticas = new RepositorioDeEstadisticas();
 	
 	private List<Empleado> listaEmpleados = new ArrayList<Empleado>();
 	
@@ -156,79 +94,68 @@ public class Controller {
 	}
 
 	public Empleado getLogInCorrect(String text, String valueOf) {
-		Empleado logInCorrecto = comprobarLogIn.getLogInCorrect(text, valueOf);
+		Empleado logInCorrecto = repositorioDeLogIn.getLogInCorrect(text, valueOf);
 		return logInCorrecto;
 	} 
-
-	public boolean comporbarSiEsJefe(int id) {
-		boolean esJefe = comprobarjefe.comprobarJefe(id);
-		return esJefe;
-	}
-
-	public boolean comprobarSiEsMecanico(int id) {
-		boolean esMecanico = comprobarMecanico.comprobarMecanico(id);
-		return esMecanico; 
-	}
 	
 	public boolean comprobarUser(String text) {
-		return comprobarUser.comprobarSiExisteUser(text);
+		return repositorioDeLogIn.comprobarSiExisteUser(text);
 	}
 
 	public boolean verificarQueLaContrasenaEsCorrecta(String dni, String passwordString) {
-		return samePass.comprobarContrasena(dni, passwordString);
+		return repositorioDeLogIn.comprobarContrasena(dni, passwordString);
 	}
 
 	public void changePassword(String dni, String newPasswordString) {
-		updatePass.updatePass(dni, newPasswordString);	
+		repositorioDeLogIn.updatePass(dni, newPasswordString);	
 		
 	}
 
 	public void actualizarUser(Empleado updateDelUser, int id) {
-		updateUser.updateUser(updateDelUser, id);
+		repositorioDeUpdates.updateUser(updateDelUser, id);
 	}
 
-	public String getNombreJefe(int jefe) {
-		return nombreUser.obtenerNombreDelUser(jefe);
-	}
+	
 
 	public void cargarListaDeEmpleados() {
-		listaEmpleados =  allEmpleados.getListaDeEmpleados();
+		listaEmpleados =  repositorioDeCargarListas.getListaDeEmpleados();
+		repositorioDeEstadisticas.obtenerTopDosVendedores();
 	}
 	
 	public void cargarListaDeVentas() {
-		listaDeVentas =  allVentas.getListaDeVentas();
+		listaDeVentas =  repositorioDeCargarListas.getListaDeVentas();
 	}
 	
 	public void cargarListaDeVehiculos() {
-		listDeVehiculos =  allVehiculos.getListaVehiculos();
+		listDeVehiculos =  repositorioDeCargarListas.getListaVehiculos();
 	}
 	
 	public void cargarListaDeClientes() {
-		listDeClientes =  allClientes.getListaDeClientes();
+		listDeClientes =  repositorioDeCargarListas.getListaDeClientes();
 	}
 	
 	public void cargarListaDeClienteVehiculos() {
-		listDeClienteVehiculos =  allClienteVehiculos.getListaDeClienteVehiculos();
+		listDeClienteVehiculos =  repositorioDeCargarListas.getListaDeClienteVehiculos();
 	}
 	
 	public void cargarListaDeReparaciones() {
-		listDeReparaciones =  allReparaciones.getListaDeReparaciones();
+		listDeReparaciones =  repositorioDeCargarListas.getListaDeReparaciones();
 	}
 
 	public boolean UpdateSalario(String dni, int salario) {
-		return updateSallary.updateSallary(dni, salario);
+		return repositorioDeUpdates.updateSallary(dni, salario);
 	}
 
 	public boolean UpdateIdJefe(String dni, int salario) {
-		return updateIdJefe.updateIdJefe(dni, salario);
+		return repositorioDeUpdates.updateIdJefe(dni, salario);
 	}
 
 	public boolean updateTelefono(String dni2, int telefono) {
-		return updateTelefono.updateTelefono(dni2, telefono);
+		return repositorioDeUpdates.updateTelefono(dni2, telefono);
 	}
 
 	public boolean updateDireccion(String dni2, String direccion2) {
-		return updateDir.updateDir(dni2, direccion2);
+		return repositorioDeUpdates.updateDir(dni2, direccion2);
 	}
 
 	public TipoDeVehiculo averiguarTipoDeVehiculo(String matricula) throws VehiculoNoEncontradoException{
@@ -245,18 +172,18 @@ public class Controller {
 	}
 	
 	public boolean UpdateReparacion(Date fechaFin2, int idReparacion2) {
-		return updateReparacion.updateReparacion(idReparacion2, fechaFin2);
+		return repositorioDeUpdates.updateReparacion(idReparacion2, fechaFin2);
 	}
 
 	public Reparacion anadirReparacion(Reparacion reparacaion) {
-		reparacaion = anadirReparqacion.createReparacion(reparacaion);
+		reparacaion = repositorioDeInserts.createReparacion(reparacaion);
 		return reparacaion;
 	}
 
 	public boolean anadirMoto(Moto moto) {
-		boolean sehaInsertadoElVehiculo = anadirVehiculo.insertarVehiculo(moto);
+		boolean sehaInsertadoElVehiculo = repositorioDeInserts.insertarVehiculo(moto);
 		if(sehaInsertadoElVehiculo) {
-			boolean seHaInsertadoLaMoto = anadirMoto.insertarMoto(moto);
+			boolean seHaInsertadoLaMoto = repositorioDeInserts.insertarMoto(moto);
 			if(seHaInsertadoLaMoto) {
 				return true;
 			}else {
@@ -269,9 +196,9 @@ public class Controller {
 	}
 
 	public boolean anadirCoche(Coche coche) {
-		boolean sehaInsertadoElVehiculo = anadirVehiculo.insertarVehiculo(coche);
+		boolean sehaInsertadoElVehiculo = repositorioDeInserts.insertarVehiculo(coche);
 		if(sehaInsertadoElVehiculo) {
-			boolean seHaInsertadoElCoche = anadirCoche.insertarCoche(coche);
+			boolean seHaInsertadoElCoche = repositorioDeInserts.insertarCoche(coche);
 			if(seHaInsertadoElCoche) {
 				return true;
 			}else {
@@ -283,7 +210,7 @@ public class Controller {
 	}
 
 	public boolean addClienteBD(Cliente cliente) {
-		return anadirCliente.insertarCliente(cliente);
+		return repositorioDeInserts.insertarCliente(cliente);
 	}
 
 	public void anadirCliente(Cliente cliente) {
@@ -315,7 +242,7 @@ public class Controller {
 	}
 
 	public boolean anadirClienteVehiculoBD(ClienteVehiculo clienteVehiculo) {
-		return anadirClienteVehiculo.insertarClienteVehiculo(clienteVehiculo);
+		return repositorioDeInserts.insertarClienteVehiculo(clienteVehiculo);
 	}
 
 	public void addClienteVehiculo(ClienteVehiculo clienteVehiculo) {
@@ -334,13 +261,13 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		anadirUser.anadirUser(empleadoNuevo);
-		anadirLogIn.anadirLogIn(empleadoNuevo.getDni(), valueOf);
+		repositorioDeInserts.anadirUser(empleadoNuevo);
+		repositorioDeLogIn.anadirLogIn(empleadoNuevo.getDni(), valueOf);
 		
 	}
 	
 	public Venta anadirVenta(Venta venta) {
-		venta = anadirVenta.createVenta(venta);
+		venta = repositorioDeInserts.createVenta(venta);
 		return venta;
 	}
 
@@ -350,7 +277,7 @@ public class Controller {
 	}
 
 	public void verificarCuenteSeleccionada(String dni) {
-		actualizarVerificado.actualizarBarcoPorId(dni);
+		repositorioDeUpdates.actualizarBarcoPorId(dni);
 		List <Empleado> listaNoverificados1 = new ArrayList<Empleado>();
 		for(Empleado empleadoActual : listEmpleadosNoVerificados) {
 			if(dni.equals(empleadoActual.getDni())) {
@@ -363,7 +290,7 @@ public class Controller {
 	}
 
 	public void empleadosAVerificar() {
-		listEmpleadosNoVerificados = listDeUsersPorVerificar.getListaDeEmpleadosPorVerificar();
+		listEmpleadosNoVerificados = repositorioDeLogIn.getListaDeEmpleadosPorVerificar();
 		
 	}
 	public void exportarDatos() {
@@ -393,7 +320,7 @@ public class Controller {
 				}else if(reparacionController.getIdReparacion() == reparacionImportada.getIdReparacion()) {
 					nuevaReparacion = false;
 					actualizarDatosReparacionImport(reparacionController, reparacionImportada);
-					updateReparacionInput.updateReparacion(reparacionController);
+					repositorioDeUpdates.updateReparacion(reparacionController);
 				}
 			}
 			if(nuevaReparacion) {
@@ -429,12 +356,12 @@ public class Controller {
 					nuevaVenta = false;
 				}else if(ventaDelController.getIdVenta() == ventaImport.getIdVenta()) {
 					actualizarDatosVentaImport(ventaDelController, ventaImport);
-					updateVenta.updateVenta(ventaDelController);
+					repositorioDeUpdates.updateVenta(ventaDelController);
 					nuevaVenta = false;
 				}
 			}
 			if(nuevaVenta) {
-				anadirVenta.createVenta(ventaImport);
+				repositorioDeInserts.createVenta(ventaImport);
 				listaDeVentas.add(ventaImport);
 			}
 		}
@@ -455,7 +382,7 @@ public class Controller {
 	}
 
 	public boolean updateComision(Vendedor vendedor) {
-		return updateVendedor.insertarComision(vendedor);
+		return repositorioDeUpdates.insertarComision(vendedor);
 	}
 
 	public boolean updateComisionList(Vendedor vendedor) {
@@ -474,7 +401,7 @@ public class Controller {
 	}
 
 	public boolean updateRango(Mecanico mecanico) {
-		return updateMecanico.insertarRango(mecanico);
+		return repositorioDeUpdates.insertarRango(mecanico);
 	}
 
 	public boolean updateRangoList(Mecanico mecanico) {
