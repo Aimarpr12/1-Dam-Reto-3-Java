@@ -9,17 +9,56 @@ import controller.Controller;
 import modelo.Empleado;
 import modelo.Mecanico;
 import modelo.Vendedor;
+import repository.IRepositorioCliente;
+import repository.IRepositorioClienteVehiculo;
+import repository.IRepositorioCoche;
+import repository.IRepositorioEmpleado;
+import repository.IRepositorioEstadisticasVentas;
+import repository.IRepositorioLogIn;
+import repository.IRepositorioMecanico;
+import repository.IRepositorioMoto;
+import repository.IRepositorioReparacion;
+import repository.IRepositorioVehiculo;
+import repository.IRepositorioVendedor;
+import repository.IRepositorioVenta;
+import repository.RepositorioCliente;
+import repository.RepositorioClienteVehiculo;
+import repository.RepositorioCoche;
+import repository.RepositorioEmpleado;
+import repository.RepositorioEstadisticasVentas;
+import repository.RepositorioLogIn;
+import repository.RepositorioMecanico;
+import repository.RepositorioMoto;
+import repository.RepositorioReparacion;
+import repository.RepositorioVehiculo;
+import repository.RepositorioVendedor;
+import repository.RepositorioVenta;
 
 public class App extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Container contentPane;
-	private Controller controller = new Controller();
+	private static Controller controller = new Controller();
 
 	/**
 	 * Launch the application.
 	 */ 
 	public static void main(String[] args) {
+		IRepositorioCliente repositorioCliente=new RepositorioCliente();
+		 IRepositorioClienteVehiculo repositorioClienteVehiculo= new RepositorioClienteVehiculo();
+		 IRepositorioCoche repositorioCoche= new RepositorioCoche();
+		 IRepositorioEmpleado repositorioEmpleado = new RepositorioEmpleado();
+		 IRepositorioEstadisticasVentas repositorioEstadisticasVentas = new RepositorioEstadisticasVentas();
+		 IRepositorioLogIn repositorioLogIn = new RepositorioLogIn();
+		 IRepositorioMecanico repositorioMecanico = new RepositorioMecanico();
+		 IRepositorioMoto repositorioMoto = new RepositorioMoto();
+		 IRepositorioReparacion repositorioReparacion = new RepositorioReparacion();
+		 IRepositorioVehiculo repositorioVehiculo = new RepositorioVehiculo();
+		 IRepositorioVendedor repositorioVendedor = new RepositorioVendedor();
+		 IRepositorioVenta repositorioVenta = new RepositorioVenta();
+		 controller = new Controller(repositorioCliente, repositorioClienteVehiculo,  repositorioCoche,  repositorioEmpleado,  repositorioEstadisticasVentas,  repositorioLogIn,  repositorioMecanico,  repositorioMoto,  repositorioReparacion,  repositorioVehiculo,  repositorioVendedor,  repositorioVenta);
+		
+		 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

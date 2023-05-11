@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -11,18 +12,27 @@ import modelo.Cliente;
 import modelo.ClienteVehiculo;
 import modelo.Coche;
 import modelo.Empleado;
+import modelo.EstadisticasDeVentas;
 import modelo.Mecanico;
 import modelo.Moto;
 import modelo.Reparacion;
+import modelo.TipoDeEmpleado;
 import modelo.TipoDeVehiculo;
 import modelo.Vehiculo;
 import modelo.Vendedor;
 import modelo.Venta;
-import repository.RepositorioCargarListas;
-import repository.RepositorioDeEstadisticas;
-import repository.RepositorioDeInserts;
-import repository.RepositorioDeLogIn;
-import repository.RepositorioDeUpdates;
+import repository.IRepositorioCliente;
+import repository.IRepositorioClienteVehiculo;
+import repository.IRepositorioCoche;
+import repository.IRepositorioEmpleado;
+import repository.IRepositorioEstadisticasVentas;
+import repository.IRepositorioLogIn;
+import repository.IRepositorioMecanico;
+import repository.IRepositorioMoto;
+import repository.IRepositorioReparacion;
+import repository.IRepositorioVehiculo;
+import repository.IRepositorioVendedor;
+import repository.IRepositorioVenta;
 import xmlParser.InputReparaciones;
 import xmlParser.InputVentas;
 import xmlParser.OutputReparaciones;
@@ -41,11 +51,35 @@ public class Controller {
 	private static OutputVentas outputVentas = new OutputVentas();	
 	private static InputReparaciones intputReparaciones = new InputReparaciones();
 	private static InputVentas intputVentas = new InputVentas();
-	private static RepositorioDeLogIn repositorioDeLogIn = new RepositorioDeLogIn();
-	private static RepositorioCargarListas repositorioDeCargarListas = new RepositorioCargarListas();
-	private static RepositorioDeInserts repositorioDeInserts = new RepositorioDeInserts();
-	private static RepositorioDeUpdates repositorioDeUpdates = new RepositorioDeUpdates();
-	private static RepositorioDeEstadisticas repositorioDeEstadisticas = new RepositorioDeEstadisticas();
+	
+	private IRepositorioCliente repositorioCliente;
+	private IRepositorioClienteVehiculo repositorioClienteVehiculo;
+	private IRepositorioCoche repositorioCoche;
+	private IRepositorioEmpleado repositorioEmpleado;
+	private IRepositorioEstadisticasVentas repositorioEstadisticasVentas;
+	private IRepositorioLogIn repositorioLogIn;
+	private IRepositorioMecanico repositorioMecanico;
+	private IRepositorioMoto repositorioMoto;
+	private IRepositorioReparacion repositorioReparacion;
+	private IRepositorioVehiculo repositorioVehiculo;
+	private IRepositorioVendedor repositorioVendedor;
+	private IRepositorioVenta repositorioVenta;
+
+
+	public Controller(IRepositorioCliente repositorioCliente, IRepositorioClienteVehiculo repositorioClienteVehiculo, IRepositorioCoche repositorioCoche, IRepositorioEmpleado repositorioEmpleado, IRepositorioEstadisticasVentas repositorioEstadisticasVentas, IRepositorioLogIn repositorioLogIn, IRepositorioMecanico repositorioMecanico, IRepositorioMoto repositorioMoto, IRepositorioReparacion repositorioReparacion, IRepositorioVehiculo repositorioVehiculo, IRepositorioVendedor repositorioVendedor, IRepositorioVenta repositorioVenta) {
+		this.repositorioCliente=repositorioCliente;
+		this.repositorioClienteVehiculo=repositorioClienteVehiculo;
+		this.repositorioCoche=repositorioCoche;
+		this.repositorioEmpleado=repositorioEmpleado;
+		this.repositorioEstadisticasVentas=repositorioEstadisticasVentas;
+		this.repositorioLogIn=repositorioLogIn;
+		this.repositorioMecanico=repositorioMecanico;
+		this.repositorioMoto=repositorioMoto;
+		this.repositorioReparacion=repositorioReparacion;
+		this.repositorioVehiculo=repositorioVehiculo;
+		this.repositorioVendedor=repositorioVendedor;
+		this.repositorioVenta=repositorioVenta;
+	}
 	
 	private List<Empleado> listaEmpleados = new ArrayList<Empleado>();
 	
@@ -61,8 +95,14 @@ public class Controller {
 	
 	private List<Empleado> listEmpleadosNoVerificados = new ArrayList<Empleado>();
 	
+	private List<EstadisticasDeVentas> listDeEstadisticasDeVentas = new ArrayList<EstadisticasDeVentas>();
+	
 	public Controller() {
 		
+	}
+	
+	public List<EstadisticasDeVentas> getEstadisticasTop2Vendedores() {
+		return listDeEstadisticasDeVentas;
 	}
 	
 	public List<Empleado> getAllEmpleadosNoVerificados(){
@@ -94,68 +134,71 @@ public class Controller {
 	}
 
 	public Empleado getLogInCorrect(String text, String valueOf) {
-		Empleado logInCorrecto = repositorioDeLogIn.getLogInCorrect(text, valueOf);
+		Empleado logInCorrecto = repositorioLogIn.getLogInCorrect(text, valueOf);
 		return logInCorrecto;
 	} 
 	
 	public boolean comprobarUser(String text) {
-		return repositorioDeLogIn.comprobarSiExisteUser(text);
+		return repositorioLogIn.comprobarSiExisteUser(text);
 	}
 
 	public boolean verificarQueLaContrasenaEsCorrecta(String dni, String passwordString) {
-		return repositorioDeLogIn.comprobarContrasena(dni, passwordString);
+		return repositorioLogIn.comprobarContrasena(dni, passwordString);
 	}
 
 	public void changePassword(String dni, String newPasswordString) {
-		repositorioDeLogIn.updatePass(dni, newPasswordString);	
+		repositorioLogIn.updatePass(dni, newPasswordString);	
 		
 	}
 
 	public void actualizarUser(Empleado updateDelUser, int id) {
-		repositorioDeUpdates.updateUser(updateDelUser, id);
+		repositorioEmpleado.updateUser(updateDelUser, id);
 	}
 
 	
 
 	public void cargarListaDeEmpleados() {
-		listaEmpleados =  repositorioDeCargarListas.getListaDeEmpleados();
-		repositorioDeEstadisticas.obtenerTopDosVendedores();
+		listaEmpleados =  repositorioEmpleado.getListaDeEmpleados();
 	}
 	
 	public void cargarListaDeVentas() {
-		listaDeVentas =  repositorioDeCargarListas.getListaDeVentas();
+		listaDeVentas =  repositorioVenta.getListaDeVentas();
 	}
 	
 	public void cargarListaDeVehiculos() {
-		listDeVehiculos =  repositorioDeCargarListas.getListaVehiculos();
+		listDeVehiculos =  repositorioVehiculo.getListaVehiculos();
+	}
+	
+	public void cargarListaDeEstadisticasDeVentas() {
+		listDeEstadisticasDeVentas = repositorioEstadisticasVentas.obtenerTopDosVendedores();
 	}
 	
 	public void cargarListaDeClientes() {
-		listDeClientes =  repositorioDeCargarListas.getListaDeClientes();
+		listDeClientes =  repositorioCliente.getListaDeClientes();
 	}
 	
 	public void cargarListaDeClienteVehiculos() {
-		listDeClienteVehiculos =  repositorioDeCargarListas.getListaDeClienteVehiculos();
+		listDeClienteVehiculos =  repositorioClienteVehiculo.getListaDeClienteVehiculos();
 	}
 	
 	public void cargarListaDeReparaciones() {
-		listDeReparaciones =  repositorioDeCargarListas.getListaDeReparaciones();
+		listDeReparaciones =  repositorioReparacion.getListaDeReparaciones();
 	}
 
 	public boolean UpdateSalario(String dni, int salario) {
-		return repositorioDeUpdates.updateSallary(dni, salario);
+		return repositorioEmpleado.updateSalary(dni, salario);
 	}
 
 	public boolean UpdateIdJefe(String dni, int salario) {
-		return repositorioDeUpdates.updateIdJefe(dni, salario);
+		return repositorioEmpleado.updateIdJefe(dni, salario);
 	}
 
 	public boolean updateTelefono(String dni2, int telefono) {
-		return repositorioDeUpdates.updateTelefono(dni2, telefono);
+		return repositorioEmpleado.updateTelefono(dni2, telefono);
 	}
 
 	public boolean updateDireccion(String dni2, String direccion2) {
-		return repositorioDeUpdates.updateDir(dni2, direccion2);
+		return repositorioEmpleado.updateDir(dni2, direccion2);
 	}
 
 	public TipoDeVehiculo averiguarTipoDeVehiculo(String matricula) throws VehiculoNoEncontradoException{
@@ -172,18 +215,18 @@ public class Controller {
 	}
 	
 	public boolean UpdateReparacion(Date fechaFin2, int idReparacion2) {
-		return repositorioDeUpdates.updateReparacion(idReparacion2, fechaFin2);
+		return repositorioReparacion.updateReparacion(idReparacion2, fechaFin2);
 	}
 
 	public Reparacion anadirReparacion(Reparacion reparacaion) {
-		reparacaion = repositorioDeInserts.createReparacion(reparacaion);
+		reparacaion = repositorioReparacion.createReparacion(reparacaion);
 		return reparacaion;
 	}
 
 	public boolean anadirMoto(Moto moto) {
-		boolean sehaInsertadoElVehiculo = repositorioDeInserts.insertarVehiculo(moto);
+		boolean sehaInsertadoElVehiculo = repositorioVehiculo.insertarVehiculo(moto);
 		if(sehaInsertadoElVehiculo) {
-			boolean seHaInsertadoLaMoto = repositorioDeInserts.insertarMoto(moto);
+			boolean seHaInsertadoLaMoto = repositorioMoto.insertarMoto(moto);
 			if(seHaInsertadoLaMoto) {
 				return true;
 			}else {
@@ -196,9 +239,9 @@ public class Controller {
 	}
 
 	public boolean anadirCoche(Coche coche) {
-		boolean sehaInsertadoElVehiculo = repositorioDeInserts.insertarVehiculo(coche);
+		boolean sehaInsertadoElVehiculo = repositorioVehiculo.insertarVehiculo(coche);
 		if(sehaInsertadoElVehiculo) {
-			boolean seHaInsertadoElCoche = repositorioDeInserts.insertarCoche(coche);
+			boolean seHaInsertadoElCoche = repositorioCoche.insertarCoche(coche);
 			if(seHaInsertadoElCoche) {
 				return true;
 			}else {
@@ -210,7 +253,7 @@ public class Controller {
 	}
 
 	public boolean addClienteBD(Cliente cliente) {
-		return repositorioDeInserts.insertarCliente(cliente);
+		return repositorioCliente.insertarCliente(cliente);
 	}
 
 	public void anadirCliente(Cliente cliente) {
@@ -242,7 +285,7 @@ public class Controller {
 	}
 
 	public boolean anadirClienteVehiculoBD(ClienteVehiculo clienteVehiculo) {
-		return repositorioDeInserts.insertarClienteVehiculo(clienteVehiculo);
+		return repositorioClienteVehiculo.insertarClienteVehiculo(clienteVehiculo);
 	}
 
 	public void addClienteVehiculo(ClienteVehiculo clienteVehiculo) {
@@ -261,14 +304,13 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		repositorioDeInserts.anadirUser(empleadoNuevo);
-		repositorioDeLogIn.anadirLogIn(empleadoNuevo.getDni(), valueOf);
+		repositorioEmpleado.anadirUser(empleadoNuevo);
+		repositorioLogIn.anadirLogIn(empleadoNuevo.getDni(), valueOf);
 		
 	}
 	
 	public Venta anadirVenta(Venta venta) {
-		venta = repositorioDeInserts.createVenta(venta);
-		return venta;
+		return repositorioVenta.createVenta(venta); 
 	}
 
 	public void addVenta(Venta venta) {
@@ -277,7 +319,7 @@ public class Controller {
 	}
 
 	public void verificarCuenteSeleccionada(String dni) {
-		repositorioDeUpdates.actualizarBarcoPorId(dni);
+		repositorioLogIn.actualizarLoginPorId(dni);
 		List <Empleado> listaNoverificados1 = new ArrayList<Empleado>();
 		for(Empleado empleadoActual : listEmpleadosNoVerificados) {
 			if(dni.equals(empleadoActual.getDni())) {
@@ -290,7 +332,7 @@ public class Controller {
 	}
 
 	public void empleadosAVerificar() {
-		listEmpleadosNoVerificados = repositorioDeLogIn.getListaDeEmpleadosPorVerificar();
+		listEmpleadosNoVerificados = repositorioEmpleado.getListaDeEmpleadosPorVerificar();
 		
 	}
 	public void exportarDatos() {
@@ -320,7 +362,7 @@ public class Controller {
 				}else if(reparacionController.getIdReparacion() == reparacionImportada.getIdReparacion()) {
 					nuevaReparacion = false;
 					actualizarDatosReparacionImport(reparacionController, reparacionImportada);
-					repositorioDeUpdates.updateReparacion(reparacionController);
+					repositorioReparacion.updateReparacion(reparacionController);
 				}
 			}
 			if(nuevaReparacion) {
@@ -356,12 +398,12 @@ public class Controller {
 					nuevaVenta = false;
 				}else if(ventaDelController.getIdVenta() == ventaImport.getIdVenta()) {
 					actualizarDatosVentaImport(ventaDelController, ventaImport);
-					repositorioDeUpdates.updateVenta(ventaDelController);
+					repositorioVenta.updateVenta(ventaDelController);
 					nuevaVenta = false;
 				}
 			}
 			if(nuevaVenta) {
-				repositorioDeInserts.createVenta(ventaImport);
+				repositorioVenta.createVenta(ventaImport);
 				listaDeVentas.add(ventaImport);
 			}
 		}
@@ -382,7 +424,7 @@ public class Controller {
 	}
 
 	public boolean updateComision(Vendedor vendedor) {
-		return repositorioDeUpdates.insertarComision(vendedor);
+		return repositorioVendedor.insertarComision(vendedor);
 	}
 
 	public boolean updateComisionList(Vendedor vendedor) {
@@ -401,7 +443,7 @@ public class Controller {
 	}
 
 	public boolean updateRango(Mecanico mecanico) {
-		return repositorioDeUpdates.insertarRango(mecanico);
+		return repositorioMecanico.insertarRango(mecanico);
 	}
 
 	public boolean updateRangoList(Mecanico mecanico) {
@@ -418,6 +460,72 @@ public class Controller {
 		listaEmpleados = listaNueva;
 		return seHaActualizado;
 	}
+	
+	public boolean cambiarDepartamentoEmpleado(String dni, Empleado user) {
+		int id=0;
+		Empleado empleadoNuevo=new Empleado();
+		boolean cambiado=false;
+		for (Empleado empleado:listaEmpleados) {
+			if (empleado.getDni().equals(dni)) {
+				if (empleado instanceof Vendedor) {
+					id=empleado.getId();
+					cambiado= repositorioEmpleado.cambiarAMecanico(id);
+					empleadoNuevo=empleado;
+				}else if (empleado instanceof Mecanico) {
+					id=empleado.getId();
+					cambiado= repositorioEmpleado.cambiarAVendedor(id);
+					empleado.setTipoDeEmpleado(TipoDeEmpleado.vendedor);
+					empleadoNuevo=empleado;
+				}else {
+					return false;
+				}
+			}
+		}
+		if (cambiado) {
+			actualizarLista(empleadoNuevo);
+			actualizarListaReparaciones(empleadoNuevo);
+			actualizarListaVentas(empleadoNuevo);
+		}
+		return true;
+	}
 
+	private void actualizarLista(Empleado empleadoNuevo) {
+	List<Empleado>listaEmpleadoNuevo=new ArrayList<Empleado>();
+	for (Empleado empleado: listaEmpleados) {
+		if (empleado.getId()==empleadoNuevo.getId()) {
+			listaEmpleadoNuevo.add(empleadoNuevo);
+		}else {
+			listaEmpleadoNuevo.add(empleado);
+		}
+	}
+	listaEmpleados=listaEmpleadoNuevo;
+	}
+	private void actualizarListaReparaciones(Empleado empleadoNuevo) {
+		List<Reparacion>listaReparacionesNuevas=new ArrayList<Reparacion>();
+		for (Reparacion reparacion: listDeReparaciones) {
+			if (reparacion.getIdMecanico()==empleadoNuevo.getId()) {
+				reparacion.setIdMecanico(0);
+				listaReparacionesNuevas.add(reparacion);		
+			}else {
+				listaReparacionesNuevas.add(reparacion);
+			}
+		}
+		listDeReparaciones=listaReparacionesNuevas;
+		
+		}
+	
+	private void actualizarListaVentas(Empleado empleadoNuevo) {
+		List<Venta>listaDeVentasNuevas=new ArrayList<Venta>();
+		for (Venta venta: listaDeVentas) {
+			if (venta.getIdVendedor()==empleadoNuevo.getId()) {
+				venta.setIdVendedor(0);
+				listaDeVentasNuevas.add(venta);	
+			}else {
+				listaDeVentasNuevas.add(venta);
+			}
+		}
+		listaDeVentas=listaDeVentasNuevas;
+	}
 
+	
 }

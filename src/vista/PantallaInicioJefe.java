@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Controller;
 import modelo.Empleado;
+import modelo.EstadisticasDeVentas;
 
 import java.awt.Color;
 import java.awt.SystemColor;
@@ -60,6 +62,59 @@ public class PantallaInicioJefe extends JPanel {
 		buttonImportarDatos(user);
 		
 		buttonExportarDatos(user);
+		
+		buttonCambiarDepartamento(user);
+	
+		btnVerEstadisticas(user);
+	}
+	
+	private void btnVerEstadisticas(Empleado user) {
+		JButton btnVerEstadisticas = new JButton("Ver Estadisticas");
+		btnVerEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<EstadisticasDeVentas> listDeEstadisticasDeVentas = controller.getEstadisticasTop2Vendedores();
+				if(listDeEstadisticasDeVentas.size() != 0) {
+					String estadisticas = "";
+					for(EstadisticasDeVentas estadistica : listDeEstadisticasDeVentas) {
+						estadisticas += "Nombre del empleado: " + estadistica.getNombreCompleto() +  " Comision total del empledo: " + estadistica.getComisionTotal() + "\n" ;
+					}
+					JOptionPane.showMessageDialog(null,	estadisticas, "Ver estadisticas", JOptionPane.INFORMATION_MESSAGE);
+					
+				}else {
+					JOptionPane.showMessageDialog(null,	"no hay estadisticas que mostrar", "Ver estadisticas", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnVerEstadisticas.setForeground(Color.WHITE);
+		btnVerEstadisticas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnVerEstadisticas.setBackground(SystemColor.textHighlight);
+		btnVerEstadisticas.setBounds(629, 497, 241, 27);
+		add(btnVerEstadisticas);
+	}
+
+	private void buttonCambiarDepartamento(Empleado user) {
+		JButton buttonCambiarDepartamento = new JButton("Cambiar Departamento");
+		buttonCambiarDepartamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = table.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					String dni = table.getValueAt(filaSeleccionada, 0).toString();
+					boolean seHaActuatulizado = controller.cambiarDepartamentoEmpleado(dni, user);	
+					if (seHaActuatulizado) {
+						JOptionPane.showMessageDialog(null, "El user con DNI " + dni + " se ha cambiado el departamento", "Cambio de departamento", JOptionPane.INFORMATION_MESSAGE);						
+					}else {
+						JOptionPane.showMessageDialog(null, "Este trabajador no puede cambiar de Departamento", "Cambiar depart", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				} 
+			}
+		});
+		buttonCambiarDepartamento.setForeground(Color.WHITE);
+		buttonCambiarDepartamento.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		buttonCambiarDepartamento.setBackground(SystemColor.textHighlight);
+		buttonCambiarDepartamento.setBounds(629, 436, 241, 27);
+		add(buttonCambiarDepartamento);
+		
 	}
 
 	private void buttonExportarDatos(Empleado user) {		
@@ -167,6 +222,7 @@ public class PantallaInicioJefe extends JPanel {
 			controller.cargarListaDeClientes();
 			controller.cargarListaDeVehiculos();
 			controller.cargarListaDeClienteVehiculos();
+			controller.cargarListaDeEstadisticasDeVentas();
 
 			listaDeEmpleados =  controller.getAllEmpleado();
 			mostrarTablaDeUsers();

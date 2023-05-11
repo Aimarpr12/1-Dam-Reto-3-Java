@@ -158,8 +158,14 @@ public class VerReparaciones extends JPanel {
 				String dni = null;
 				int filaSeleccionada = table.getSelectedRow();
 				if (filaSeleccionada != -1) {
-					dni = table.getValueAt(filaSeleccionada, 4).toString();
-					verDatosEmpleado(dni, user);	
+					try {
+						dni = table.getValueAt(filaSeleccionada, 4).toString();						
+						verDatosEmpleado(dni, user);							
+						
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "El mecanico seleccionado ya no es mecanico", "Datos del mecanico", JOptionPane.INFORMATION_MESSAGE);
+						// TODO: handle exception
+					}
 				} 
 			}
 		});
