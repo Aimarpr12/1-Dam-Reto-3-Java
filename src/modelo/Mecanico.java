@@ -1,13 +1,8 @@
 package modelo;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import controller.Controller;
 
 public class Mecanico extends Empleado {
 
@@ -59,28 +54,7 @@ public class Mecanico extends Empleado {
 				+ salario + ", jefe=" + jefe + "]";
 	}
 	
-	@Override
-	public int calcularAntiguedad() {
-		System.out.println(LocalDate.now());
-		Date fechaContratacion = this.getFechaContratacion();
-		Instant instant = Instant.ofEpochMilli(fechaContratacion.getTime());
-		LocalDate fechaContratacionLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-		LocalDate fechaActual = LocalDate.now();
-		return Period.between(fechaContratacionLocalDate, fechaActual).getYears();
-
-
-	}
-	@Override
-	public int calcularEdad() {
-		Date fechaContratacion = this.getFechaNacimiento();
-		Instant instant = Instant.ofEpochMilli(fechaContratacion.getTime());
-		LocalDate fechaNacimientoLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-		LocalDate fechaActual = LocalDate.now();
-		return Period.between(fechaNacimientoLocalDate, fechaActual).getYears();
-	}
-	
-	public Mecanico encontrarMecanicoEnLista(String dni, Controller controller) {
-		List <Empleado> listEmpleado = controller.getAllEmpleado();
+	public Mecanico encontrarMecanicoEnLista(String dni, List <Empleado> listEmpleado) {
 		for(Empleado empleado : listEmpleado) {
 			if(dni.equals(empleado.getDni())) {
 				return (Mecanico) empleado;
@@ -88,21 +62,7 @@ public class Mecanico extends Empleado {
 		}
 		return null;
 	}
-
-
-
-	public boolean setRango(Mecanico mecanico, Controller controller) {
-		boolean seHaInsertado = controller.updateRango(mecanico);
-		System.out.println(seHaInsertado);
-		if(seHaInsertado) {
-			return controller.updateRangoList(mecanico);
-		}else {
-			return false;
-		}
-	}
-
-
-
+	
 	public void addDatosMecanico(Empleado empleado) {
 		this.id = empleado.getId();
 		this.dni = empleado.getDni();

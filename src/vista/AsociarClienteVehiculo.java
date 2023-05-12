@@ -61,7 +61,12 @@ public class AsociarClienteVehiculo extends JPanel {
 				ComboBoxMatriculaAnadirReparacion comboSeleccionado = (ComboBoxMatriculaAnadirReparacion) comboBoxVehiculo.getSelectedItem();
 				comboSeleccionado.getValue();
 				ClienteVehiculo clienteVehiculo = new ClienteVehiculo(comboSeleccionado.getValue(), comboBoxDni.getSelectedItem().toString());
-				boolean seHaAnadido = clienteVehiculo.addClienteVehiculo(clienteVehiculo, controller);
+				boolean seHaAnadido = controller.anadirClienteVehiculoBD(clienteVehiculo);
+				if(seHaAnadido) {
+					controller.addClienteVehiculo(clienteVehiculo);
+				}else {
+					seHaAnadido = false;			
+				}
 				if(seHaAnadido) {
 					JOptionPane.showMessageDialog(
 							null,

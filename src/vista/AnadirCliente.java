@@ -253,7 +253,12 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 					Cliente cliente = new Cliente(textFieldDni.getText(), 
 							textFieldNombre.getText(), textFielApellido.getText(), 
 							Integer.parseInt(textFielTelefono.getText()), textFieldDir.getText(), textFieldCorreo.getText());
-					boolean seHaAñadido = cliente.addCliente(cliente, controller);
+					boolean seHaAñadido = controller.addClienteBD(cliente);
+					if(seHaAñadido) {
+						controller.anadirCliente(cliente);
+					}else {
+						seHaAñadido = false;
+					}
 					if(seHaAñadido) {
 						JOptionPane.showMessageDialog(
 								null,

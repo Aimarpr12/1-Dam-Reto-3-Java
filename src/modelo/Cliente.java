@@ -2,7 +2,6 @@ package modelo;
 
 import java.util.List;
 
-import controller.Controller;
 
 public class Cliente {
 	protected String dni;
@@ -74,25 +73,13 @@ public class Cliente {
 		this.correo = correo;
 	}
 
-	public Cliente getUserFromList(Controller controller, String dni2) {
-		List <Cliente> listDeClientes = controller.getAllClientes();
+	public Cliente getUserFromList(List <Cliente> listDeClientes, String dni2) {
 		for(Cliente clienteActual : listDeClientes) {
 			if(dni2.equals(clienteActual.getDni())){
 				return clienteActual;
 			}
 		}
 		return null;
-		
-	}
-
-	public boolean addCliente(Cliente cliente, Controller controller) {
-		boolean seHaInsertadoCorrectamente = controller.addClienteBD(cliente);
-		if(seHaInsertadoCorrectamente) {
-			controller.anadirCliente(cliente);
-			return true;
-		}else {
-			return false;
-		}
 		
 	}
 

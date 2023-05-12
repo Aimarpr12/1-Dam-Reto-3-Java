@@ -139,7 +139,7 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 								"Error",
 								JOptionPane.ERROR_MESSAGE);
 						txtDni.setText("");
-						passwordField.setText("");
+						passwordField.setText("");	
 					}		
 				}else {
 					JOptionPane.showMessageDialog(
@@ -196,7 +196,7 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 	}
 
 	protected boolean comprobarSiEstanVerificados(String text) {
-		for(Empleado empleadoActual :controller.getAllEmpleadosNoVerificados()) {
+		for(Empleado empleadoActual : controller.getAllEmpleadosNoVerificados()) {
 			if(text.equals(empleadoActual.getDni())) {
 				return false;
 			}

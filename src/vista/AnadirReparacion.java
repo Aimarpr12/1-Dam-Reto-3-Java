@@ -217,7 +217,7 @@ public class AnadirReparacion extends JPanel implements DocumentListener, Action
 					e1.printStackTrace();
 				}
 				Reparacion reparacion = new Reparacion(comboSeleccionado.getValue(), textPaneDescripcion.getText(), Integer.parseInt(textFieldCoste.getText()), Integer.parseInt(textFieldPrecio.getText()), fechaActual,user.getId());
-				boolean seHaInsetado = reparacion.anadirReparacion(reparacion, controller);
+				boolean seHaInsetado = controller.anadirReparacionFuncion(reparacion);
 				if(seHaInsetado) {
 					JOptionPane.showMessageDialog(
 							null,

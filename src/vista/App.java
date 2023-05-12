@@ -93,7 +93,7 @@ public class App extends JFrame {
 
 	public void mostrarSignUp() {
 		contentPane.removeAll();
-		CreateAcount panelInicial = new CreateAcount();
+		CreateAcount panelInicial = new CreateAcount(controller);
 		contentPane.add(panelInicial);
 		panelInicial.setLayout(null);
 		validate();

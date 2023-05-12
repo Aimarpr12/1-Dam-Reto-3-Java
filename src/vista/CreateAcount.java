@@ -36,7 +36,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	/**
 	 * 
 	 */
-	private Controller controller = new Controller();
+	private Controller controller;
 	private static final long serialVersionUID = 1L;
 	private JTextField txtDni;
 	private JPasswordField passwordField;
@@ -52,8 +52,9 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	private boolean segundaParte = false;
 	private String fechaFormateada;
 	
-	public CreateAcount() {
+	public CreateAcount(Controller controller) {
 		setLayout(null);
+		this.controller = controller;
 		
 		labelDNI();
 		
@@ -109,7 +110,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 			public void actionPerformed(ActionEvent e) {
 				remove(labelContrasenaNoCoincide);  
 				if(!segundaParte) {
-					if (String.valueOf(passwordField.getPassword()).equals(String.valueOf(passwordFieldRepeat.getPassword())) && txtDni.getText().length() <= 9 && String.valueOf(passwordField.getPassword()).length() <=16) {
+					if (String.valueOf(passwordField.getPassword()).equals(String.valueOf(passwordFieldRepeat.getPassword())) && txtDni.getText().length() == 9 && String.valueOf(passwordField.getPassword()).length() <=16) {
 						if(controller.comprobarUser(txtDni.getText())) {
 							txtDni.setEnabled(false);
 							passwordField.setEnabled(false);
@@ -123,7 +124,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 							app.logIn();
 						}
 					}else {
-						JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Algun dato es incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
 						passwordFieldRepeat.setText("");
 						passwordField.setText("");
 					}					

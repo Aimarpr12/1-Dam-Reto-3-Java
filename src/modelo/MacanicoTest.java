@@ -37,7 +37,7 @@ public class MacanicoTest {
 	
 	@Test
 	public void encontrarMecanicoEnLista() {
-		Mecanico mecanico2 =  mecanico.encontrarMecanicoEnLista("45678901D", controller);
+		Mecanico mecanico2 =  mecanico.encontrarMecanicoEnLista("45678901D", controller.getAllEmpleado());
 		assertEquals(mecanico2.getDni(), "45678901D");
 	}
 	

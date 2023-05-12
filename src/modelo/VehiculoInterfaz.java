@@ -1,10 +1,8 @@
 package modelo;
 
-import controller.Controller;
+import java.util.List;
+
 
 public interface VehiculoInterfaz {
-	boolean anadirVehiculo(Vehiculo vehiculo, Controller controller);
-	boolean estaReparado(Vehiculo vehiculo);
-	boolean estaVendido(Vehiculo vehiculo);
-	Vehiculo encontrarVehiculoEnLista(String matricula, Controller controller);
+	Vehiculo encontrarVehiculoEnLista(String matricula, List <Vehiculo> listDeVehiculos);
 }

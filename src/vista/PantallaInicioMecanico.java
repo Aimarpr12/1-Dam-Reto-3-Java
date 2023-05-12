@@ -5,9 +5,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.Controller;
 import error.VehiculoNoEncontradoException;
@@ -24,10 +31,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.awt.Color;
@@ -171,11 +180,11 @@ public class PantallaInicioMecanico extends JPanel {
 			tipoDeVehiculo = controller.averiguarTipoDeVehiculo(matricula);
 			if(TipoDeVehiculo.coche.equals(tipoDeVehiculo)) {
 				Coche coche = new Coche();
-				coche = (Coche) coche.encontrarVehiculoEnLista(matricula, controller);
+				coche = (Coche) coche.encontrarVehiculoEnLista(matricula, controller.getAllVehiculos());
 				mostrarDatatosCoches(coche);
 			}else if (TipoDeVehiculo.moto.equals(tipoDeVehiculo)){
 				Moto moto = new Moto();
-				moto = (Moto) moto.encontrarVehiculoEnLista(matricula, controller);
+				moto = (Moto) moto.encontrarVehiculoEnLista(matricula, controller.getAllVehiculos());
 				mostrarDatosMoto(moto);
 			}    
 		} catch (VehiculoNoEncontradoException e) {
@@ -276,7 +285,7 @@ public class PantallaInicioMecanico extends JPanel {
 			e1.printStackTrace();
 		}
 		Reparacion reparacion = new Reparacion();
-		boolean seHaReparado = reparacion.finalizarReaparacion(fechaActual, idReparacion, controller);
+		boolean seHaReparado = controller.finalizarReaparacion(fechaActual, idReparacion);
 		if(seHaReparado) {			
 			JOptionPane.showMessageDialog(null,"Actualizado la fecha de fin", "Correct update", JOptionPane.INFORMATION_MESSAGE);	
 			Component component = (Component) e.getSource();
@@ -299,7 +308,7 @@ public class PantallaInicioMecanico extends JPanel {
 				if (filaSeleccionada != -1) {
 					dni = table.getValueAt(filaSeleccionada,6).toString();
 					Cliente cliente = new Cliente();	
-					cliente = cliente.getUserFromList(controller, dni);
+					cliente = cliente.getUserFromList(controller.getAllClientes(), dni);
 					JOptionPane.showMessageDialog(null, ""
 							+ "DNI: " + cliente.getDni() + "\n"
 							+ "Nombre: " + cliente.getNombre() + "\n"
@@ -338,6 +347,43 @@ public class PantallaInicioMecanico extends JPanel {
 		listaDeReparaciones = getAllReparacionesPorMecanico(user.getId());
 		actualizarVentas();
 
+		 // Agregar sorter a la tabla
+	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+	    table.setRowSorter(sorter);
+
+	    // Agregar MouseListener a los encabezados de las columnas
+	    for (int i = 0; i < table.getColumnCount(); i++) {
+	        final int columnIndex = i;
+	        TableColumn column = table.getColumnModel().getColumn(i);
+	        column.setHeaderRenderer(new ColumnHeaderRenderer());
+	        column.setHeaderValue("<html><b>" + column.getHeaderValue() + "</b></html>");
+	        column.setResizable(true);
+
+	        JTableHeader tableHeader = table.getTableHeader();
+	        tableHeader.addMouseListener(new MouseInputAdapter() {
+	            @Override
+	            public void mouseClicked(MouseEvent e) {
+	                // Obtener el índice de la columna seleccionada
+	                int columnIndex = tableHeader.columnAtPoint(e.getPoint());
+
+	                // Obtener la dirección de ordenamiento actual
+	                SortOrder currentOrder = sorter.getSortKeys().isEmpty()
+	                        ? SortOrder.UNSORTED
+	                        : sorter.getSortKeys().get(0).getSortOrder();
+
+	                // Establecer la nueva dirección de ordenamiento
+	                if (currentOrder == SortOrder.ASCENDING || currentOrder == SortOrder.UNSORTED) {
+	                    sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(columnIndex, SortOrder.DESCENDING)));
+	                } else {
+	                    sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(columnIndex, SortOrder.ASCENDING)));
+	                }
+
+	                // Ordenar la tabla
+	                sorter.sort();
+	            }
+	        });
+	    }
+		
 		scrollPane.setViewportView(table);
 	}
 
@@ -362,8 +408,8 @@ public class PantallaInicioMecanico extends JPanel {
 			fila[2]= reparacion.getCoste();
 			fila[3]= reparacion.getFechaIni();
 			fila[4]= reparacion.getFechaFin();
-			fila[5] = reparacion.conseguirMatriculaDelCoche(controller);
-			fila[6] = reparacion.conseguiDniDelCliente(controller);
+			fila[5] = reparacion.conseguirMatriculaDelCoche(controller.getAllVehiculos());
+			fila[6] = reparacion.conseguiDniDelCliente(controller.getAllClienteVehiculos());
 
 			model.addRow(fila); 
 		}

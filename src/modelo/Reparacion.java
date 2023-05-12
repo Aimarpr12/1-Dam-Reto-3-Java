@@ -2,9 +2,6 @@ package modelo;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
-import controller.Controller;
 
 public class Reparacion {
 	protected int idReparacion;
@@ -129,8 +126,7 @@ public class Reparacion {
 		this.idMecanico = idMecanico;
 	}
 
-	public String conseguirElDniDelMecanico(Controller controller) {
-		List <Empleado> listEmpleados =controller.getAllEmpleado();
+	public String conseguirElDniDelMecanico(List <Empleado> listEmpleados) {
 		for(Empleado empleado: listEmpleados){
 			if(empleado.getId() == getIdMecanico()) {
 				return empleado.getDni();
@@ -139,8 +135,7 @@ public class Reparacion {
 		return null;
 	}
 
-	public String conseguirMatriculaDelCoche(Controller controller) {
-		List <Vehiculo> listVehiculos =controller.getAllVehiculos();
+	public String conseguirMatriculaDelCoche(List <Vehiculo> listVehiculos) {
 		for(Vehiculo vehiculo: listVehiculos){
 			if(vehiculo.getBastidor().equals(getIdVehiculo())) {
 				return vehiculo.getMatricula();
@@ -149,8 +144,7 @@ public class Reparacion {
 		return null;
 	}
 
-	public String conseguiDniDelCliente(Controller controller) {
-		List <ClienteVehiculo> listCliente = controller.getAllClienteVehiculos();
+	public String conseguiDniDelCliente(List <ClienteVehiculo> listCliente) {
 		for(ClienteVehiculo cliente : listCliente){
 			if(cliente.getBastidor().equals(getIdVehiculo())){
 				return cliente.getIdCliente();
@@ -158,38 +152,4 @@ public class Reparacion {
 		}
 		return null;
 	}
-	
-	public boolean finalizarReaparacion(Date fechaFin2, int idReparacion2, Controller controller) {
-		boolean sehaActualizadoCorrectamentEnBD = controller.UpdateReparacion(fechaFin2, idReparacion2);
-		if(!sehaActualizadoCorrectamentEnBD) {
-			return false;
-		}
-		Date fechaFinVieja = new Date();
-		boolean seHaEditadoCorrectamente = false;
-		List<Reparacion> todosLasReparaciones = controller.getAllReparaciones();
-		for(Reparacion reparacion : todosLasReparaciones) {
-			if(idReparacion2 == reparacion.getIdReparacion()) {
-				fechaFinVieja = reparacion.getFechaFin();
-				reparacion.setFechaFin(fechaFin2);
-				seHaEditadoCorrectamente = true;
-			}
-		}
-		if(!sehaActualizadoCorrectamentEnBD) {
-			controller.UpdateReparacion(fechaFinVieja, idReparacion2);
-		}
-		
-		return seHaEditadoCorrectamente;
-	}
-
-	public boolean anadirReparacion(Reparacion reparacaion, Controller controller) {
-		reparacaion = controller.anadirReparacion(reparacaion);	
-		if(0 != reparacaion.getIdReparacion()) {
-			controller.addReparacion(reparacaion);
-			return true;
-		}else {
-			return false;
-		}
-	}
-
-
 }

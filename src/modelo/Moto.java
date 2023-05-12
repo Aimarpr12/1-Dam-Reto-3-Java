@@ -2,7 +2,6 @@ package modelo;
 
 import java.util.List;
 
-import controller.Controller;
 
 public class Moto extends Vehiculo{
 	
@@ -40,35 +39,8 @@ public class Moto extends Vehiculo{
 		this.cilindrada = cilindrada;
 	}
 
-
-
 	@Override
-	public boolean anadirVehiculo(Vehiculo vehiculo, Controller controller) {
-		Moto moto = (Moto) vehiculo;
-		boolean seHaAnadidoEnBD = controller.anadirMoto(moto);
-		if(seHaAnadidoEnBD) {
-			controller.addMoto(moto);
-			return true;
-		}else {
-			return false;			
-		}
-	}
-
-	@Override
-	public boolean estaReparado(Vehiculo vehiculo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean estaVendido(Vehiculo vehiculo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Vehiculo encontrarVehiculoEnLista(String matricula, Controller controller) {
-		List <Vehiculo> listDeVehiculos = controller.getAllVehiculos();
+	public Vehiculo encontrarVehiculoEnLista(String matricula, List <Vehiculo> listDeVehiculos) {
 		for(Vehiculo vehiculoActual : listDeVehiculos) {
 			if(matricula.equals(vehiculoActual.getMatricula())){
 				return vehiculoActual;

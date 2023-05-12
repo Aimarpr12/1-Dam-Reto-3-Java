@@ -6,7 +6,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import controller.Controller;
 
 public class Vendedor extends Empleado {
 	protected List <Venta> listaDeVentas;
@@ -88,18 +87,6 @@ public class Vendedor extends Empleado {
 		 return Period.between(this.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();		
 		
 	}
-
-
-
-	public boolean setComision(Vendedor vendedor, Controller controller) {
-		boolean seHaInsertado = controller.updateComision(vendedor);
-		if(seHaInsertado) {
-			 return controller.updateComisionList(vendedor);
-		}else {			
-			return false;
-		}
-	}
-
 
 
 	public void addDatosVendedor(Empleado empleado) {

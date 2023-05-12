@@ -329,13 +329,16 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		} else {
 		    return false;
 		}
-		boolean seHaAnadido = coche.anadirVehiculo(vehiculo, controller);
-		if(seHaAnadido) {
+		boolean seHaAnadidoEnBD = controller.anadirCoche(coche);
+		if(seHaAnadidoEnBD) {
+			controller.addCoche(coche);
 			return true;
+		}else {
+			return false;			
 		}
-		return false;
 		
 	}
+	
 	private boolean insertarCilindrada(Vehiculo vehiculo) {
 		int cilindrada = 0;
 		boolean cilindradaValida = false;
@@ -345,18 +348,20 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		        null,
 		        "Introduce la cilindrada de la moto:",
 		        "Cilindrada",
-		        JOptionPane.PLAIN_MESSAGE);
+		        JOptionPane.PLAIN_MESSAGE
+		   );
 
 		    try {
 		        cilindrada = Integer.parseInt(input);
 		        cilindradaValida = true;
-		        Moto moto = new Moto(vehiculo, cilindrada);
-		        boolean seHaAnadido = moto.anadirVehiculo(moto, controller);
-		        if(seHaAnadido) {
-		        	return true;
-		        }else {
-		        	return false;
-		        }
+		        Moto moto = new Moto(vehiculo, cilindrada);		        
+				boolean seHaAnadidoEnBD = controller.anadirMoto(moto);
+				if(seHaAnadidoEnBD) {
+					controller.addMoto(moto);
+					return true;
+				}else {
+					return false;			
+				}
 		    } catch (NumberFormatException e) {
 		        JOptionPane.showMessageDialog(
 		            null,

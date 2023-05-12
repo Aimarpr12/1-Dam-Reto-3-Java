@@ -1,6 +1,5 @@
 package modelo;
 
-import controller.Controller;
 
 public class ClienteVehiculo {
 	protected String bastidor;
@@ -27,16 +26,5 @@ public class ClienteVehiculo {
 	public void setIdCliente(String idCliente) {
 		this.idCliente = idCliente;
 	}
-
-	public boolean addClienteVehiculo(ClienteVehiculo clienteVehiculo, Controller controller) {
-		boolean seHaAnadido = controller.anadirClienteVehiculoBD(clienteVehiculo);
-		if(seHaAnadido) {
-			controller.addClienteVehiculo(clienteVehiculo);
-			return true;
-		}else {
-			return false;			
-		}
-	}
-	
 	
 }

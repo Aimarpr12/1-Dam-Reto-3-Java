@@ -2,7 +2,8 @@ package modelo;
 
 import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 public class CocheTest {
 

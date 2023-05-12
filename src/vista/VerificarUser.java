@@ -170,7 +170,7 @@ public class VerificarUser extends JPanel {
 		    options[0]);
 
 		empleado = new Empleado();
-		empleado = empleado.getEmpleadoConDni(dni, controller);
+		empleado = empleado.getEmpleadoConDni(dni, controller.getAllEmpleado());
 		if (selectedOption == 0) {
 			empleado.setTipoDeEmpleado(TipoDeEmpleado.vendedor);
 			System.out.println(empleado.toString());
@@ -218,12 +218,22 @@ public class VerificarUser extends JPanel {
 		} else {
 		    return false;
 		}
-		boolean seHaAnadido = mecanico.setRango(mecanico, controller);
+		boolean seHaAnadido = setRango(mecanico);
+		
 		if(seHaAnadido) {
 			return true;
 		}
 		return false;
 		
+	}
+	
+	public boolean setRango(Mecanico mecanico) {
+		boolean seHaInsertado = controller.updateRango(mecanico);
+		if(seHaInsertado) {
+			return controller.updateRangoList(mecanico);
+		}else {
+			return false;
+		}
 	}
 	private boolean insertarComision(Empleado empleado) {
 		Vendedor vendedor = new Vendedor();
@@ -242,7 +252,7 @@ public class VerificarUser extends JPanel {
 		    	comision = Double.parseDouble(input);
 		        comisionValida = true;
 		        vendedor.setComision(comision);
-		        boolean seHaAnadido = vendedor.setComision(vendedor, controller);
+		        boolean seHaAnadido = controller.setComisionFuncion(vendedor);
 		        if(seHaAnadido) {
 		        	return true;
 		        }else {

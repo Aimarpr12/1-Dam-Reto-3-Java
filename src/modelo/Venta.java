@@ -2,9 +2,6 @@ package modelo;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
-import controller.Controller;
 
 public class Venta {
 	protected int idVenta;
@@ -78,8 +75,7 @@ public class Venta {
 		this.idVendedor = idVendedor;
 	}
 	
-	public String conseguiDniDelCliente(Controller controller) {
-		List <ClienteVehiculo> listCliente = controller.getAllClienteVehiculos();
+	public String conseguiDniDelCliente(List <ClienteVehiculo> listCliente) {
 		for(ClienteVehiculo cliente : listCliente){
 			if(cliente.getBastidor().equals(getBastidor())){
 				return cliente.getIdCliente();
@@ -89,8 +85,7 @@ public class Venta {
 	}
 
 	
-	public String conseguirElDniDelVendedor(Controller controller) {
-		List <Empleado> listEmpleados =controller.getAllEmpleado();
+	public String conseguirElDniDelVendedor(List <Empleado> listEmpleados) {
 		for(Empleado empleado: listEmpleados){
 			if(empleado.getId() == getIdVendedor()) {
 				return empleado.getDni();
@@ -99,24 +94,13 @@ public class Venta {
 		return null;
 	}
 
-	public String conseguirMatriculaDelCoche(Controller controller) {
-		List <Vehiculo> listVehiculos =controller.getAllVehiculos();
+	public String conseguirMatriculaDelCoche(List <Vehiculo> listVehiculos) {
 		for(Vehiculo vehiculo: listVehiculos){
 			if(vehiculo.getBastidor().equals(getBastidor())) {
 				return vehiculo.getMatricula();
 			}
 		}
 		return null;
-	}
-	
-	public boolean anadirVenta(Venta venta, Controller controller) {
-		venta = controller.anadirVenta(venta);	
-		if(0 != venta.getIdVenta()) {
-			controller.addVenta(venta);
-			return true;
-		}else {
-			return false;
-		}
 	}
 	
 	@Override

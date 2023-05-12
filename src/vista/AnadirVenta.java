@@ -197,7 +197,7 @@ public class AnadirVenta extends JPanel implements DocumentListener, ActionListe
 						e1.printStackTrace();
 					}
 					Venta venta = new Venta(Integer.parseInt(textFieldPrecio.getText()), fechaActual, comboSeleccionado.getValue(), comboBoxDni.getSelectedItem().toString(), user.getId());
-					boolean seHaInsertado = venta.anadirVenta(venta, controller);
+					boolean seHaInsertado = controller.anadirVentaFuncion(venta);
 					ClienteVehiculo clienteVehiculo = new ClienteVehiculo(comboSeleccionado.getValue(), comboBoxDni.getSelectedItem().toString());
 					if(seHaInsertado) {
 						JOptionPane.showMessageDialog(
