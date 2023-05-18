@@ -38,7 +38,7 @@ public class VendedorTest {
         List<Empleado> listaEmpleados = new ArrayList<>();
         Empleado empleado1 = new Empleado("12345678", "John", "Doe", 123456789, new Date(), "Dirección 1", "john.doe@example.com");
         Empleado empleado2 = new Empleado("98765432", "Jane", "Smith", 987654321, new Date(), "Dirección 2", "jane.smith@example.com");
-        Empleado empleado3 = new Empleado("56789012", "Michael", "Johnson", 567890123, new Date(), "Dirección 3", "michael.johnson@example.com");
+        Vendedor empleado3 = new Vendedor("56789012", "Michael", "Johnson", 567890123, new Date(), "Dirección 3", "michael.johnson@example.com");
         listaEmpleados.add(empleado1);
         listaEmpleados.add(empleado2);
         listaEmpleados.add(empleado3);
@@ -46,13 +46,13 @@ public class VendedorTest {
         Vendedor vendedor = new Vendedor();
         
         // Encontrar un vendedor en la lista por su DNI
-        Vendedor vendedorEncontrado = vendedor.encontrarVendedorEnLista("98765432", listaEmpleados);
+        Vendedor vendedorEncontrado = vendedor.encontrarVendedorEnLista("56789012", listaEmpleados);
         
         // Verificar que se ha encontrado el vendedor correcto
         Assert.assertNotNull(vendedorEncontrado);
-        Assert.assertEquals("98765432", vendedorEncontrado.getDni());
-        Assert.assertEquals("Jane", vendedorEncontrado.getNombre());
-        Assert.assertEquals("Smith", vendedorEncontrado.getApellido());
+        Assert.assertEquals("56789012", vendedorEncontrado.getDni());
+        Assert.assertEquals("Michael", vendedorEncontrado.getNombre());
+        Assert.assertEquals("Johnson", vendedorEncontrado.getApellido());
     }
 }
         

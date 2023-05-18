@@ -5,13 +5,51 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import repository.IRepositorioCliente;
+import repository.IRepositorioClienteVehiculo;
+import repository.IRepositorioCoche;
+import repository.IRepositorioEmpleado;
+import repository.IRepositorioEstadisticasVentas;
+import repository.IRepositorioLogIn;
+import repository.IRepositorioMecanico;
+import repository.IRepositorioMoto;
+import repository.IRepositorioReparacion;
+import repository.IRepositorioVehiculo;
+import repository.IRepositorioVendedor;
+import repository.IRepositorioVenta;
+import repository.RepositorioCliente;
+import repository.RepositorioClienteVehiculo;
+import repository.RepositorioCoche;
+import repository.RepositorioEmpleado;
+import repository.RepositorioEstadisticasVentas;
+import repository.RepositorioLogIn;
+import repository.RepositorioMecanico;
+import repository.RepositorioMoto;
+import repository.RepositorioReparacion;
+import repository.RepositorioVehiculo;
+import repository.RepositorioVendedor;
+import repository.RepositorioVenta;
+
 public class ControllerTest {
 
 	private static Controller controller;
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){ 
-		controller = new Controller();
+		IRepositorioCliente repositorioCliente=new RepositorioCliente();
+		 IRepositorioClienteVehiculo repositorioClienteVehiculo= new RepositorioClienteVehiculo();
+		 IRepositorioCoche repositorioCoche= new RepositorioCoche();
+		 IRepositorioEmpleado repositorioEmpleado = new RepositorioEmpleado();
+		 IRepositorioEstadisticasVentas repositorioEstadisticasVentas = new RepositorioEstadisticasVentas();
+		 IRepositorioLogIn repositorioLogIn = new RepositorioLogIn();
+		 IRepositorioMecanico repositorioMecanico = new RepositorioMecanico();
+		 IRepositorioMoto repositorioMoto = new RepositorioMoto();
+		 IRepositorioReparacion repositorioReparacion = new RepositorioReparacion();
+		 IRepositorioVehiculo repositorioVehiculo = new RepositorioVehiculo();
+		 IRepositorioVendedor repositorioVendedor = new RepositorioVendedor();
+		 IRepositorioVenta repositorioVenta = new RepositorioVenta();
+		 controller = new Controller(repositorioCliente, repositorioClienteVehiculo,  repositorioCoche,  repositorioEmpleado,  repositorioEstadisticasVentas,  repositorioLogIn,  repositorioMecanico,  repositorioMoto,  repositorioReparacion,  repositorioVehiculo,  repositorioVendedor,  repositorioVenta);
+		
 		controller.cargarListaDeClientes();
 		controller.cargarListaDeClienteVehiculos();
 		controller.cargarListaDeEmpleados();

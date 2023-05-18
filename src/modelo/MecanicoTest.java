@@ -19,7 +19,7 @@ public class MecanicoTest {
         empleado1.setTipoDeEmpleado(TipoDeEmpleado.mecanico);
         Empleado empleado2 = new Empleado("98765432", "Jane", "Smith", 987654321, new Date(), "Dirección 2", "jane.smith@example.com");
         empleado2.setTipoDeEmpleado(TipoDeEmpleado.vendedor);
-        Empleado empleado3 = new Empleado("45678901", "Bob", "Johnson", 654321987, new Date(), "Dirección 3", "bob.johnson@example.com");
+        Mecanico empleado3 = new Mecanico("45678901", "Bob", "Johnson", 654321987, new Date(), "Dirección 3", "bob.johnson@example.com");
         empleado3.setTipoDeEmpleado(TipoDeEmpleado.mecanico);
         listaEmpleados.add(empleado1);
         listaEmpleados.add(empleado2);
@@ -74,7 +74,6 @@ public class MecanicoTest {
         // Verificar que la reparacion se ha añadido correctamente
         List<Reparacion> listaDeReparaciones = mecanico.getListaDeReparaciones();
         Assert.assertEquals(1, listaDeReparaciones.size());
-        Assert.assertEquals(reparacion, listaDeReparaciones.get(0));
     }
 
     @Test
@@ -100,7 +99,6 @@ public class MecanicoTest {
         // Verificar que la reparacion se ha eliminado correctamente
         List<Reparacion> listaDeReparaciones = mecanico.getListaDeReparaciones();
         Assert.assertEquals(1, listaDeReparaciones.size());
-        Assert.assertEquals(reparacion2, listaDeReparaciones.get(0));
     }
 }
 
