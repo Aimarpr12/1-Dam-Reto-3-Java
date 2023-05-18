@@ -20,7 +20,6 @@ import controller.Controller;
 import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
 import modelo.Coche;
-import modelo.Empleado;
 import modelo.Mecanico;
 import modelo.Moto;
 import modelo.Reparacion;
@@ -90,6 +89,9 @@ public class PantallaInicioMecanico extends JPanel {
 	
 	private void btnAsociarClienteAVehiculo(Mecanico user) {
 		JButton btnAsociarClienteAVehiculo = new JButton("Asociar Cliente A Vehiculo");
+		btnAsociarClienteAVehiculo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAsociarClienteAVehiculo.setForeground(new Color(255, 255, 255));
+		btnAsociarClienteAVehiculo.setBackground(SystemColor.textHighlight);
 		btnAsociarClienteAVehiculo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -97,12 +99,15 @@ public class PantallaInicioMecanico extends JPanel {
 				app.asociarClienteVehiculo(user);
 			}
 		});
-		btnAsociarClienteAVehiculo.setBounds(664, 95, 200, 23);
+		btnAsociarClienteAVehiculo.setBounds(628, 470, 244, 23);
 		add(btnAsociarClienteAVehiculo);
 	}
 
 	private void btnAnadirCliente(Mecanico user) {
 		JButton btnAnadirCliente = new JButton("Añadir Cliente");
+		btnAnadirCliente.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAnadirCliente.setForeground(new Color(255, 255, 255));
+		btnAnadirCliente.setBackground(SystemColor.textHighlight);
 		btnAnadirCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -110,13 +115,16 @@ public class PantallaInicioMecanico extends JPanel {
 				app.anadirCliente(user);
 			}
 		});
-		btnAnadirCliente.setBounds(664, 49, 200, 23);
+		btnAnadirCliente.setBounds(341, 470, 200, 23);
 		add(btnAnadirCliente);
 		
 	}
 
 	private void btnAnadirVehiculo(Mecanico user) {		
 		JButton btnAnadirVehiculo = new JButton("Añadir Vehiculo");
+		btnAnadirVehiculo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAnadirVehiculo.setForeground(new Color(255, 255, 255));
+		btnAnadirVehiculo.setBackground(SystemColor.textHighlight);
 		btnAnadirVehiculo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -124,7 +132,7 @@ public class PantallaInicioMecanico extends JPanel {
 				app.anadirVehiculo(user);
 			}
 		});
-		btnAnadirVehiculo.setBounds(475, 49, 160, 23);
+		btnAnadirVehiculo.setBounds(72, 470, 160, 23);
 		add(btnAnadirVehiculo);
 		
 	}
@@ -154,8 +162,10 @@ public class PantallaInicioMecanico extends JPanel {
 	}
 
 
-
-	private void btnVerVehiculo(Empleado user) { 
+	/**
+	 * Muestra pop up con todos los datos del vehiculo seleccionado en la tabla
+	 */
+	private void btnVerVehiculo(Mecanico user) { 
 		JButton btnDatosDelVehiculo = new JButton("Datos del Vehículo");
 		btnDatosDelVehiculo.setBackground(SystemColor.textHighlight);
 		btnDatosDelVehiculo.setForeground(Color.WHITE);
@@ -173,8 +183,12 @@ public class PantallaInicioMecanico extends JPanel {
 		btnDatosDelVehiculo.setBounds(466, 409, 160, 23);
 		add(btnDatosDelVehiculo);
 	} 
-
-	private void verDatosDelCoche(String matricula, Empleado user) {
+	/**
+	 * Obtiene los datos del vehiculo dependiendo del tipo
+	 * @param matricula
+	 * @param user
+	 */
+	private void verDatosDelCoche(String matricula, Mecanico user) {
 		TipoDeVehiculo tipoDeVehiculo;
 		try {
 			tipoDeVehiculo = controller.averiguarTipoDeVehiculo(matricula);
@@ -200,7 +214,7 @@ public class PantallaInicioMecanico extends JPanel {
 				+ "Matrícula: " + moto.getMatricula() + "\n"
 				+ "Marca: " + moto.getMarca() + "\n"
 				+ "Modelo: " + moto.getModelo() + "\n"
-				+ "Año: " + moto.getAño() + "\n"
+				+ "Año: " + moto.getAno() + "\n"
 				+ "Cilindrada: " + moto.getCilindrada()
 				, "Datos de la moto", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -211,7 +225,7 @@ public class PantallaInicioMecanico extends JPanel {
 				+ "Matrícula: " + coche.getMatricula() + "\n"
 				+ "Marca: " + coche.getMarca() + "\n"
 				+ "Modelo: " + coche.getModelo() + "\n"
-				+ "Año: " + coche.getAño() + "\n"
+				+ "Año: " + coche.getAno() + "\n"
 				+ "Tipo de motor: " + coche.getMotor()
 				, "Datos del coche", JOptionPane.INFORMATION_MESSAGE);		
 	}
@@ -249,7 +263,7 @@ public class PantallaInicioMecanico extends JPanel {
 					App app = (App) SwingUtilities.getRoot(component);
 					app.anadirReparacion(user);					
 				}else {
-					JOptionPane.showMessageDialog(null,"No se peude añadir la reparacion por que hay 3 reparaciones sin finalizar", 
+					JOptionPane.showMessageDialog(null,"No se puede añadir la reparacion por que hay 3 reparaciones sin finalizar", 
 							"Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -284,7 +298,6 @@ public class PantallaInicioMecanico extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		Reparacion reparacion = new Reparacion();
 		boolean seHaReparado = controller.finalizarReaparacion(fechaActual, idReparacion);
 		if(seHaReparado) {			
 			JOptionPane.showMessageDialog(null,"Actualizado la fecha de fin", "Correct update", JOptionPane.INFORMATION_MESSAGE);	
@@ -295,8 +308,10 @@ public class PantallaInicioMecanico extends JPanel {
 			JOptionPane.showMessageDialog(null,"No se ha podido actualizar", "Error", JOptionPane.INFORMATION_MESSAGE);	
 		}
 	}
-
-	private void btnVerCliente(Empleado user) {
+	/**
+	 * Muestra pop up con todos los datos del cliente seleccionado en la tabla
+	 */
+	private void btnVerCliente(Mecanico user) {
 		JButton btnVerDatosDelCliente = new JButton("Datos del Cliente");
 		btnVerDatosDelCliente.setBackground(SystemColor.textHighlight);
 		btnVerDatosDelCliente.setForeground(Color.WHITE);
@@ -324,7 +339,7 @@ public class PantallaInicioMecanico extends JPanel {
 		add(btnVerDatosDelCliente);		
 	}
 
-	private void cargarTodasLasVentas(Empleado user) {		
+	private void cargarTodasLasVentas(Mecanico user) {		
 		setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -344,7 +359,7 @@ public class PantallaInicioMecanico extends JPanel {
 		model.addColumn("Fecha Fin");
 		model.addColumn("Matrícula");
 		model.addColumn("DNI del Cliente");
-		listaDeReparaciones = getAllReparacionesPorMecanico(user.getId());
+		listaDeReparaciones = user.getListaDeReparaciones();
 		actualizarVentas();
 
 		 // Agregar sorter a la tabla
@@ -385,17 +400,6 @@ public class PantallaInicioMecanico extends JPanel {
 	    }
 		
 		scrollPane.setViewportView(table);
-	}
-
-	private List<Reparacion> getAllReparacionesPorMecanico(int id) {
-		List <Reparacion> listDeTodasLasReparaciones = controller.getAllReparaciones();
-		List <Reparacion> listDeReparacionesPorMecanico = new ArrayList <Reparacion>();
-		for(Reparacion reparacion : listDeTodasLasReparaciones) {
-			if(id == reparacion.getIdMecanico()){
-				listDeReparacionesPorMecanico.add(reparacion);
-			}
-		}
-		return listDeReparacionesPorMecanico;
 	}
 
 	private void actualizarVentas() {
@@ -440,7 +444,9 @@ public class PantallaInicioMecanico extends JPanel {
 		add(btnVerMisDatos);
 
 	}
-
+	/**
+	 * Para acceder a modificar los datos hay que insertar password
+	 */
 	private void buttonEditarDatos(Mecanico user) {
 		btnEditarDatos = new JButton("Editar Datos");
 		btnEditarDatos.setBackground(SystemColor.textHighlight);

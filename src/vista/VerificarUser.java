@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +26,8 @@ import modelo.TipoDeEmpleado;
 import modelo.TipoDeVehiculo;
 import modelo.Vehiculo;
 import modelo.Vendedor;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 
 public class VerificarUser extends JPanel {
@@ -38,6 +41,7 @@ public class VerificarUser extends JPanel {
 	private JScrollPane scrollPane;
 	private Empleado empleado;
     public VerificarUser(Empleado user, Controller controller) {
+    	setBackground(new Color(255, 252, 244));
     	this.controller = controller;
         setLayout(null);
 
@@ -56,25 +60,33 @@ public class VerificarUser extends JPanel {
     
     private void labelNombre(Empleado user) {
     	JLabel labelNombre = new JLabel(user.getNombre());
-		labelNombre.setBounds(357, 24, 109, 14);
+    	labelNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
+    	labelNombre.setForeground(new Color(255, 128, 0));
+		labelNombre.setBounds(682, 65, 109, 14);
 		add(labelNombre);
 	}
 
 
 	private void buttonExit() {
     	JButton buttonExit = new JButton("Exit");
+    	buttonExit.setForeground(new Color(255, 255, 255));
+    	buttonExit.setBackground(SystemColor.textHighlight);
+    	buttonExit.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		buttonExit.setBounds(377, 324, 89, 23);
+		buttonExit.setBounds(547, 391, 89, 23);
 		add(buttonExit);
 	}
 
 
 	private void buttonVerificar() {
     	JButton buttonVerificar = new JButton("Verificar");
+    	buttonVerificar.setForeground(new Color(255, 255, 255));
+    	buttonVerificar.setBackground(SystemColor.textHighlight);
+    	buttonVerificar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonVerificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
@@ -100,7 +112,7 @@ public class VerificarUser extends JPanel {
 				cargarDatosTabla(controller.getAllEmpleadosNoVerificados());
 			}
 		});
-		buttonVerificar.setBounds(100, 324, 89, 23);
+		buttonVerificar.setBounds(270, 391, 89, 23);
 		add(buttonVerificar);
 		
 	}
@@ -108,6 +120,9 @@ public class VerificarUser extends JPanel {
 
 	private void buttonAtras(Empleado user) {
     	JButton buttonVolverARH = new JButton("Volver Atras");
+    	buttonVolverARH.setForeground(new Color(255, 255, 255));
+    	buttonVolverARH.setBackground(SystemColor.textHighlight);
+    	buttonVolverARH.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonVolverARH.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -115,7 +130,7 @@ public class VerificarUser extends JPanel {
                 app.esJefe(user);
 			}
 		});
-		buttonVolverARH.setBounds(215, 324, 137, 23);
+		buttonVolverARH.setBounds(385, 391, 137, 23);
 		add(buttonVolverARH);
 	}
 
@@ -123,7 +138,7 @@ public class VerificarUser extends JPanel {
 	private void mostrarEmpleadosPorVerificar() {
     	List<Empleado> listDeEmpleadosPorVerificar = controller.getAllEmpleadosNoVerificados();
     	scrollPane = new JScrollPane();
-		scrollPane.setBounds(100, 100, 366, 184);
+		scrollPane.setBounds(270, 167, 366, 184);
 		add(scrollPane);
 		
 		
@@ -156,7 +171,9 @@ public class VerificarUser extends JPanel {
 		table.setVisible(true);
 		
 	}
-	
+	/**
+	 * Muestra pop up con todos los tipos de empleado y se debe elegir uno al validarlo
+	 */
 	protected boolean anadirTipoDeEmpleado(String dni) {
 		String[] options = {"Vendedor", "Mecanico"};
 		int selectedOption = JOptionPane.showOptionDialog(
@@ -195,6 +212,9 @@ public class VerificarUser extends JPanel {
 
 		
 	}
+	/**
+	 * Si es mecanico pide que insertes rango
+	 */
 	private boolean insertarRango(Empleado emple) {
 		String[] options = {"Jefe de taller", "Mecánico senior", "Mecánico junior"};
 		int selectedOption = JOptionPane.showOptionDialog(
@@ -235,6 +255,9 @@ public class VerificarUser extends JPanel {
 			return false;
 		}
 	}
+	/**
+	 * Muestra pop up para que insertes comision si es vendedor
+	 */
 	private boolean insertarComision(Empleado empleado) {
 		Vendedor vendedor = new Vendedor();
 		vendedor.addDatosVendedor(empleado);

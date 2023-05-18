@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -27,7 +26,6 @@ import modelo.Cliente;
 import modelo.ClienteVehiculo;
 import modelo.ComboBoxMatriculaAnadirReparacion;
 import modelo.IntegerOnlyDocument;
-import modelo.Reparacion;
 import modelo.Vehiculo;
 import modelo.Vendedor;
 import modelo.Venta;
@@ -80,7 +78,9 @@ public class AnadirVenta extends JPanel implements DocumentListener, ActionListe
 		btnLogOut.setBounds(753, 83, 89, 23);
 		add(btnLogOut);		
 	}
-	
+	/**
+	 * Boton que vuelve a la pantalla de inicio correspondiente dependiendo del tipo de empleado
+	 */
 	private void buttonAtras(Vendedor user) {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.setBackground(SystemColor.textHighlight);
@@ -165,7 +165,7 @@ public class AnadirVenta extends JPanel implements DocumentListener, ActionListe
 		add(comboBoxVehiculo);
 		List<Vehiculo> listDeVehiculos = controller.getAllVehiculos();
 		for(Vehiculo vehiculo : listDeVehiculos) {
-			if(controller.averiguarSiElVehiculoNoTieneDueño(vehiculo.getBastidor())) {
+			if(controller.averiguarSiElVehiculoNoTieneDueno(vehiculo.getBastidor())) {
 				comboBoxVehiculo.addItem(new ComboBoxMatriculaAnadirReparacion(vehiculo.getBastidor(), vehiculo.getMatricula() ));
 			}
 		}
@@ -177,8 +177,10 @@ public class AnadirVenta extends JPanel implements DocumentListener, ActionListe
 		lblMatricula.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMatricula.setBounds(179, 195, 162, 14);
 		add(lblMatricula);
-
 	}
+	/**
+	 * Annade la venta en bbdd y en la tabla clienteVehiculo
+	 */
 	private void btnAnadirVenta(Vendedor user) {
 		btnAnadirVenta = new JButton("Añadir Venta");
 		btnAnadirVenta.setBackground(SystemColor.textHighlight);
@@ -198,6 +200,7 @@ public class AnadirVenta extends JPanel implements DocumentListener, ActionListe
 					}
 					Venta venta = new Venta(Integer.parseInt(textFieldPrecio.getText()), fechaActual, comboSeleccionado.getValue(), comboBoxDni.getSelectedItem().toString(), user.getId());
 					boolean seHaInsertado = controller.anadirVentaFuncion(venta);
+					user.anadirVentaAListaDeVentas(venta);
 					ClienteVehiculo clienteVehiculo = new ClienteVehiculo(comboSeleccionado.getValue(), comboBoxDni.getSelectedItem().toString());
 					if(seHaInsertado) {
 						JOptionPane.showMessageDialog(

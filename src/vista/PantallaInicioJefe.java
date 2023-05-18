@@ -1,6 +1,5 @@
 package vista;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import javax.swing.JPanel;
@@ -32,6 +31,8 @@ import javax.swing.event.MouseInputAdapter;
 import controller.Controller;
 import modelo.Empleado;
 import modelo.EstadisticasDeVentas;
+import modelo.Mecanico;
+import modelo.Vendedor;
 
 import java.awt.Color;
 import java.awt.SystemColor;
@@ -75,14 +76,46 @@ public class PantallaInicioJefe extends JPanel {
 		buttonImportarDatos(user);
 		
 		buttonExportarDatos(user);
-		
-		buttonCambiarDepartamento(user);
 	
 		btnVerEstadisticas(user);
+		
+		btnVerVentasOReparacionesDelEmpleado(user);
 	}
-	
+	/**
+	 * Muestra ventas o reparaciones del user seleccionado en la tabla
+	 */
+	private void btnVerVentasOReparacionesDelEmpleado(Empleado user) {
+		JButton btnVerVentasO = new JButton("Ver Ventas o Reparaciones Del Empleado");
+		btnVerVentasO.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Component component = (Component) e.getSource();
+				App app = (App) SwingUtilities.getRoot(component);
+				
+				int filaSeleccionada = table.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					String dni = table.getValueAt(filaSeleccionada, 0).toString();
+					Empleado empleado = user.getEmpleadoConDni(dni, controller.getAllEmpleado());
+					if(empleado instanceof Mecanico) {
+						Mecanico mecanico = (Mecanico) empleado;
+						app.verReparacionesPorMecanico(user, mecanico);
+					}else if(empleado instanceof Vendedor) {
+						Vendedor vendedor = (Vendedor) empleado;
+						app.verReparacionesPorMecanico(user, vendedor);
+					}
+				}	
+			}
+		});
+		btnVerVentasO.setForeground(Color.WHITE);
+		btnVerVentasO.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnVerVentasO.setBackground(SystemColor.textHighlight);
+		btnVerVentasO.setBounds(62, 481, 407, 27);
+		add(btnVerVentasO);
+	}
+	/**
+	 * Muestra los mejores vendedores del mes pasado
+	 */
 	private void btnVerEstadisticas(Empleado user) {
-		JButton btnVerEstadisticas = new JButton("Ver Estadisticas");
+		JButton btnVerEstadisticas = new JButton("Ver Estadistica");
 		btnVerEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<EstadisticasDeVentas> listDeEstadisticasDeVentas = controller.getEstadisticasTop2Vendedores();
@@ -101,35 +134,13 @@ public class PantallaInicioJefe extends JPanel {
 		btnVerEstadisticas.setForeground(Color.WHITE);
 		btnVerEstadisticas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnVerEstadisticas.setBackground(SystemColor.textHighlight);
-		btnVerEstadisticas.setBounds(629, 497, 241, 27);
+		btnVerEstadisticas.setBounds(672, 484, 241, 22);
 		add(btnVerEstadisticas);
-	}
-
-	private void buttonCambiarDepartamento(Empleado user) {
-		JButton buttonCambiarDepartamento = new JButton("Cambiar Departamento");
-		buttonCambiarDepartamento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int filaSeleccionada = table.getSelectedRow();
-				if (filaSeleccionada != -1) {
-					String dni = table.getValueAt(filaSeleccionada, 0).toString();
-					boolean seHaActuatulizado = controller.cambiarDepartamentoEmpleado(dni, user);	
-					if (seHaActuatulizado) {
-						JOptionPane.showMessageDialog(null, "El user con DNI " + dni + " se ha cambiado el departamento", "Cambio de departamento", JOptionPane.INFORMATION_MESSAGE);						
-					}else {
-						JOptionPane.showMessageDialog(null, "Este trabajador no puede cambiar de Departamento", "Cambiar depart", JOptionPane.ERROR_MESSAGE);
-					}
-					
-				} 
-			}
-		});
-		buttonCambiarDepartamento.setForeground(Color.WHITE);
-		buttonCambiarDepartamento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		buttonCambiarDepartamento.setBackground(SystemColor.textHighlight);
-		buttonCambiarDepartamento.setBounds(629, 436, 241, 27);
-		add(buttonCambiarDepartamento);
 		
 	}
-
+	/**
+	 * Exporta datos de memoria a xml
+	 */
 	private void buttonExportarDatos(Empleado user) {		
 		JButton btnExportarDatos = new JButton("Exportar Datos");
 		btnExportarDatos.addActionListener(new ActionListener() {
@@ -140,12 +151,14 @@ public class PantallaInicioJefe extends JPanel {
 		btnExportarDatos.setForeground(Color.WHITE);
 		btnExportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnExportarDatos.setBackground(SystemColor.textHighlight);
-		btnExportarDatos.setBounds(629, 213, 163, 23);
+		btnExportarDatos.setBounds(672, 214, 241, 23);
 		add(btnExportarDatos);
 		
 		
 	}
-
+	/**
+	 * Importa datos de xml a memoria y actualiza bbdd
+	 */
 	private void buttonImportarDatos(Empleado user) {
 		JButton btnImportarDatos = new JButton("Importar Datos");
 		btnImportarDatos.addActionListener(new ActionListener() {
@@ -156,10 +169,12 @@ public class PantallaInicioJefe extends JPanel {
 		btnImportarDatos.setForeground(Color.WHITE);
 		btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnImportarDatos.setBackground(SystemColor.textHighlight);
-		btnImportarDatos.setBounds(629, 256, 163, 23);
+		btnImportarDatos.setBounds(672, 270, 241, 23);
 		add(btnImportarDatos);
 	}
-
+	/**
+	 * Verifica empleados que no tienen acceso a login
+	 */
 	private void buttonVerificarEmpleados(Empleado user) {
 		JButton btnVerificarEmpleados = new JButton("Verificar Empleados");
 		btnVerificarEmpleados.addActionListener(new ActionListener() {
@@ -172,7 +187,7 @@ public class PantallaInicioJefe extends JPanel {
 		btnVerificarEmpleados.setForeground(Color.WHITE);
 		btnVerificarEmpleados.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnVerificarEmpleados.setBackground(SystemColor.textHighlight);
-		btnVerificarEmpleados.setBounds(629, 388, 163, 23);
+		btnVerificarEmpleados.setBounds(672, 428, 241, 23);
 		add(btnVerificarEmpleados);
 	}
 
@@ -204,7 +219,7 @@ public class PantallaInicioJefe extends JPanel {
 				app.mostrarVerReparaciones(user);
 			}
 		});
-		btnVerTodasLasReparaciones.setBounds(629, 298, 163, 23);
+		btnVerTodasLasReparaciones.setBounds(672, 324, 241, 23);
 		add(btnVerTodasLasReparaciones);
 	}
 
@@ -220,7 +235,7 @@ public class PantallaInicioJefe extends JPanel {
 				app.mostrarVerVentas(user);
 			}
 		});
-		btnVerTodasLasVentas.setBounds(629, 343, 163, 23);
+		btnVerTodasLasVentas.setBounds(672, 373, 241, 23);
 		add(btnVerTodasLasVentas);
 
 	}
@@ -265,7 +280,7 @@ public class PantallaInicioJefe extends JPanel {
 	    model.addColumn("Apellido");
 	    model.addColumn("Salario");
 
-	    añadirempleadosALaLista();
+	    anadirempleadosALaLista();
 
 	    // Agregar sorter a la tabla
 	    TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
@@ -309,7 +324,7 @@ public class PantallaInicioJefe extends JPanel {
 	}
 
 
-	private void añadirempleadosALaLista() {
+	private void anadirempleadosALaLista() {
 		for (Empleado empleado : listaDeEmpleados) {
 			Object[] fila = new Object [4];
 			fila[0]= empleado.getDni();
@@ -342,17 +357,17 @@ public class PantallaInicioJefe extends JPanel {
 				}
 				if (empleoSelecciona == "vendedor") {
 					listaDeEmpleados = user.getAllEmpeladosVendedor(controller.getAllEmpleado());
-					añadirempleadosALaLista();
+					anadirempleadosALaLista();
 				}else if(empleoSelecciona == "mecanico"){
 					listaDeEmpleados = user.getAllEmpeladosMecanico(controller.getAllEmpleado());
-					añadirempleadosALaLista();
+					anadirempleadosALaLista();
 				}else {
 					listaDeEmpleados =  controller.getAllEmpleado();
-					añadirempleadosALaLista();
+					anadirempleadosALaLista();
 				}
 			}
 		});
-		btnAplicar.setBounds(379, 203, 89, 23);
+		btnAplicar.setBounds(379, 195, 89, 23);
 		add(btnAplicar);
 	}
 
@@ -372,7 +387,7 @@ public class PantallaInicioJefe extends JPanel {
 		comboBoxEmpleo = new JComboBox<>();
 		comboBoxEmpleo.setBackground(new Color(255, 255, 255));
 		comboBoxEmpleo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		comboBoxEmpleo.setBounds(62, 203, 307, 22);
+		comboBoxEmpleo.setBounds(62, 195, 307, 22);
 		comboBoxEmpleo.addItem("seleciona un empleo");
 		comboBoxEmpleo.addItem("vendedor");
 		comboBoxEmpleo.addItem("mecanico");
@@ -381,9 +396,9 @@ public class PantallaInicioJefe extends JPanel {
 
 	private void labelDepartamento() {		
 		JLabel labelDepartameto = new JLabel("Departamento");
-		labelDepartameto.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		labelDepartameto.setFont(new Font("Tahoma", Font.BOLD, 15));
 		labelDepartameto.setForeground(new Color(255, 128, 0));
-		labelDepartameto.setBounds(62, 178, 130, 14);
+		labelDepartameto.setBounds(62, 170, 130, 14);
 		add(labelDepartameto);
 
 	}

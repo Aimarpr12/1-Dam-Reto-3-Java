@@ -256,4 +256,24 @@ public class App extends JFrame {
 		setVisible(true);
 
 	}
+
+	public void verReparacionesPorMecanico(Empleado user, Mecanico mecanico) {
+		contentPane.removeAll();
+		VerReparacionesDeMecanico panelInicial = new VerReparacionesDeMecanico(user, mecanico,controller);
+		contentPane.add(panelInicial);
+		panelInicial.setLayout(null);
+		validate();
+		setVisible(true);
+		
+	}
+	
+	public void verReparacionesPorMecanico(Empleado user, Vendedor vendedor) {
+		contentPane.removeAll();
+		VerVentasDeVendedor panelInicial = new VerVentasDeVendedor(user, vendedor, controller);
+		contentPane.add(panelInicial);
+		panelInicial.setLayout(null);
+		validate();
+		setVisible(true);
+		
+	}
 }

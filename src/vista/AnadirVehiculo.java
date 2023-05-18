@@ -109,7 +109,9 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		btnLogOut.setBounds(713, 49, 89, 23);
 		add(btnLogOut);		
 	}
-
+	/**
+	 * Boton que vuelve a la pantalla de inicio correspondiente dependiendo del tipo de empleado
+	 */
 	private void buttonAtras(Empleado user) {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.setForeground(Color.WHITE);
@@ -214,8 +216,12 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		lblAno.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblAno.setBounds(594, 295, 115, 14);
 		add(lblAno);
-		
 	}
+	/**
+	 * Recoge los datos de los campos
+	 * hace comprobaciones de tamaño
+	 * introduce en bbdd
+	 */
 	private void btnAnadirVehiculo(Empleado user) {
 		btnAnadirVehiculo = new JButton("Añadir Vehiculo");
 		btnAnadirVehiculo.setForeground(Color.WHITE);
@@ -302,9 +308,11 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		} else {
 			return false;
 		}
-
-		
 	}
+	/**
+	 * Si es un coche, inserta el tipo de motor
+	 * @param vehiculo
+	 */
 	private boolean insertarTipoDeMotor(Vehiculo vehiculo) {
 		String[] options = {"Diesel", "Gasolina", "Electrico"};
 		int selectedOption = JOptionPane.showOptionDialog(
@@ -338,7 +346,10 @@ public class AnadirVehiculo extends JPanel implements DocumentListener, ActionLi
 		}
 		
 	}
-	
+	/**
+	 * Si es una moto, inserta la cilindrada
+	 * @param vehiculo
+	 */
 	private boolean insertarCilindrada(Vehiculo vehiculo) {
 		int cilindrada = 0;
 		boolean cilindradaValida = false;

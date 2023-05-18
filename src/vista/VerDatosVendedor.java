@@ -145,7 +145,9 @@ public class VerDatosVendedor extends JPanel {
 			labelNombre.setBounds(526, 53, 109, 14);
 			add(labelNombre);
 		}
-
+		/**
+		 * Para ver el sueldo, hay que introducir password
+		 */
 		private void buttonVerSueldo(Vendedor user) {
 			JButton btnNewButton = new JButton("Ver Sueldo");
 			btnNewButton.setBackground(SystemColor.textHighlight);

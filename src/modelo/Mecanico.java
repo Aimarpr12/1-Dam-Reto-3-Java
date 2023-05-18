@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +25,21 @@ public class Mecanico extends Empleado {
 
 
 
+	public List<Reparacion> getListaDeReparaciones() {
+		return listaDeReparaciones;
+	}
+
+
+
+	public void setListaDeReparaciones(List<Reparacion> listaDeReparaciones) {
+		this.listaDeReparaciones = listaDeReparaciones;
+	}
+
+
+
 	public Mecanico(Empleado empleado, String rango) {
 		super(empleado.getId(), empleado.getDni(), empleado.getNombre(),empleado.getApellido(), empleado.getFechaNacimiento(), empleado.getFechaContratacion(), empleado.getNumeroTelefono(), empleado.getDireccion(), empleado.getEmail(), empleado.getSalario(), empleado.getJefe());
-		this.rango = rango;
+		this.rango = rango; 
 	}
 
 	public Mecanico(int id, String dni, String nombre, String apellido, Date fechaNacimiento, Date fechaContratacion,
@@ -75,6 +88,25 @@ public class Mecanico extends Empleado {
 		this.email = empleado.getEmail();
 		this.salario = empleado.getSalario();
 		this.jefe = empleado.getJefe();
+	}
+	
+	public void anadirReparacionAListaDeReparacion(Reparacion reparacion) {
+		listaDeReparaciones.add(reparacion);
+	}
+
+
+
+	public void removeReparacionDeLaLista(int idReparacion) {
+		List <Reparacion> listaNuevaDeReparacion = new ArrayList<Reparacion>();
+		for(Reparacion reparacion : listaDeReparaciones) {
+			if(idReparacion == reparacion.getIdReparacion()) {
+				
+			}else {
+				listaNuevaDeReparacion.add(reparacion);
+			}
+		}
+		listaDeReparaciones = listaNuevaDeReparacion;
+		
 	}
 
 }

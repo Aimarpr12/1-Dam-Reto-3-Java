@@ -139,7 +139,7 @@ public class RepositorioVehiculo implements IRepositorioVehiculo{
 			preparedStatement.setString(2, vehiculo.getMatricula());
 			preparedStatement.setString(3, vehiculo.getMarca());
 			preparedStatement.setString(4, vehiculo.getModelo());
-			preparedStatement.setInt(5, vehiculo.getAño());
+			preparedStatement.setInt(5, vehiculo.getAno());
 
 			// para ver la consulta antes de que se ejecute
 

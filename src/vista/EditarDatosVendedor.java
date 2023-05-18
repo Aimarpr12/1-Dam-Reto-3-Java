@@ -71,7 +71,9 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 		btnLogOut.setBounds(724, 65, 89, 23);
 		add(btnLogOut);		
 	}
-
+	/**
+	 * Devuelve a la pantalla correspondiente segun el tipo de user
+	 */
 	private void buttonAtras(Vendedor user) {
 		JButton btnAtras = new JButton("Atrás");
 		btnAtras.setForeground(Color.WHITE);
@@ -87,7 +89,10 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 		btnAtras.setBounds(52, 65, 89, 23);
 		add(btnAtras);
 	}
-
+	/**
+	 * Pide pass antigua
+	 * Pide pass nueva 2 veces, y deben coincidir
+	 */
 	private void buttonChangePass(Vendedor user) {
 		JButton btnCambiarContrasena = new JButton("Cambiar contraseña");
 		btnCambiarContrasena.setForeground(Color.WHITE);
@@ -142,6 +147,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void jTextCorreo(Vendedor user) {
 		textCorreo = new JTextField();
+		textCorreo.setForeground(new Color(255, 128, 0));
 		textCorreo.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textCorreo.setColumns(10);
 		textCorreo.setBounds(469, 370, 236, 20);
@@ -153,6 +159,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void labelCorreo() {
 		JLabel lblCorreo = new JLabel("Correo:");
+		lblCorreo.setForeground(new Color(255, 128, 0));
 		lblCorreo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblCorreo.setBounds(261, 373, 141, 14);
 		add(lblCorreo);
@@ -161,6 +168,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void jTextDireccion(Vendedor user) {
 		textDireccion = new JTextField();
+		textDireccion.setForeground(new Color(255, 128, 0));
 		textDireccion.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textDireccion.setColumns(10);
 		textDireccion.setBounds(469, 320, 236, 20);
@@ -172,6 +180,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void labelDireccion() {
 		JLabel lblDireccion = new JLabel("Dirección:");
+		lblDireccion.setForeground(new Color(255, 128, 0));
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblDireccion.setBounds(261, 323, 141, 14);
 		add(lblDireccion);
@@ -180,6 +189,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void jTextTelefono(Vendedor user) {
 		textTelefono = new JTextField();
+		textTelefono.setForeground(new Color(255, 128, 0));
 		textTelefono.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textTelefono.setColumns(10);
 		textTelefono.setBounds(469, 267, 236, 20);
@@ -199,6 +209,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void labelTelefono() {
 		JLabel lblTelefono = new JLabel("Teléfono:");
+		lblTelefono.setForeground(new Color(255, 128, 0));
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTelefono.setBounds(261, 270, 141, 14);
 		add(lblTelefono);
@@ -207,6 +218,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void jTextApellido(Vendedor user) {
 		textApellido = new JTextField();
+		textApellido.setForeground(new Color(255, 128, 0));
 		textApellido.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textApellido.setColumns(10);
 		textApellido.setBounds(469, 211, 236, 20);
@@ -218,6 +230,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void labelApellido() {
 		JLabel lblApellido = new JLabel("Apellido:");
+		lblApellido.setForeground(new Color(255, 128, 0));
 		lblApellido.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblApellido.setBounds(261, 214, 141, 14);
 		add(lblApellido);
@@ -226,6 +239,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 
 	private void jTextNombre(Vendedor user) {
 		textNombre = new JTextField();
+		textNombre.setForeground(new Color(255, 128, 0));
 		textNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textNombre.setColumns(10);
 		textNombre.setBounds(469, 155, 236, 20);
@@ -238,6 +252,7 @@ public class EditarDatosVendedor extends JPanel  implements DocumentListener, Ac
 	private void labelNombre() {
 		setLayout(null);
 		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setForeground(new Color(255, 128, 0));
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNombre.setBounds(261, 158, 141, 14);
 		add(lblNombre);

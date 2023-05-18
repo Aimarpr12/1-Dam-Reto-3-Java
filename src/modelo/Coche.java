@@ -7,15 +7,15 @@ public class Coche extends Vehiculo {
 
 	protected Motor motor;
 
-	public Coche(String bastidor, String matricula, String marca, String modelo, int año,
+	public Coche(String bastidor, String matricula, String marca, String modelo, int ano,
 			TipoDeVehiculo tipoDeVehiculo, Motor motor) {
-		super(bastidor, matricula, marca, modelo, año, tipoDeVehiculo);
+		super(bastidor, matricula, marca, modelo, ano, tipoDeVehiculo);
 		this.motor = motor;
 	}
 	
-	public Coche(String bastidor, String matricula, String marca, String modelo, int año,
+	public Coche(String bastidor, String matricula, String marca, String modelo, int ano,
 			TipoDeVehiculo tipoDeVehiculo) {
-		super(bastidor, matricula, marca, modelo, año, tipoDeVehiculo);
+		super(bastidor, matricula, marca, modelo, ano, tipoDeVehiculo);
 	}
 	
 	public Coche() {

@@ -107,7 +107,10 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 		txtDni.getDocument().addDocumentListener(this);
 
 	}
-
+	/**
+	 * Dependiendo de que instancia de empleado es, lleva a una pagina diferente
+	 * carga las listas necesarias para cada user
+	 */
 	private void buttonLogIn(String text, String valueOf) {
 		buttonLogIn = new JButton("LogIn");
 		buttonLogIn.setBackground(SystemColor.textHighlight);
@@ -126,10 +129,14 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 						}else if (comprobarSiEsMecanico(user.getId())){
 							String rango = conseguirDatosDeMecanico(user.getId());
 							Mecanico mecanico = new Mecanico (user, rango);
+							controller.cargarListaDeReparaciones();
+							mecanico.setListaDeReparaciones(controller.getAllReparacionesPorMecanico(mecanico.getId()));
 							app.esMecanico(mecanico);
 						}else {
 							double comisionVenta = conseguirDatosDeVendedor(user.getId());
 							Vendedor vendedor = new Vendedor(user, comisionVenta);
+							controller.cargarListaDeVentas();
+							vendedor.setListaDeVentas(controller.getAllVentasPorVendedor(vendedor.getId()));
 							app.esVendedor(vendedor); 
 						}
 					}else {
@@ -205,18 +212,18 @@ public class LogIn extends JPanel implements DocumentListener, ActionListener   
 	}
 
 	private void labelContrasena() {
-		JLabel labelContraseña = new JLabel("Contraseña:");
-		labelContraseña.setForeground(new Color(255, 128, 0));
-		labelContraseña.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		labelContraseña.setBounds(499, 261, 86, 14);
-		add(labelContraseña);
+		JLabel labelContrasena = new JLabel("Contraseña:");
+		labelContrasena.setForeground(new Color(255, 128, 0));
+		labelContrasena.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelContrasena.setBounds(499, 261, 109, 14);
+		add(labelContrasena);
 	}
 		
 	private void labelDNI() {
 		JLabel labelUsuario = new JLabel("DNI:");
 		labelUsuario.setForeground(new Color(255, 128, 0));
-		labelUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		labelUsuario.setBounds(284, 261, 86, 14);
+		labelUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelUsuario.setBounds(284, 261, 324, 14);
 		add(labelUsuario);
 
 	}

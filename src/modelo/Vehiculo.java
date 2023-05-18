@@ -6,7 +6,7 @@ public abstract class Vehiculo implements VehiculoInterfaz{
 	protected String matricula;
 	protected String marca;
 	protected String modelo;
-	protected int año;
+	protected int ano;
 	protected TipoDeVehiculo tipoDeVehiculo;
 	
 
@@ -15,23 +15,23 @@ public abstract class Vehiculo implements VehiculoInterfaz{
 		
 	}
 	
-	public Vehiculo(String bastidor, String matricula, String marca, String modelo, int año) {
+	public Vehiculo(String bastidor, String matricula, String marca, String modelo, int ano) {
 		super();
 		this.bastidor = bastidor;
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
-		this.año = año;
+		this.ano = ano;
 	}
 	
-	public Vehiculo(String bastidor, String matricula, String marca, String modelo, int año,
+	public Vehiculo(String bastidor, String matricula, String marca, String modelo, int ano,
 			TipoDeVehiculo tipoDeVehiculo) {
 		super();
 		this.bastidor = bastidor;
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
-		this.año = año;
+		this.ano = ano;
 		this.tipoDeVehiculo = tipoDeVehiculo;
 	}
 
@@ -86,13 +86,13 @@ public abstract class Vehiculo implements VehiculoInterfaz{
 	}
 
 
-	public int getAño() {
-		return año;
+	public int getAno() {
+		return ano;
 	}
 
 
-	public void setAño(int año) {
-		this.año = año;
+	public void setAno(int ano) {
+		this.ano = ano;
 	}
 
 	

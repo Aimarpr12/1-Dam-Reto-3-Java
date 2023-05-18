@@ -16,7 +16,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import controller.Controller;
-import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
 import modelo.Empleado;
 import modelo.IntegerOnlyDocument;
@@ -49,78 +48,82 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 		setBackground(new Color(255, 252, 244));
 		this.controller = controller;
 		setLayout(null);
-		
-		
+
+
 		btnAnadirCliente(user);
 
-		
+
 		anadirDni(user);
-		
-		
+
+
 		anadirNombre();
-		
+
 		anadirApellido();	
-		
+
 		anadirTelefono();
-		
+
 		anadirDireccion();
-		
+
 		anadirCorreo();
-		
+
 		buttonLogOut();
-		
+
 		buttonAtras(user);
 	}
 	private void anadirCorreo() {
 		lableAnadirCorreo();
 		txtFieldoCorreo();
-		
+
 	}
-	
+
 	private void anadirDireccion() {
 		lableDireccion();
 		txtFieldDireccion();
-		
+
 	}
 	private void anadirTelefono() {
 		lableTelefono();
 		txtFieldTelefono();
-		
+
 	}
 	private void anadirApellido() {
 		lableApellido();
 		textFieldApellido();
 	}
-	
+
 	private void anadirNombre() {
 		lblNombre();
 		textNombre();
-		
+
 	}
-	
+
 	private void anadirDni(Empleado user) {
 		lblDni();
 		textFieldDni(user);
-		
+
 	}
-	
+
 	private void buttonLogOut() {
 		JButton btnLogOut = new JButton("LogOut");
+		btnLogOut.setForeground(new Color(255, 255, 255));
 		btnLogOut.setBackground(SystemColor.textHighlight);
 		btnLogOut.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
-                App app = (App) SwingUtilities.getRoot(component);
-                app.logIn();
+				App app = (App) SwingUtilities.getRoot(component);
+				app.logIn();
 			}
 		});
-		btnLogOut.setBounds(623, 49, 89, 23);
+		btnLogOut.setBounds(701, 49, 89, 23);
 		add(btnLogOut);		
 	}
-
+	/**
+	 * Boton que vuelve a la pantalla de inicio correspondiente dependiendo del tipo de empleado
+	 */
 	private void buttonAtras(Empleado user) {
 		JButton btnAtras = new JButton("Atras");
+		btnAtras.setForeground(new Color(255, 255, 255));
 		btnAtras.setBackground(SystemColor.textHighlight);
 		btnAtras.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAtras.addActionListener(new ActionListener() {
@@ -128,50 +131,50 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 				Component component = (Component) e.getSource();
 				App app = (App) SwingUtilities.getRoot(component);
 				try {
-				    Mecanico mecanico = (Mecanico) user;
-				    app.esMecanico(mecanico);
+					Mecanico mecanico = (Mecanico) user;
+					app.esMecanico(mecanico);
 				} catch (Exception e1) {
-				    try {
-				        Vendedor vendedor = (Vendedor) user;
-				        app.esVendedor(vendedor);								
-				    } catch (Exception e2) {
-				        System.out.println(e2.getMessage());
-				    }
+					try {
+						Vendedor vendedor = (Vendedor) user;
+						app.esVendedor(vendedor);								
+					} catch (Exception e2) {
+						System.out.println(e2.getMessage());
+					}
 				}
 			}
 		});
 		btnAtras.setBounds(80, 49, 89, 23);
 		add(btnAtras);
-		
+
 	}
-	
+
 	private void txtFieldoCorreo() {
 		textFieldCorreo = new JTextField();
 		textFieldCorreo.setColumns(10);
-		textFieldCorreo.setBounds(506, 288, 86, 20);
+		textFieldCorreo.setBounds(545, 320, 86, 20);
 		textFieldCorreo.getDocument().addDocumentListener(this);
 		add(textFieldCorreo);
-		
+
 	}
 	private void lableAnadirCorreo() {
 		lablCorreo = new JLabel("Correo:");
 		lablCorreo.setForeground(new Color(255, 128, 0));
 		lablCorreo.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lablCorreo.setBounds(506, 248, 73, 14);
+		lablCorreo.setBounds(545, 280, 73, 14);
 		add(lablCorreo);
-		
+
 	}
-	
+
 	private void textFieldDni(Empleado user) {
 		textFieldDni = new JTextField();
-		textFieldDni.setBounds(506, 157, 86, 20);
+		textFieldDni.setBounds(545, 189, 86, 20);
 		textFieldDni.getDocument().addDocumentListener(this);
 		add(textFieldDni);
 		textFieldDni.setColumns(10);		
 	}
 	private void txtFieldDireccion() {
 		textFieldDir = new JTextField();
-		textFieldDir.setBounds(345, 288, 86, 20);
+		textFieldDir.setBounds(384, 320, 86, 20);
 		textFieldDir.getDocument().addDocumentListener(this);
 		add(textFieldDir);		
 	}
@@ -179,69 +182,75 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 		JLabel lblDireccion = new JLabel("Direccion:");
 		lblDireccion.setForeground(new Color(255, 128, 0));
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDireccion.setBounds(342, 248, 89, 14);
+		lblDireccion.setBounds(381, 280, 89, 14);
 		add(lblDireccion);
-		
+
 	}
 	private void txtFieldTelefono() {
 		textFielTelefono = new JTextField();
-		textFielTelefono.setBounds(163, 288, 86, 20);
+		textFielTelefono.setBounds(202, 320, 86, 20);
 		textFielTelefono.setDocument(new IntegerOnlyDocument());
 		textFielTelefono.getDocument().addDocumentListener(this);
 		add(textFielTelefono);
-		
+
 	}
 	private void lableTelefono() {
 		JLabel lblTelefono = new JLabel("Telefono:");
 		lblTelefono.setForeground(new Color(255, 128, 0));
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblTelefono.setBounds(163, 248, 86, 14);
+		lblTelefono.setBounds(202, 280, 86, 14);
 		add(lblTelefono);
-		
+
 	}
-	
+
 	private void textFieldApellido() {
 		textFielApellido = new JTextField();
 		textFielApellido.setColumns(10);
-		textFielApellido.setBounds(345, 157, 86, 20);
+		textFielApellido.setBounds(384, 189, 86, 20);
 		textFielApellido.getDocument().addDocumentListener(this);
 		add(textFielApellido);				
 	}
-	
+
 	private void lableApellido() {
 		JLabel lablApellido = new JLabel("Apellido:");
 		lablApellido.setForeground(new Color(255, 128, 0));
 		lablApellido.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lablApellido.setBounds(345, 126, 73, 14);
+		lablApellido.setBounds(384, 158, 73, 14);
 		add(lablApellido);		
 	}
-	
+
 	private void textNombre() {
-	    textFieldNombre = new JTextField();
-	    textFieldNombre.setBounds(163, 157, 86, 20);
-	    textFieldNombre.getDocument().addDocumentListener(this);
-	    add(textFieldNombre);
+		textFieldNombre = new JTextField();
+		textFieldNombre.setBounds(202, 189, 86, 20);
+		textFieldNombre.getDocument().addDocumentListener(this);
+		add(textFieldNombre);
 	}
 
 	private void lblNombre() {
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setForeground(new Color(255, 128, 0));
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombre.setBounds(163, 126, 86, 14);
+		lblNombre.setBounds(202, 158, 86, 14);
 		add(lblNombre);		
 	}
-	
-	
+
+
 	private void lblDni() {
 		JLabel lblDni = new JLabel("Dni:");
 		lblDni.setForeground(new Color(255, 128, 0));
 		lblDni.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDni.setBounds(506, 126, 115, 14);
-		add(lblDni);
-		
+		lblDni.setBounds(545, 158, 115, 14);
+		add(lblDni);	
 	}
+
+	/**
+	 * Recoge los datos de los campos
+	 * hace comprobaciones de tamaño
+	 * introduce en bbdd
+	 */
 	private void btnAnadirCliente(Empleado user) {
 		btnAnadirCliente = new JButton("Añadir Cliente");
+		btnAnadirCliente.setForeground(new Color(255, 255, 255));
 		btnAnadirCliente.setBackground(SystemColor.textHighlight);
 		btnAnadirCliente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAnadirCliente.addActionListener(new ActionListener() {
@@ -253,13 +262,13 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 					Cliente cliente = new Cliente(textFieldDni.getText(), 
 							textFieldNombre.getText(), textFielApellido.getText(), 
 							Integer.parseInt(textFielTelefono.getText()), textFieldDir.getText(), textFieldCorreo.getText());
-					boolean seHaAñadido = controller.addClienteBD(cliente);
-					if(seHaAñadido) {
+					boolean seHaAnadido = controller.addClienteBD(cliente);
+					if(seHaAnadido) {
 						controller.anadirCliente(cliente);
 					}else {
-						seHaAñadido = false;
-					}
-					if(seHaAñadido) {
+						seHaAnadido = false;
+					};
+					if(seHaAnadido) {
 						JOptionPane.showMessageDialog(
 								null,
 								"Se ha añadido correctamente",
@@ -267,64 +276,56 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 								JOptionPane.ERROR_MESSAGE);	
 						Component component = (Component) e.getSource();
 						App app = (App) SwingUtilities.getRoot(component);
-						/*
-						try {
-						    Mecanico mecanico = (Mecanico) user;
-						    app.esMecanico(mecanico);
-						} catch (ClassCastException e1) {
-						    try {
-						        Vendedor vendedor = (Vendedor) user;
-						        app.esVendedor(vendedor);								
-						    } catch (ClassCastException e2) {
-						    	throw new UsuarioNoValidoException("El usuario no es un Mecanico ni un Vendedor válido");
-						    }
-						}
-						*/
-						
 						if (user instanceof Mecanico) {
 							Mecanico mecanico = (Mecanico) user;
 							app.esMecanico(mecanico);
 						} else if (user instanceof Vendedor) {
 							Vendedor vendedor = (Vendedor) user;
-					        app.esVendedor(vendedor);
+							app.esVendedor(vendedor);
 						}
 					}else {
 						JOptionPane.showMessageDialog(
-							    null,
-							    "No se ha añadido.",
-							    "Error",
-							    JOptionPane.ERROR_MESSAGE);
+								null,
+								"No se ha añadido.",
+								"Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
-					
+
+				}else {
+					JOptionPane.showMessageDialog(
+							null,
+							"Algun dato es incorrecto",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-		btnAnadirCliente.setBounds(358, 371, 139, 23);
+		btnAnadirCliente.setBounds(397, 403, 139, 23);
 		add(btnAnadirCliente);
 		btnAnadirCliente.setEnabled(false);
 		btnAnadirCliente.addActionListener(this);
 	}
-	
+
 	public static boolean tieneArrobaEntreMedias(String str) {
-	    int longitud = str.length();
-	    if (longitud < 3) {
-	        return false; // el string no tiene suficientes caracteres para tener una arroba entre medias
-	    }
-	    
-	    String correo = str.substring(1, str.length()-1);
-	    if(correo.contains("@")) {
-	    	return true;
-	    }else {
-	    	return false;
-	    }
+		int longitud = str.length();
+		if (longitud < 3) {
+			return false; // el string no tiene suficientes caracteres para tener una arroba entre medias
+		}
+
+		String correo = str.substring(1, str.length()-1);
+		if(correo.contains("@")) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public void insertUpdate(DocumentEvent e) {
-	    if (textFieldNombre.getText().length() >0 && textFielApellido.getText().length() > 0 &&  textFielTelefono.getText().length() > 0 && textFieldDir.getText().length() > 0 && textFieldCorreo.getText().length() > 0 && textFieldDni.getText().length() > 0) {
-	    	btnAnadirCliente.setEnabled(true);
-	    }
-	  }
-	
+		if (textFieldNombre.getText().length() >0 && textFielApellido.getText().length() > 0 &&  textFielTelefono.getText().length() > 0 && textFieldDir.getText().length() > 0 && textFieldCorreo.getText().length() > 0 && textFieldDni.getText().length() > 0) {
+			btnAnadirCliente.setEnabled(true);
+		}
+	}
+
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		if (textFieldNombre.getText().length() > 17 || textFieldNombre.getText().length() < 17 || textFielApellido.getText().length() == 0 || textFielTelefono.getText().length() == 0 || textFieldDir.getText().length() == 0 || textFieldCorreo.getText().length() == 0 || textFieldDni.getText().length() == 0) {
@@ -334,12 +335,12 @@ public class AnadirCliente extends JPanel implements DocumentListener, ActionLis
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 
 }

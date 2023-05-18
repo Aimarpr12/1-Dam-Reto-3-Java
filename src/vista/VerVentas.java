@@ -1,6 +1,8 @@
 package vista;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -21,16 +23,23 @@ import controller.Controller;
 import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
 import modelo.Coche;
+import modelo.ComboBoxNuevoVendedor;
 import modelo.Empleado;
 import modelo.Moto;
+import modelo.TipoDeEmpleado;
 import modelo.TipoDeVehiculo;
+import modelo.Vendedor;
 import modelo.Venta;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -64,6 +73,110 @@ public class VerVentas extends JPanel {
 		buttonLogOut();
 
 		buttonAtras(user);
+		
+		btnVerDatosVendedor(user);
+		
+		btnCambiarVendedor(user);
+	}
+	/**
+	 * Muestra pop up con todos los datos del vendedor seleccionado en la tabla
+	 */
+	private void btnVerDatosVendedor(Empleado user) {
+		JButton btnVerDatosVendedor = new JButton("Ver Datos Vendedor");
+		btnVerDatosVendedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String dni = null;
+				int filaSeleccionada = table.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					dni = table.getValueAt(filaSeleccionada, 3).toString();						
+					verDatosEmpleado(dni, user);							
+				} else {
+					JOptionPane.showMessageDialog(null, "El vendedor seleccionado ya no es mecanico", "Datos del mecanico", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		btnVerDatosVendedor.setForeground(Color.WHITE);
+		btnVerDatosVendedor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnVerDatosVendedor.setBackground(SystemColor.textHighlight);
+		btnVerDatosVendedor.setBounds(648, 368, 195, 23);
+		add(btnVerDatosVendedor);
+	}
+
+	protected void verDatosEmpleado(String dni, Empleado user) {
+		Vendedor vendedor = new Vendedor();
+		vendedor = (Vendedor) vendedor.encontrarVendedorEnLista(dni, controller.getAllEmpleado());
+		JOptionPane.showMessageDialog(null, ""
+				+ "Id: " + vendedor.getId() + "\n"
+				+ "DNI: " + vendedor.getDni() + "\n"
+				+ "Nombre: " +  vendedor.getNombre()+ "\n"
+				+ "Apelldio: " + vendedor.getApellido()+ "\n"
+				+ "Telefono: " + vendedor.getNumeroTelefono()+ "\n"
+				+ "Años en la empresa: " + vendedor.calcularAntiguedad()+ "\n"
+				+ "Edad: " + vendedor.calcularEdad()+ "\n"
+				+ "Dir: " + vendedor.getDireccion() + "\n"
+				+ "Correo: " + vendedor.getEmail() + "\n"
+				+ "Salario: " + vendedor.getSalario() + "\n"
+				+ "Rango: " + vendedor.getComision()
+				, "Datos del mecanico", JOptionPane.INFORMATION_MESSAGE);
+
+		
+	}
+	/**
+	 * Muestra pop up para cambiar el vendedor de una venta
+	 * @param user
+	 */
+	private void btnCambiarVendedor(Empleado user) {
+		JButton btnCambiarVendedor = new JButton("Cambiar Vendedor");
+		btnCambiarVendedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String dni = null;
+				int filaSeleccionada = table.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					dni = table.getValueAt(filaSeleccionada, 3).toString();
+					int idVenta =Integer.parseInt(table.getValueAt(filaSeleccionada, 0).toString());
+					popUpNuevoVendedor(dni, idVenta);
+					if (table != null) {
+						model.setNumRows(0); 
+					}
+					actualizarVentas();
+				}
+			}
+		});
+		btnCambiarVendedor.setForeground(Color.WHITE);
+		btnCambiarVendedor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnCambiarVendedor.setBackground(SystemColor.textHighlight);
+		btnCambiarVendedor.setBounds(457, 366, 160, 23);
+		add(btnCambiarVendedor);		
+	}
+	/**
+	 * Muestra pop up para insertar nuevo vendedor
+	 * @param dni
+	 * @param idVenta
+	 */
+	protected void popUpNuevoVendedor(String dni, int idVenta) {
+		List<ComboBoxNuevoVendedor> opciones = new ArrayList<ComboBoxNuevoVendedor>();
+		int idEmpleadoViejo = 0;
+        for(Empleado empleado : controller.getAllEmpleado()) {
+        	if(TipoDeEmpleado.vendedor == empleado.getTipoDeEmpleado() && dni != empleado.getDni()) {
+        		
+        		Vendedor vendedor = (Vendedor) empleado;
+        		opciones.add(new ComboBoxNuevoVendedor(vendedor));
+        	}else if(dni == empleado.getDni()) {
+        		idEmpleadoViejo = empleado.getId();
+        	}
+        } 
+		
+        JComboBox<ComboBoxNuevoVendedor> comboBox = new JComboBox<>(opciones.toArray(new ComboBoxNuevoVendedor[0]));
+	
+        JOptionPane.showMessageDialog(null, comboBox, "Selecciona el nuevo mecanico", JOptionPane.PLAIN_MESSAGE);
+	
+        ComboBoxNuevoVendedor comboSeleccionado = (ComboBoxNuevoVendedor) comboBox.getSelectedItem();
+	
+        if (comboSeleccionado.getValue().getApellido() != null) {
+        	boolean seHaCambiadoElVendedor = controller.editVendedorDeUnaVenta(comboSeleccionado.getValue().getId(), idEmpleadoViejo, idVenta);
+        }
+        	
+        
 	}
 
 	private void buttonLogOut() {
@@ -98,7 +211,9 @@ public class VerVentas extends JPanel {
 		add(btnAtras);
 
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del vehiculo seleccionado en la tabla
+	 */
 	private void btnVerVehiculo(Empleado user) { 
 		JButton btnDatosDelVehiculo = new JButton("Datos del Vehiculo");
 		btnDatosDelVehiculo.setBackground(SystemColor.textHighlight);
@@ -114,7 +229,7 @@ public class VerVentas extends JPanel {
 				} 
 			}
 		});
-		btnDatosDelVehiculo.setBounds(683, 366, 160, 23);
+		btnDatosDelVehiculo.setBounds(258, 366, 160, 23);
 		add(btnDatosDelVehiculo);
 	} 
 
@@ -143,7 +258,7 @@ public class VerVentas extends JPanel {
 				+ "Matricula: " + moto.getMatricula() + "\n"
 				+ "Marca: " + moto.getMarca() + "\n"
 				+ "Modelo: " + moto.getModelo() + "\n"
-				+ "Año: " + moto.getAño() + "\n"
+				+ "Año: " + moto.getAno() + "\n"
 				+ "Cilindrada: " + moto.getCilindrada()
 				, "Datos de la moto", JOptionPane.INFORMATION_MESSAGE);		
 	}
@@ -154,12 +269,14 @@ public class VerVentas extends JPanel {
 				+ "Matricula: " + coche.getMatricula() + "\n"
 				+ "Marca: " + coche.getMarca() + "\n"
 				+ "Modelo: " + coche.getModelo() + "\n"
-				+ "Año: " + coche.getAño() + "\n"
+				+ "Año: " + coche.getAno() + "\n"
 				+ "Tipo de motor: " + coche.getMotor()
 				, "Datos del coche", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del cliente seleccionado en la tabla
+	 */
 	private void btnVerCliente(Empleado user) {
 		JButton btnVerDatosDelCliente = new JButton("Datos del Cliente");
 		btnVerDatosDelCliente.setBackground(SystemColor.textHighlight);
@@ -259,13 +376,15 @@ public class VerVentas extends JPanel {
 			Object[] fila = new Object [6];
 			fila[0]= venta.getIdVenta();
 			fila[1]= venta.getPrecio();
-			fila[2]= venta.getFecha();
-			fila[3]= venta.getIdVendedor();
-			fila[4]= venta.getBastidor();
-			fila[5] = venta.getIdCliente();
-
+			Date fecha = venta.getFecha();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			fila[2]= df;
+			fila[3]= venta.conseguirElDniDelVendedor(controller.getAllEmpleado());
+			fila[4]= venta.conseguirMatriculaDelCoche(controller.getAllVehiculos());
+			fila[5] = venta.conseguiDniDelCliente(controller.getAllClienteVehiculos());
+ 
 			model.addRow(fila); 
-		}
+		} 
 
 	}
 }

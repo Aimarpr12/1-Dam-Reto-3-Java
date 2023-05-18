@@ -7,22 +7,22 @@ public class Moto extends Vehiculo{
 	
 	protected int cilindrada;
 
-	public Moto(String bastidor, String matricula, String marca, String modelo, int año,
+	public Moto(String bastidor, String matricula, String marca, String modelo, int ano,
 			TipoDeVehiculo tipoDeVehiculo, int cilindrada) {
-		super(bastidor, matricula, marca, modelo, año, tipoDeVehiculo);
+		super(bastidor, matricula, marca, modelo, ano, tipoDeVehiculo);
 		// TODO Auto-generated constructor stub
 		this.cilindrada = cilindrada;
 	}
 	
 	public Moto(Vehiculo vehiculo, int cilindrada) {
-		super(vehiculo.getBastidor(), vehiculo.getMatricula(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getAño(), vehiculo.getTipoDeVehiculo());
+		super(vehiculo.getBastidor(), vehiculo.getMatricula(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getAno(), vehiculo.getTipoDeVehiculo());
 		// TODO Auto-generated constructor stub
 		this.cilindrada = cilindrada;
 	}
 	
-	public Moto(String bastidor, String matricula, String marca, String modelo, int año,
+	public Moto(String bastidor, String matricula, String marca, String modelo, int ano,
 			TipoDeVehiculo tipoDeVehiculo) {
-		super(bastidor, matricula, marca, modelo, año, tipoDeVehiculo);
+		super(bastidor, matricula, marca, modelo, ano, tipoDeVehiculo);
 	}
 	
 	public Moto() {

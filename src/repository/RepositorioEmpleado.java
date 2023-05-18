@@ -220,124 +220,7 @@ public class RepositorioEmpleado implements IRepositorioEmpleado{
 		}
 		return response;
 	}
-	@Override
-	public boolean updateDir(String dni, String dir){
-		boolean updateCorrect = false;
-		// La conexion con BBDD
-		Connection connection = null;
-
-		// Vamos a lanzar una sentencia SQL contra la BBDD
-		PreparedStatement  preparedStatement  = null;
-
-		try {
-			// El Driver que vamos a usar
-			Class.forName(DBUtils.DRIVER);
-
-			// Abrimos la conexion con BBDD
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			// Montamos la SQL. Las ? se rellenan a continuacion
-			// String sql = "update  emple set edad = ? where nombre = ?";
-			String sql = "update empleado set empleado.dir = ? where empleado.DNI = ?";
-
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			// La fecha hay que formatearla ya que Date guarda en milisegundos
-			// https://docs.oracle.com/javase/8/docs/api/java/util/Date.html
-
-			preparedStatement.setString(1, dir);
-			preparedStatement.setString(2, dni);
-
-			// para ver la consulta antes de que se ejecute
-
-			// La ejecutamos...
-			preparedStatement.executeUpdate();
-			updateCorrect = true;
-		} catch (SQLException sqle) {  
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
-			sqle.printStackTrace();
-		} catch(Exception e){ 
-			System.out.println("Error generico - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			// Cerramos al reves de como las abrimos
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};
-			try {
-				if (connection != null) { 
-					connection.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};					
-		}
-		return updateCorrect;
-	}
-	@Override
-	public boolean updateSalary(String dni, int salario){
-		boolean updateCorrect = false;
-		// La conexion con BBDD
-		Connection connection = null;
-
-		// Vamos a lanzar una sentencia SQL contra la BBDD
-		PreparedStatement  preparedStatement  = null;
-
-		try {
-			// El Driver que vamos a usar
-			Class.forName(DBUtils.DRIVER);
-
-			// Abrimos la conexion con BBDD
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			// Montamos la SQL. Las ? se rellenan a continuacion
-			// String sql = "update  emple set edad = ? where nombre = ?";
-			String sql = "update empleado set empleado.salario = ? where empleado.DNI = ?";
-
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			// La fecha hay que formatearla ya que Date guarda en milisegundos
-			// https://docs.oracle.com/javase/8/docs/api/java/util/Date.html
-
-			preparedStatement.setInt(1, salario);
-			preparedStatement.setString(2, dni);
-
-			// para ver la consulta antes de que se ejecute
-
-			// La ejecutamos...
-			preparedStatement.executeUpdate();
-			updateCorrect = true;
-		} catch (SQLException sqle) {  
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
-			sqle.printStackTrace();
-		} catch(Exception e){ 
-			System.out.println("Error generico - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			// Cerramos al reves de como las abrimos
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};
-			try {
-				if (connection != null) { 
-					connection.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};					
-		}
-		return updateCorrect;
-	}
+	
 	@Override
 	public void updateUser(Empleado user, int id){
 
@@ -380,7 +263,6 @@ public class RepositorioEmpleado implements IRepositorioEmpleado{
 			preparedStatement.setString(5, user.getDireccion());
 			preparedStatement.setString(6, user.getEmail());
 			preparedStatement.setInt(7, id);
-
 			// para ver la consulta antes de que se ejecute
 
 			// La ejecutamos...
@@ -470,7 +352,6 @@ public class RepositorioEmpleado implements IRepositorioEmpleado{
 
 				//EmpleadoAbstracto empleado = new E
 			}
-			System.out.println(response.size());
 			// No es posible saber cuantas cosas nos ha devuelto el resultSet.
 			// Hay que ir 1 por 1 y guardandolo todo en su objeto Ejemplo correspondiente
 
@@ -505,124 +386,7 @@ public class RepositorioEmpleado implements IRepositorioEmpleado{
 		}
 		return response;
 	}
-	@Override
-	public boolean updateIdJefe(String dni, int idJefe){
-		boolean updateCorrect = false;
-		// La conexion con BBDD
-		Connection connection = null;
-
-		// Vamos a lanzar una sentencia SQL contra la BBDD
-		PreparedStatement  preparedStatement  = null;
-
-		try {
-			// El Driver que vamos a usar
-			Class.forName(DBUtils.DRIVER);
-
-			// Abrimos la conexion con BBDD
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			// Montamos la SQL. Las ? se rellenan a continuacion
-			// String sql = "update  emple set edad = ? where nombre = ?";
-			String sql = "update empleado set empleado.idJefe = ? where empleado.DNI = ?";
-
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			// La fecha hay que formatearla ya que Date guarda en milisegundos
-			// https://docs.oracle.com/javase/8/docs/api/java/util/Date.html
-
-			preparedStatement.setInt(1, idJefe);
-			preparedStatement.setString(2, dni);
-
-			// para ver la consulta antes de que se ejecute
-
-			// La ejecutamos...
-			preparedStatement.executeUpdate();
-			updateCorrect = true;
-		} catch (SQLException sqle) {  
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
-			sqle.printStackTrace();
-		} catch(Exception e){ 
-			System.out.println("Error generico - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			// Cerramos al reves de como las abrimos
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};
-			try {
-				if (connection != null) { 
-					connection.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};					
-		}
-		return updateCorrect;
-	}
-	@Override
-	public boolean updateTelefono(String dni, int telefono){
-		boolean updateCorrect = false;
-		// La conexion con BBDD
-		Connection connection = null;
-
-		// Vamos a lanzar una sentencia SQL contra la BBDD
-		PreparedStatement  preparedStatement  = null;
-
-		try {
-			// El Driver que vamos a usar
-			Class.forName(DBUtils.DRIVER);
-
-			// Abrimos la conexion con BBDD
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-
-			// Montamos la SQL. Las ? se rellenan a continuacion
-			// String sql = "update  emple set edad = ? where nombre = ?";
-			String sql = "update empleado set empleado.telefono = ? where empleado.DNI = ?";
-
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			// La fecha hay que formatearla ya que Date guarda en milisegundos
-			// https://docs.oracle.com/javase/8/docs/api/java/util/Date.html
-
-			preparedStatement.setInt(1, telefono);
-			preparedStatement.setString(2, dni);
-
-			// para ver la consulta antes de que se ejecute
-
-			// La ejecutamos...
-			preparedStatement.executeUpdate();
-			updateCorrect = true;
-		} catch (SQLException sqle) {  
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
-			sqle.printStackTrace();
-		} catch(Exception e){ 
-			System.out.println("Error generico - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			// Cerramos al reves de como las abrimos
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};
-			try {
-				if (connection != null) { 
-					connection.close(); 
-				}
-			} catch(Exception e){ 
-				// No hace falta
-			};					
-		}
-		return updateCorrect;
-	}
+	
 	@Override
 	public boolean cambiarAMecanico(int id) {
 		boolean updateCorrect = false;
@@ -746,7 +510,6 @@ public class RepositorioEmpleado implements IRepositorioEmpleado{
 				// No hace falta
 			};					
 		}
-		System.out.println(updateCorrect);
 		return updateCorrect;
 	}
 }

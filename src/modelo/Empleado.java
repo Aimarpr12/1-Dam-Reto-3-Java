@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -188,10 +189,8 @@ public class Empleado implements EmpleadoInterfaz {
 	}
 	
 	public List <Empleado> getAllEmpeladosVendedor(List<Empleado> todosLosEmplados) {
-		System.out.println(todosLosEmplados.size());
 		List<Empleado> listaEmpleadosVendedor = new ArrayList<Empleado>();
 		for(Empleado empleadoActual : todosLosEmplados) {
-			System.out.println(empleadoActual.getTipoDeEmpleado());
 			if(TipoDeEmpleado.vendedor.equals(empleadoActual.getTipoDeEmpleado())) {
 				listaEmpleadosVendedor.add(empleadoActual);
 			}
@@ -210,12 +209,21 @@ public class Empleado implements EmpleadoInterfaz {
 	
 	@Override
 	public int calcularAntiguedad() {
-		 return Period.between(this.getFechaContratacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();		
+		Date fechaContratacion = this.getFechaContratacion();
+		Instant instant = Instant.ofEpochMilli(fechaContratacion.getTime());
+		LocalDate fechaContratacionLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate fechaActual = LocalDate.now();
+		return Period.between(fechaContratacionLocalDate, fechaActual).getYears();
+
+
 	}
 	@Override
 	public int calcularEdad() {
-		 return Period.between(this.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();		
-		
+		Date fechaContratacion = this.getFechaNacimiento();
+		Instant instant = Instant.ofEpochMilli(fechaContratacion.getTime());
+		LocalDate fechaNacimientoLocalDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate fechaActual = LocalDate.now();
+		return Period.between(fechaNacimientoLocalDate, fechaActual).getYears();
 	}
   
 }

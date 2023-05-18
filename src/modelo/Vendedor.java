@@ -1,8 +1,6 @@
 package modelo;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,9 +31,7 @@ public class Vendedor extends Empleado {
 	public void setComision(double comision) {
 		this.comision = comision;
 	}
-
-
-
+	
 	public Vendedor(Empleado empleado, double comisionVenta) {
 		super(empleado.id, empleado.dni, empleado.nombre, empleado.apellido, empleado.fechaNacimiento, 
 				empleado.fechaContratacion, empleado.numeroTelefono, empleado.direccion, empleado.email, 
@@ -77,18 +73,6 @@ public class Vendedor extends Empleado {
 	}
 
 
-
-	@Override
-	public int calcularAntiguedad() {
-		 return Period.between(this.getFechaContratacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();		
-	}
-	@Override
-	public int calcularEdad() {
-		 return Period.between(this.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();		
-		
-	}
-
-
 	public void addDatosVendedor(Empleado empleado) {
 		this.id = empleado.getId();
 		this.dni = empleado.getDni();
@@ -103,6 +87,29 @@ public class Vendedor extends Empleado {
 		this.jefe = empleado.getJefe();
 	}
 
+	public void anadirVentaAListaDeVentas(Venta venta) {
+		listaDeVentas.add(venta);
+	}
 	
+	public Vendedor encontrarVendedorEnLista(String dni, List <Empleado> listEmpleado) {
+		for(Empleado empleado : listEmpleado) {
+			if(dni.equals(empleado.getDni())) {
+				return (Vendedor) empleado;
+			}
+		}
+		return null;
+	}
 	
+	public void removeVentaDeLaLista(int idVenta) {
+		List <Venta> listaNuevaVentas = new ArrayList<Venta>();
+		for(Venta venta : listaDeVentas) {
+			if(idVenta == venta.getIdVenta()) {
+				
+			}else {
+				listaNuevaVentas.add(venta);
+			}
+		}
+		listaDeVentas = listaNuevaVentas;
+		
+	}
 }

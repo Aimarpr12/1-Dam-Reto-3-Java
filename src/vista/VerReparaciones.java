@@ -4,10 +4,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,10 +29,12 @@ import controller.Controller;
 import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
 import modelo.Coche;
+import modelo.ComboBoxNuevoMecanico;
 import modelo.Empleado;
 import modelo.Mecanico;
 import modelo.Moto;
 import modelo.Reparacion;
+import modelo.TipoDeEmpleado;
 import modelo.TipoDeVehiculo;
 
 import java.awt.Color;
@@ -45,8 +49,6 @@ public class VerReparaciones extends JPanel {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Create the panel.
-	 * @param user 
-	 * @param controller 
 	 */
 	private Controller controller;
 	private JTable table;
@@ -61,6 +63,80 @@ public class VerReparaciones extends JPanel {
 		buttonAtras(user);
 		btnVerVehiculo(user);
 		btnVerMecanico(user);
+		btnCambiarMecanico(user);
+	}
+	/**
+	 * Muestra pop up para cambiar al mecanico de la reparacion
+	 * @param user
+	 */
+	private void btnCambiarMecanico(Empleado user) {
+		JButton btnCambiarMecanico = new JButton("Cambiar Mecanico");
+		btnCambiarMecanico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String dni = null;
+				int filaSeleccionada = table.getSelectedRow();
+				if (filaSeleccionada != -1) {
+					dni = table.getValueAt(filaSeleccionada, 4).toString();
+					int idReparacion =Integer.parseInt(table.getValueAt(filaSeleccionada, 0).toString());
+					popUpNuevoMecanico(dni, idReparacion);
+				}
+			}
+		});
+		btnCambiarMecanico.setForeground(Color.WHITE);
+		btnCambiarMecanico.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnCambiarMecanico.setBackground(SystemColor.textHighlight);
+		btnCambiarMecanico.setBounds(464, 366, 160, 23);
+		add(btnCambiarMecanico);		
+	}
+	/**
+	 * Cambia nuevo mecanico por viejo
+	 * @param dni
+	 * @param idReparacion
+	 */
+	protected void popUpNuevoMecanico(String dni, int idReparacion) { 
+		List<ComboBoxNuevoMecanico> opciones = new ArrayList<ComboBoxNuevoMecanico>();
+        int idEmpleadoViejo = 0;
+        for(Empleado empleado : controller.getAllEmpleado()) {
+        	if(TipoDeEmpleado.mecanico == empleado.getTipoDeEmpleado() && dni != empleado.getDni()) {
+        		
+        		Mecanico mecanico = (Mecanico) empleado;
+        		opciones.add(new ComboBoxNuevoMecanico(mecanico));
+        	}else if(dni == empleado.getDni()) {
+        		idEmpleadoViejo = empleado.getId();
+        	}
+        } 
+        
+        // Crear el JComboBox y agregar los elementos de la lista
+        JComboBox<ComboBoxNuevoMecanico> comboBox = new JComboBox<>(opciones.toArray(new ComboBoxNuevoMecanico[0]));
+
+        // Mostrar el JComboBox en un diálogo
+        JOptionPane.showMessageDialog(null, comboBox, "Selecciona el nuevo mecanico", JOptionPane.PLAIN_MESSAGE);
+
+        // Obtener el elemento seleccionado
+        ComboBoxNuevoMecanico comboSeleccionado = (ComboBoxNuevoMecanico) comboBox.getSelectedItem();
+        // Mostrar el resultado
+        if (comboSeleccionado.getValue().getApellido() != null) {
+        	boolean seHaCambiadoElMecanico = controller.editMecanicoDeUnaReparacion(comboSeleccionado.getValue().getId(), idEmpleadoViejo, idReparacion);
+            if(seHaCambiadoElMecanico) {
+            	JOptionPane.showMessageDialog(
+						null,
+						"Se ha cambiado el mecanico",
+						"Mecanico cambiado",
+						JOptionPane.INFORMATION_MESSAGE);
+            }else {
+            	JOptionPane.showMessageDialog(
+						null,
+						"No ee ha cambiado el mecanico",
+						"Mecanico no cambiado",
+						JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+        	JOptionPane.showMessageDialog(
+					null,
+					"Ninguna opcion seleccionada",
+					"ERROR",
+					JOptionPane.ERROR_MESSAGE);
+        }
 	}
 
 	private void buttonLogOut() {
@@ -95,7 +171,9 @@ public class VerReparaciones extends JPanel {
 		add(btnAtras);
 
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del vehiculo seleccionado en la tabla
+	 */
 	private void btnVerVehiculo(Empleado user) { 
 		JButton btnDatosDelVehiculo = new JButton("Datos del Vehiculo");
 		btnDatosDelVehiculo.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -111,7 +189,7 @@ public class VerReparaciones extends JPanel {
 				} 
 			}
 		});
-		btnDatosDelVehiculo.setBounds(346, 366, 160, 23);
+		btnDatosDelVehiculo.setBounds(265, 366, 160, 23);
 		add(btnDatosDelVehiculo);
 	} 
 
@@ -140,7 +218,7 @@ public class VerReparaciones extends JPanel {
 				+ "Matricula: " + moto.getMatricula() + "\n"
 				+ "Marca: " + moto.getMarca() + "\n"
 				+ "Modelo: " + moto.getModelo() + "\n"
-				+ "Año: " + moto.getAño() + "\n"
+				+ "Año: " + moto.getAno() + "\n"
 				+ "Cilindrada: " + moto.getCilindrada()
 				, "Datos de la moto", JOptionPane.INFORMATION_MESSAGE);
 	
@@ -152,11 +230,13 @@ public class VerReparaciones extends JPanel {
 				+ "Matricula: " + coche.getMatricula() + "\n"
 				+ "Marca: " + coche.getMarca() + "\n"
 				+ "Modelo: " + coche.getModelo() + "\n"
-				+ "Año: " + coche.getAño() + "\n"
+				+ "Año: " + coche.getAno() + "\n"
 				+ "Tipo de motor: " + coche.getMotor()
 				, "Datos del coche", JOptionPane.INFORMATION_MESSAGE);	
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del mecanico seleccionado en la tabla
+	 */
 	private void btnVerMecanico(Empleado user) { 
 		JButton btnDatosDelVehiculo = new JButton("Ver Datos Mecanico");
 		btnDatosDelVehiculo.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -167,15 +247,11 @@ public class VerReparaciones extends JPanel {
 				String dni = null;
 				int filaSeleccionada = table.getSelectedRow();
 				if (filaSeleccionada != -1) {
-					try {
-						dni = table.getValueAt(filaSeleccionada, 4).toString();						
-						verDatosEmpleado(dni, user);							
-						
-					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, "El mecanico seleccionado ya no es mecanico", "Datos del mecanico", JOptionPane.INFORMATION_MESSAGE);
-						// TODO: handle exception
-					}
-				} 
+					dni = table.getValueAt(filaSeleccionada, 4).toString();						
+					verDatosEmpleado(dni, user);							
+				} else {
+					JOptionPane.showMessageDialog(null, "El mecanico seleccionado ya no es mecanico", "Datos del mecanico", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		btnDatosDelVehiculo.setBounds(662, 366, 181, 23);

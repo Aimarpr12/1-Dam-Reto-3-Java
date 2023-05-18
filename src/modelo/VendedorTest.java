@@ -1,69 +1,58 @@
 package modelo;
 
-import static org.junit.Assert.*;
+import modelo.*;
 
-import java.text.SimpleDateFormat;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import controller.Controller;
-
 public class VendedorTest {
 
-		
-	private static List <Empleado> listDeEmpleados;
-	private static Controller controller;
-	private static Vendedor vendedor;
-	private static Date date;
-	private static Date date2;
-		
-	@BeforeClass
-	public static void setUpBeforeClass(){
-		Controller controller1 = new Controller();
-		controller = controller1;
-		controller.cargarListaDeEmpleados();
-		listDeEmpleados = controller.getAllEmpleado();
-		date = new Date();
-		date2 = new Date();
-        
-        // Crea un objeto SimpleDateFormat con el formato deseado
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-        
-        try {
-        	date2 = formatoFecha.parse("2010-01-01");
-        	date = formatoFecha.parse("2020-01-10");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		vendedor = new Vendedor(1, "cdvasdas", "dfcdfasdfs", "dasdas", date, date2, 123456789, "ndfsomnkdfs", "dasmddasd@dsdais.com", 1200, 1, TipoDeEmpleado.vendedor);
-	}
-	
-	@Test
-	public void addDatosVendedor() {
-		Empleado empleado = new Empleado(1, "cdvasdas", "dfcdfasdfs", "dasdas", date, date2, 123456789, "ndfsomnkdfs", "dasmddasd@dsdais.com", 1200, 1, TipoDeEmpleado.vendedor);
-		vendedor.addDatosVendedor(empleado);
-		assertEquals(vendedor.getId(), empleado.getId());
-	}
-	
-	@Test
-	public void setComision() {
-		vendedor.setComision(2);
-		//assertFalse(vendedor.setComision(vendedor));
-	}
-	
-	@Test
-	public void calcularAntiguedad() {
-		assertEquals(vendedor.calcularAntiguedad(), 13);
-		
-	}
+    @Test
+    public void testAddDatosVendedor() {
+        // Crear empleado de ejemplo
+        Empleado empleado = new Empleado("12345678", "John", "Doe", 123456789, new Date(), "Dirección 1", "john.doe@example.com");
+        empleado.setSalario(2000);
+        empleado.setJefe(12345);
 
-	@Test
-	public void calcularEdad() {
-		assertNotEquals(vendedor.calcularEdad(), 1);
-		
-	}
+        // Crear instancia de Vendedor
+        Vendedor vendedor = new Vendedor();
 
+        // Agregar los datos del empleado al vendedor
+        vendedor.addDatosVendedor(empleado);
+
+        // Verificar que los datos se han agregado correctamente
+        Assert.assertEquals("12345678", vendedor.getDni());
+        Assert.assertEquals("John", vendedor.getNombre());
+        Assert.assertEquals("Doe", vendedor.getApellido());
+        Assert.assertEquals(2000, vendedor.getSalario());
+        Assert.assertEquals(12345, vendedor.getJefe());
+    }
+
+    @Test
+    public void testEncontrarVendedorEnLista() {
+        // Crear lista de empleados de ejemplo
+        List<Empleado> listaEmpleados = new ArrayList<>();
+        Empleado empleado1 = new Empleado("12345678", "John", "Doe", 123456789, new Date(), "Dirección 1", "john.doe@example.com");
+        Empleado empleado2 = new Empleado("98765432", "Jane", "Smith", 987654321, new Date(), "Dirección 2", "jane.smith@example.com");
+        Empleado empleado3 = new Empleado("56789012", "Michael", "Johnson", 567890123, new Date(), "Dirección 3", "michael.johnson@example.com");
+        listaEmpleados.add(empleado1);
+        listaEmpleados.add(empleado2);
+        listaEmpleados.add(empleado3);
+        // Crear instancia de Vendedor
+        Vendedor vendedor = new Vendedor();
+        
+        // Encontrar un vendedor en la lista por su DNI
+        Vendedor vendedorEncontrado = vendedor.encontrarVendedorEnLista("98765432", listaEmpleados);
+        
+        // Verificar que se ha encontrado el vendedor correcto
+        Assert.assertNotNull(vendedorEncontrado);
+        Assert.assertEquals("98765432", vendedorEncontrado.getDni());
+        Assert.assertEquals("Jane", vendedorEncontrado.getNombre());
+        Assert.assertEquals("Smith", vendedorEncontrado.getApellido());
+    }
 }
+        

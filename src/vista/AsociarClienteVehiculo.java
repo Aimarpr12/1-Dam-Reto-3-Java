@@ -51,6 +51,10 @@ public class AsociarClienteVehiculo extends JPanel {
 		
 		buttonAtras(user);
 	}
+	/**
+	 * Inserta en la bbdd la relacion entre un vehiculo y un cliente
+	 * @param user
+	 */
 	private void btnConfirmar(Empleado user) {
 		JButton btnNewButton = new JButton("Asociar Cliente A Vehiculo");
 		btnNewButton.setBackground(SystemColor.textHighlight);
@@ -111,7 +115,9 @@ public class AsociarClienteVehiculo extends JPanel {
 		comboBoxDni();
 		
 	}
-	
+	/**
+	 * Devuelve al empleado a la pantalla de inicio correspondiente segun su tipo
+	 */
 	private void buttonLogOut() {
 		JButton btnLogOut = new JButton("LogOut");
 		btnLogOut.setBackground(SystemColor.textHighlight);
@@ -181,7 +187,7 @@ public class AsociarClienteVehiculo extends JPanel {
 		add(comboBoxVehiculo);
 		List<Vehiculo> listDeVehiculos = controller.getAllVehiculos();
 		for(Vehiculo vehiculo : listDeVehiculos) {
-			if(controller.averiguarSiElVehiculoNoTieneDueño(vehiculo.getBastidor())) {
+			if(controller.averiguarSiElVehiculoNoTieneDueno(vehiculo.getBastidor())) {
 				comboBoxVehiculo.addItem(new ComboBoxMatriculaAnadirReparacion(vehiculo.getBastidor(), vehiculo.getMatricula() ));
 			}
 		}

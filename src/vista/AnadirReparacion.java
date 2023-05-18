@@ -8,7 +8,6 @@ import modelo.IntegerOnlyDocument;
 import modelo.Mecanico;
 import modelo.Reparacion;
 import modelo.Vehiculo;
-import modelo.Vendedor;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -49,7 +48,7 @@ public class AnadirReparacion extends JPanel implements DocumentListener, Action
 		this.controller = controller;
 		setLayout(null);
 
-		btnAnadirreparcion(user);
+		btnAnadirReparcion(user);
 		
 		buttonAnadirVehiculo(user);
 
@@ -81,7 +80,9 @@ public class AnadirReparacion extends JPanel implements DocumentListener, Action
 		btnLogOut.setBounds(720, 83, 107, 23);
 		add(btnLogOut);		
 	}
-	
+	/**
+	 * Boton que vuelve a la pantalla de inicio correspondiente dependiendo del tipo de empleado
+	 */
 	private void buttonAtras(Mecanico user) {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.setBackground(SystemColor.textHighlight);
@@ -198,9 +199,13 @@ public class AnadirReparacion extends JPanel implements DocumentListener, Action
 		lblMatricula.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMatricula.setBounds(179, 179, 229, 14);
 		add(lblMatricula);
-
 	}
-	private void btnAnadirreparcion(Mecanico user) {
+	/**
+	 * Recoge los datos de los campos
+	 * hace comprobaciones de tamaño
+	 * introduce en bbdd
+	 */
+	private void btnAnadirReparcion(Mecanico user) {
 		btnAnadirReparcion = new JButton("Añadir Reparacion");
 		btnAnadirReparcion.setForeground(Color.WHITE);
 		btnAnadirReparcion.setBackground(SystemColor.textHighlight);
@@ -218,6 +223,7 @@ public class AnadirReparacion extends JPanel implements DocumentListener, Action
 				}
 				Reparacion reparacion = new Reparacion(comboSeleccionado.getValue(), textPaneDescripcion.getText(), Integer.parseInt(textFieldCoste.getText()), Integer.parseInt(textFieldPrecio.getText()), fechaActual,user.getId());
 				boolean seHaInsetado = controller.anadirReparacionFuncion(reparacion);
+				user.anadirReparacionAListaDeReparacion(reparacion);
 				if(seHaInsetado) {
 					JOptionPane.showMessageDialog(
 							null,

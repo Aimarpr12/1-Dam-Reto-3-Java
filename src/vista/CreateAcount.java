@@ -30,7 +30,6 @@ import com.toedter.calendar.JCalendar;
 
 import controller.Controller;
 import modelo.Empleado;
-import modelo.Mecanico;
 
 public class CreateAcount extends JPanel implements DocumentListener, ActionListener   {
 	/**
@@ -53,6 +52,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	private String fechaFormateada;
 	
 	public CreateAcount(Controller controller) {
+		setBackground(new Color(255, 252, 244));
 		setLayout(null);
 		this.controller = controller;
 		
@@ -80,7 +80,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	private void passwordFieldRepeat() {
 		passwordFieldRepeat = new JPasswordField();
 		passwordFieldRepeat.setToolTipText("");
-		passwordFieldRepeat.setBounds(48, 202, 109, 20);
+		passwordFieldRepeat.setBounds(587, 213, 168, 20);
 		add(passwordFieldRepeat);
 		passwordFieldRepeat.getDocument().addDocumentListener(this);
 		
@@ -89,7 +89,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	private void passwordField() {
 		passwordField = new JPasswordField();
 		passwordField.setToolTipText("");
-		passwordField.setBounds(48, 144, 109, 20);
+		passwordField.setBounds(362, 212, 144, 20);
 		add(passwordField);
 		passwordField.getDocument().addDocumentListener(this);
 		
@@ -97,15 +97,20 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	
 	private void jTextField() {
 		txtDni = new JTextField();
-		txtDni.setBounds(48, 86, 109, 20);
+		txtDni.setBounds(126, 213, 109, 20);
 		add(txtDni);
 		txtDni.setColumns(10);
 		txtDni.getDocument().addDocumentListener(this);
 		
 	}
-	
+	/**
+	 * Crea un nuevo usuario con el dni y la contrasenna
+	 */
 	private void buttonCreateAccount(JLabel labelContrasenaNoCoincide, String text, String valueOf) {
 		buttonLogIn = new JButton("Create Password");
+		buttonLogIn.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		buttonLogIn.setForeground(new Color(255, 255, 255));
+		buttonLogIn.setBackground(SystemColor.textHighlight);
 		buttonLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remove(labelContrasenaNoCoincide);  
@@ -131,7 +136,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 				}
 			}
 		});
-		buttonLogIn.setBounds(118, 250, 133, 23);
+		buttonLogIn.setBounds(362, 377, 170, 23);
 		add(buttonLogIn);
 		buttonLogIn.setEnabled(false);
 		buttonLogIn.addActionListener(this);
@@ -158,7 +163,7 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	
 	private void buttonLogOut() {
 		JButton btnLogOut = new JButton("Atras");
-		btnLogOut.setForeground(Color.WHITE);
+		btnLogOut.setForeground(new Color(255, 255, 255));
 		btnLogOut.setBackground(SystemColor.textHighlight);
 		btnLogOut.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnLogOut.addActionListener(new ActionListener() {
@@ -171,8 +176,11 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 		btnLogOut.setBounds(724, 65, 89, 23);
 		add(btnLogOut);		
 	}
-
-	private void buttonCreateAccont(JLabel labelAlgunCampoVacion) {
+	/**
+	 * El boton no funciona si hay algun campo vacio
+	 * @param labelAlgunCampoVacio
+	 */
+	private void buttonCreateAccont(JLabel labelAlgunCampoVacio) {
 		buttonCreateAccount = new JButton("Rellenar datos");
 		buttonCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -379,16 +387,19 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	}
 
 	private void labelContrasena() {
-		JLabel labelContraseña = new JLabel("Contraseña:");
-		labelContraseña.setBounds(48, 119, 86, 14);
-		add(labelContraseña);
-		
+		JLabel labelContrasena = new JLabel("Contraseña:");
+		labelContrasena.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelContrasena.setForeground(new Color(255, 128, 0));
+		labelContrasena.setBounds(387, 188, 424, 14);
+		add(labelContrasena);	
 	}
 	
 	private void labelContrasenaRepeat() {
-		JLabel labelContraseña = new JLabel("Repite La Contraseña:");
-		labelContraseña.setBounds(48, 177, 200, 14);
-		add(labelContraseña);
+		JLabel labelContrasena = new JLabel("Repite La Contraseña:");
+		labelContrasena.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelContrasena.setForeground(new Color(255, 128, 0));
+		labelContrasena.setBounds(587, 188, 224, 14);
+		add(labelContrasena);
 		
 	}
 	
@@ -401,7 +412,9 @@ public class CreateAcount extends JPanel implements DocumentListener, ActionList
 	}
 	private void labelDNI() {
 		JLabel labelUsuario = new JLabel("DNI:");
-		labelUsuario.setBounds(48, 61, 86, 14);
+		labelUsuario.setFont(new Font("Tahoma", Font.BOLD, 15));
+		labelUsuario.setForeground(new Color(255, 128, 0));
+		labelUsuario.setBounds(158, 188, 586, 14);
 		add(labelUsuario);
 		
 	}

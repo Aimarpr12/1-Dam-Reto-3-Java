@@ -177,7 +177,7 @@ public class VerVehiculosDisponibles extends JPanel {
 			fila[1]= vehiculo.getMatricula();
 			fila[2]= vehiculo.getMarca();
 			fila[3]= vehiculo.getModelo();
-			fila[4]= vehiculo.getAño();
+			fila[4]= vehiculo.getAno();
 			
 			model.addRow(fila); 
 		}

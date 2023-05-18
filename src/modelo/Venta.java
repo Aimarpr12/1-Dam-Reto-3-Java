@@ -76,12 +76,7 @@ public class Venta {
 	}
 	
 	public String conseguiDniDelCliente(List <ClienteVehiculo> listCliente) {
-		for(ClienteVehiculo cliente : listCliente){
-			if(cliente.getBastidor().equals(getBastidor())){
-				return cliente.getIdCliente();
-			}
-		}
-		return null;
+		return getIdCliente();
 	}
 
 	

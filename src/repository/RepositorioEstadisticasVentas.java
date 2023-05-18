@@ -47,22 +47,22 @@ public class RepositorioEstadisticasVentas implements IRepositorioEstadisticasVe
 				String totalComision = resultSet.getString(2);
 				EstadisticasDeVentas estadisticasDeVentas = new EstadisticasDeVentas(nombreCompleto, totalComision);
 				response.add(estadisticasDeVentas);
-				// System.out.println(nombreCompleto + " ha ganado " + String.format("%.2f", totalComision) + " € de comisión el mes pasado.");
 			}
-
-			resultSet.close();
-
-			preparedStatement.getMoreResults();
-
-			resultSet = preparedStatement.getResultSet();
-
-			while (resultSet.next()) {
-				String nombreCompleto = resultSet.getString(1);
-				String totalComision = resultSet.getString(2);
-				EstadisticasDeVentas estadisticasDeVentas = new EstadisticasDeVentas(nombreCompleto, totalComision);
-				response.add(estadisticasDeVentas);
-				// System.out.println(nombreCompleto + " ha ganado " + String.format("%.2f", totalComision) + " € de comisión el mes pasado.");
-			}
+			//no se como poner 2
+//			resultSet.close();
+//
+//			preparedStatement.getMoreResults();
+//
+//			resultSet = preparedStatement.getResultSet();
+//			System.out.println(resultSet);
+//
+//			while (resultSet.next()) {
+//				String nombreCompleto = resultSet.getString(1);
+//				String totalComision = resultSet.getString(2);
+//				EstadisticasDeVentas estadisticasDeVentas = new EstadisticasDeVentas(nombreCompleto, totalComision);
+//				response.add(estadisticasDeVentas);
+//				// System.out.println(nombreCompleto + " ha ganado " + String.format("%.2f", totalComision) + " € de comisión el mes pasado.");
+//			}
 
 		} catch (SQLException sqle) {
 			System.out.println("Error con la base de datos - " + sqle.getMessage());

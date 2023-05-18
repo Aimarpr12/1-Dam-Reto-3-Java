@@ -21,8 +21,6 @@ import error.VehiculoNoEncontradoException;
 import modelo.Cliente;
 import modelo.ClienteVehiculo;
 import modelo.Coche;
-import modelo.Empleado;
-import modelo.Mecanico;
 import modelo.Moto;
 import modelo.TipoDeVehiculo;
 import modelo.Vehiculo;
@@ -35,8 +33,11 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Component;
@@ -63,7 +64,7 @@ public class PantallaInicioVendedor extends JPanel {
 	public PantallaInicioVendedor(Vendedor user, Controller controller2) {
 		setBackground(new Color(255, 252, 244));
 		setLayout(null);
-		this.controller = controller2; 
+		this.controller = controller2;
 		cargarTodasLasListas();
 
 		cargarTodasLasVentas(user);
@@ -84,18 +85,17 @@ public class PantallaInicioVendedor extends JPanel {
 		
 		buttonVerVehiculosDisponibles(user);
 		
-		btnAsociarClienteAVehiculo(user);
-		
 		btnAnadirCliente(user);
 		
 		btnAnadirVehiculo(user);
 	}
 	
-	private void btnAsociarClienteAVehiculo(Vendedor user) {
-	}
 
 	private void btnAnadirCliente(Vendedor user) {
 		JButton btnAnadirCliente = new JButton("Añadir Cliente");
+		btnAnadirCliente.setForeground(new Color(255, 255, 255));
+		btnAnadirCliente.setBackground(SystemColor.textHighlight);
+		btnAnadirCliente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAnadirCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -103,13 +103,16 @@ public class PantallaInicioVendedor extends JPanel {
 				app.anadirCliente(user);
 			}
 		});
-		btnAnadirCliente.setBounds(664, 49, 200, 23);
+		btnAnadirCliente.setBounds(529, 460, 200, 23);
 		add(btnAnadirCliente);
 		
 	}
 
 	private void btnAnadirVehiculo(Vendedor user) {		
 		JButton btnAnadirVehiculo = new JButton("Añadir Vehiculo");
+		btnAnadirVehiculo.setForeground(new Color(255, 255, 255));
+		btnAnadirVehiculo.setBackground(SystemColor.textHighlight);
+		btnAnadirVehiculo.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAnadirVehiculo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = (Component) e.getSource();
@@ -117,7 +120,7 @@ public class PantallaInicioVendedor extends JPanel {
 				app.anadirVehiculo(user);
 			}
 		});
-		btnAnadirVehiculo.setBounds(475, 49, 160, 23);
+		btnAnadirVehiculo.setBounds(246, 460, 160, 23);
 		add(btnAnadirVehiculo);
 		
 	}
@@ -161,7 +164,10 @@ public class PantallaInicioVendedor extends JPanel {
 		btnVehiculosDisponibles.setBounds(270, 409, 204, 23);
 		add(btnVehiculosDisponibles);		
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del vehiculo seleccionado en la tabla
+	 * @param user
+	 */
 	private void btnVerVehiculo(Vendedor user) { 
 		JButton btnDatosDelVehiculo = new JButton("Datos del Vehiculo");
 		btnDatosDelVehiculo.setBackground(SystemColor.textHighlight);
@@ -178,11 +184,15 @@ public class PantallaInicioVendedor extends JPanel {
 				} 
 			}
 		});
-		btnDatosDelVehiculo.setBounds(484, 409, 160, 23);
+		btnDatosDelVehiculo.setBounds(494, 409, 160, 23);
 		add(btnDatosDelVehiculo);
 	} 
-
-	private void verDatosDelCoche(String matricula, Empleado user) {
+	/**
+	 * Dependiendo del tipo de vehiculo, obtiene la info correspondiente
+	 * @param matricula
+	 * @param user
+	 */
+	private void verDatosDelCoche(String matricula, Vendedor user) {
 		try {
 			TipoDeVehiculo tipoDeVehiculo = controller.averiguarTipoDeVehiculo(matricula);
 			if(TipoDeVehiculo.coche.equals(tipoDeVehiculo)) {
@@ -208,7 +218,7 @@ public class PantallaInicioVendedor extends JPanel {
 				+ "Matrícula: " + coche.getMatricula() + "\n"
 				+ "Marca: " + coche.getMarca() + "\n"
 				+ "Modelo: " + coche.getModelo() + "\n"
-				+ "Año: " + coche.getAño() + "\n"
+				+ "Año: " + coche.getAno() + "\n"
 				+ "Tipo de motor: " + coche.getMotor()
 				, "Datos del coche", JOptionPane.INFORMATION_MESSAGE);
 	
@@ -221,11 +231,13 @@ public class PantallaInicioVendedor extends JPanel {
 				+ "Matrícula: " + moto.getMatricula() + "\n"
 				+ "Marca: " + moto.getMarca() + "\n"
 				+ "Modelo: " + moto.getModelo() + "\n"
-				+ "Año: " + moto.getAño() + "\n"
+				+ "Año: " + moto.getAno() + "\n"
 				+ "Cilindrada: " + moto.getCilindrada()
 				, "Datos de la moto", JOptionPane.INFORMATION_MESSAGE);		
 	}
-
+	/**
+	 * Muestra pop up con todos los datos del cliente seleccionado en la tabla
+	 */
 	private void btnVerCliente(Vendedor user) {
 		JButton btnVerDatosDelCliente = new JButton("Datos del Cliente");
 		btnVerDatosDelCliente.setBackground(SystemColor.textHighlight);
@@ -254,7 +266,7 @@ public class PantallaInicioVendedor extends JPanel {
 		add(btnVerDatosDelCliente);		
 	}
 
-	private void cargarTodasLasVentas(Empleado user) {		
+	private void cargarTodasLasVentas(Vendedor user) {		
 		setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -272,7 +284,7 @@ public class PantallaInicioVendedor extends JPanel {
 		model.addColumn("Fecha");
 		model.addColumn("Matrícula");
 		model.addColumn("DNI del Cliente");
-		listaDeVentas = getAllVentasPorVendedor(user.getId());
+		listaDeVentas = user.getListaDeVentas();
 		actualizarVentas();
 
 		 // Agregar sorter a la tabla
@@ -314,28 +326,16 @@ public class PantallaInicioVendedor extends JPanel {
 		
 		scrollPane.setViewportView(table);
 	}
-	
-	
-
-	private List<Venta> getAllVentasPorVendedor(int id) {
-		List <Venta> listDeTodasLasVentas = controller.getAllVentas();
-		List <Venta> listDeVentasPorVendedor = new ArrayList <Venta>();
-		for(Venta venta : listDeTodasLasVentas) {
-			if(id == venta.getIdVendedor()){
-				listDeVentasPorVendedor.add(venta);
-			}
-		}
-		return listDeVentasPorVendedor;
-	}
 
 	private void actualizarVentas() {
-
 		for (Venta venta : listaDeVentas) {
 
 			Object[] fila = new Object [5];
 			fila[0]= venta.getIdVenta();
 			fila[1]= venta.getPrecio();
-			fila[2]= venta.getFecha();
+			Date fecha = venta.getFecha();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			fila[2]= df.format(fecha);
 			fila[3]= venta.conseguirMatriculaDelCoche(controller.getAllVehiculos());
 			fila[4]= venta.getIdCliente();
 
@@ -344,7 +344,7 @@ public class PantallaInicioVendedor extends JPanel {
 
 	}
 
-	private void labelNombre(Empleado user) {
+	private void labelNombre(Vendedor user) {
 		JLabel labelNombre = new JLabel(user.getNombre());
 		labelNombre.setForeground(new Color(255, 128, 0));
 		labelNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -368,7 +368,9 @@ public class PantallaInicioVendedor extends JPanel {
 		add(btnVerMisDatos);
 
 	}
-
+	/**
+	 * Para editar datos hay que introducir el password
+	 */
 	private void buttonEditarDatos(Vendedor user) {
 		btnEditarDatos = new JButton("Editar Datos");
 		btnEditarDatos.setBackground(SystemColor.textHighlight);
