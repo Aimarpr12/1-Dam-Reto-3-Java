@@ -14,7 +14,7 @@ public class Mecanico extends Empleado {
 	public Mecanico(String dni, String nombre, String apellido, int numeroTelefono, Date fechaNacimiento,
 			String direccion, String email) {
 		super(dni, nombre, apellido, numeroTelefono, fechaNacimiento, direccion, email);
-		// TODO Auto-generated constructor stub
+		listaDeReparaciones = new ArrayList<Reparacion>();
 	}
 
 	
@@ -50,6 +50,7 @@ public class Mecanico extends Empleado {
 
 	public Mecanico() {
 		// TODO Auto-generated constructor stub
+		listaDeReparaciones = new ArrayList<Reparacion>();
 	}
 
 
